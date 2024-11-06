@@ -11,19 +11,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.proksi_tbptb.ui.theme.ProkSI_TBPTBTheme
+import com.example.proksi_tbptb.ui.theme.theme.ProkSI_TBPTBTheme
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import com.example.proksi_tbptb.ui.theme.pages.LoginPage
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
-            ProkSI_TBPTBTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+            MaterialTheme {
+                Surface {
+                    LoginPage()  // Display the login page
                 }
             }
         }
