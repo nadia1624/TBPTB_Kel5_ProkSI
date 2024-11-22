@@ -1,0 +1,49 @@
+Index: app/src/main/java/com/example/proksi_tbptb/MainActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.proksi_tbptb\r\n\r\nimport android.os.Bundle\r\nimport androidx.activity.ComponentActivity\r\nimport androidx.activity.compose.setContent\r\nimport androidx.activity.enableEdgeToEdge\r\nimport androidx.compose.foundation.layout.fillMaxSize\r\nimport androidx.compose.foundation.layout.padding\r\nimport androidx.compose.material3.Scaffold\r\nimport androidx.compose.material3.Text\r\nimport androidx.compose.runtime.Composable\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.compose.ui.tooling.preview.Preview\r\n\r\nclass MainActivity : ComponentActivity() {\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        setContent {\r\n                }\r\n            }\r\n        }\r\n    }\r\n}\r\n\r\n@Composable\r\nfun Greeting(name: String, modifier: Modifier = Modifier) {\r\n    Text(\r\n        text = \"Hello $name!\",\r\n        modifier = modifier\r\n    )\r\n}\r\n\r\n@Preview(showBackground = true)\r\n@Composable\r\nfun GreetingPreview() {\r\n    ProkSI_TBPTBTheme {\r\n        Greeting(\"Android\")\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/proksi_tbptb/MainActivity.kt b/app/src/main/java/com/example/proksi_tbptb/MainActivity.kt
+--- a/app/src/main/java/com/example/proksi_tbptb/MainActivity.kt	
++++ b/app/src/main/java/com/example/proksi_tbptb/MainActivity.kt	
+@@ -11,6 +11,7 @@
+ import androidx.compose.runtime.Composable
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.tooling.preview.Preview
++import com.example.proksi_tbptb.ui.theme.ProkSI_TBPTBTheme
+ 
+ class MainActivity : ComponentActivity() {
+     override fun onCreate(savedInstanceState: Bundle?) {
+@@ -19,8 +20,6 @@
+                 }
+             }
+         }
+-    }
+-}
+ 
+ @Composable
+ fun Greeting(name: String, modifier: Modifier = Modifier) {
+Index: app/src/main/java/com/example/proksi_tbptb/ui/theme/pages/LoginPage.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.proksi_tbptb.ui.theme.pages\r\n\r\nimport androidx.compose.foundation.Image\r\nimport androidx.compose.foundation.background\r\nimport androidx.compose.foundation.layout.*\r\nimport androidx.compose.foundation.shape.RoundedCornerShape\r\nimport androidx.compose.material.*\r\nimport androidx.compose.runtime.*\r\nimport androidx.compose.ui.Alignment\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.compose.ui.graphics.Color\r\nimport androidx.compose.ui.res.painterResource\r\nimport androidx.compose.ui.text.font.FontWeight\r\nimport androidx.compose.ui.text.input.PasswordVisualTransformation\r\nimport androidx.compose.ui.tooling.preview.Preview\r\nimport androidx.compose.ui.unit.dp\r\nimport androidx.compose.ui.unit.sp\r\nimport com.example.proksi_tbptb.R\r\n\r\n@Composable\r\nfun LoginPage() {\r\n    Column(\r\n        modifier = Modifier\r\n            .fillMaxSize()\r\n            .background(Color(0xFF333333))\r\n            .padding(16.dp),\r\n        horizontalAlignment = Alignment.CenterHorizontally,\r\n        verticalArrangement = Arrangement.Center\r\n    ) {\r\n        Card(\r\n            shape = RoundedCornerShape(0.dp),\r\n            backgroundColor = Color(0xFFFDF0D5),\r\n            elevation = 6.dp,\r\n            modifier = Modifier\r\n                .fillMaxSize()  // Make the Card occupy the entire screen\r\n                .fillMaxWidth()\r\n                .padding(0.dp)\r\n        ) {\r\n            Column(\r\n                horizontalAlignment = Alignment.CenterHorizontally,\r\n                modifier = Modifier.padding(24.dp)\r\n            ) {\r\n                Image(\r\n                    painter = painterResource(R.drawable.logologin),\r\n                    contentDescription = \"Company Logo\",\r\n                    modifier = Modifier\r\n                        .fillMaxWidth()\r\n                        .height(250.dp)\r\n                        .padding(top = 5.dp)\r\n                )\r\n                Spacer(modifier = Modifier.height(0.dp))\r\n\r\n                Image(\r\n                    painter = painterResource(R.drawable.proksi),\r\n                    contentDescription = \"Mascot Image\",\r\n                    modifier = Modifier.size(100.dp)\r\n                )\r\n\r\n                Spacer(modifier = Modifier.height(8.dp))\r\n\r\n                Text(\r\n                    text = \"Welcome!\",\r\n                    fontSize = 20.sp,\r\n                    color = Color(0xFF333333)\r\n                )\r\n\r\n                Spacer(modifier = Modifier.height(24.dp))\r\n\r\n                var email by remember { mutableStateOf(\"\") }\r\n                var password by remember { mutableStateOf(\"\") }\r\n\r\n                OutlinedTextField(\r\n                    value = email,\r\n                    onValueChange = { email = it },\r\n                    label = { Text(\"EMAIL\") },\r\n                    placeholder = { Text(\"Enter your email\") },\r\n                    modifier = Modifier.fillMaxWidth(),\r\n                    singleLine = true\r\n                )\r\n\r\n                Spacer(modifier = Modifier.height(16.dp))\r\n\r\n                OutlinedTextField(\r\n                    value = password,\r\n                    onValueChange = { password = it },\r\n                    label = { Text(\"PASSWORD\") },\r\n                    placeholder = { Text(\"Enter your password\") },\r\n                    modifier = Modifier.fillMaxWidth(),\r\n                    singleLine = true,\r\n                    visualTransformation = PasswordVisualTransformation()\r\n                )\r\n\r\n                Spacer(modifier = Modifier.height(24.dp))\r\n\r\n                Button(\r\n                    onClick = { /* Handle login logic here */ },\r\n                    modifier = Modifier\r\n                        .fillMaxWidth()\r\n                        .height(48.dp),\r\n                    colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFFFF6F00)),\r\n                    shape = RoundedCornerShape(5.dp)\r\n                ) {\r\n                    Text(\r\n                        text = \"Login\",\r\n                        color = Color.White,\r\n                        fontSize = 16.sp\r\n                    )\r\n                }\r\n            }\r\n        }\r\n    }\r\n}\r\n\r\n@Preview(showBackground = true)\r\n@Composable\r\nfun PreviewLoginPage() {\r\n    LoginPage()\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/proksi_tbptb/ui/theme/pages/LoginPage.kt b/app/src/main/java/com/example/proksi_tbptb/ui/theme/pages/LoginPage.kt
+--- a/app/src/main/java/com/example/proksi_tbptb/ui/theme/pages/LoginPage.kt	
++++ b/app/src/main/java/com/example/proksi_tbptb/ui/theme/pages/LoginPage.kt	
+@@ -5,6 +5,11 @@
+ import androidx.compose.foundation.layout.*
+ import androidx.compose.foundation.shape.RoundedCornerShape
+ import androidx.compose.material.*
++import androidx.compose.material3.Button
++import androidx.compose.material3.ButtonDefaults
++import androidx.compose.material3.Card
++import androidx.compose.material3.OutlinedTextField
++import androidx.compose.material3.Text
+ import androidx.compose.runtime.*
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
