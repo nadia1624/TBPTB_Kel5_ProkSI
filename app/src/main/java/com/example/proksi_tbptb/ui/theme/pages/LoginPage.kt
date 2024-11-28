@@ -4,10 +4,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -15,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -34,10 +33,10 @@ fun LoginPage() {
     ) {
         Card(
             shape = RoundedCornerShape(0.dp),
-            backgroundColor = Color(0xFFFDF0D5),
-            elevation = 6.dp,
+            elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
             modifier = Modifier
-                .fillMaxSize()  // Make the Card occupy the entire screen
+                .fillMaxSize()
+                .background(Color(0xFFFDF0D5))
                 .fillMaxWidth()
                 .padding(0.dp)
         ) {
@@ -46,7 +45,7 @@ fun LoginPage() {
                 modifier = Modifier.padding(24.dp)
             ) {
                 Image(
-                    painter = painterResource(R.drawable.logologin),
+                    painter = painterResource(R.drawable.logoproksi),
                     contentDescription = "Company Logo",
                     modifier = Modifier
                         .fillMaxWidth()
@@ -56,7 +55,7 @@ fun LoginPage() {
                 Spacer(modifier = Modifier.height(0.dp))
 
                 Image(
-                    painter = painterResource(R.drawable.proksi),
+                    painter = painterResource(R.drawable.logoproksi),
                     contentDescription = "Mascot Image",
                     modifier = Modifier.size(100.dp)
                 )
@@ -102,7 +101,7 @@ fun LoginPage() {
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(48.dp),
-                    colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFFFF6F00)),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF6F00)),
                     shape = RoundedCornerShape(5.dp)
                 ) {
                     Text(
@@ -116,8 +115,8 @@ fun LoginPage() {
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
-fun PreviewLoginPage() {
+fun LoginPagePreview (){
     LoginPage()
 }

@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    kotlin("kapt")
 }
 
 android {
@@ -15,6 +16,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "BASE_URL","\"http://10.0.2.2:3000/\"")
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -38,6 +40,8 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
+
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -59,6 +63,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.datastore.core.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -67,4 +72,24 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+//    DataStore
+    implementation(libs.androidx.datastore)
+
+//    Caroutine
+    implementation(libs.kotlinx.coroutines.android)
+
+//    Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
+//    Dagger
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+
+//    Hilt
+    implementation(libs.androidx.hilt.navigation.compose)
+}
+
+kapt{
+    correctErrorTypes = true
 }

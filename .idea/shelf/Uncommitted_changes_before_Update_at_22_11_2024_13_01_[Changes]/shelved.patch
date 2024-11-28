@@ -1,0 +1,25 @@
+Index: .idea/modules/app/ProkSI_TBPTB.app.iml
+===================================================================
+diff --git a/.idea/modules/app/ProkSI_TBPTB.app.iml b/.idea/modules/app/ProkSI_TBPTB.app.iml
+deleted file mode 100644
+--- a/.idea/modules/app/ProkSI_TBPTB.app.iml	(revision 802b8e0066dac75d8273ab5d1be11f2b7562d13b)
++++ /dev/null	(revision 802b8e0066dac75d8273ab5d1be11f2b7562d13b)
+@@ -1,17 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<module version="4">
+-  <component name="ModuleClassLoaderOverlays">
+-    <paths>
+-      <option value="C:\Users\LENOVO\AppData\Local\Temp\overlay1921964067556220279" />
+-      <option value="C:\Users\LENOVO\AppData\Local\Temp\overlay13578979669646063437" />
+-      <option value="C:\Users\LENOVO\AppData\Local\Temp\overlay6299578781609350441" />
+-      <option value="C:\Users\LENOVO\AppData\Local\Temp\overlay11601627294702330190" />
+-      <option value="C:\Users\LENOVO\AppData\Local\Temp\overlay17138444949774220162" />
+-      <option value="C:\Users\LENOVO\AppData\Local\Temp\overlay536902827652692018" />
+-      <option value="C:\Users\LENOVO\AppData\Local\Temp\overlay17137293020550018372" />
+-      <option value="C:\Users\LENOVO\AppData\Local\Temp\overlay17376847272629041589" />
+-      <option value="C:\Users\LENOVO\AppData\Local\Temp\overlay8185664074281982631" />
+-      <option value="C:\Users\LENOVO\AppData\Local\Temp\overlay1582067193557454563" />
+-    </paths>
+-  </component>
+-</module>
+\ No newline at end of file
