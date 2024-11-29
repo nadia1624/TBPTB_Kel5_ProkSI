@@ -1,12 +1,13 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("com.google.dagger.hilt.android")
     kotlin("kapt")
 }
 
 android {
     namespace = "com.example.proksi_tbptb"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.proksi_tbptb"
@@ -71,15 +72,17 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation("androidx.navigation:navigation-compose:2.7.3")
-    implementation ("androidx.compose.material:material-icons-core:1.5.1")
-    implementation ("androidx.compose.material:material-icons-extended:1.5.1")
-    implementation ("androidx.compose.foundation:foundation:1.5.1")
+    implementation(libs.androidx.navigation.compose)
+    implementation (libs.androidx.material.icons.core)
+    implementation (libs.androidx.material.icons.extended)
+    implementation (libs.androidx.foundation)
+    implementation(libs.material3)
+
 
 //    DataStore
     implementation(libs.androidx.datastore)
 
-//    Caroutine
+//   Caroutine
     implementation(libs.kotlinx.coroutines.android)
 
 //    Retrofit

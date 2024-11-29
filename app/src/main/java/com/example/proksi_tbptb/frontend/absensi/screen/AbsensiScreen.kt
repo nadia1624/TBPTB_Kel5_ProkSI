@@ -1,5 +1,6 @@
 package com.example.proksi_tbptb.frontend.absensi.screen
 
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,6 +20,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.proksi_tbptb.R
+import com.example.proksi_tbptb.data.remote.retrofit.ApiConfig
+import com.example.proksi_tbptb.data.remote.retrofit.ApiService
 import com.example.proksi_tbptb.frontend.Component.BottomBar
 import com.example.proksi_tbptb.frontend.Component.TopBar
 import com.example.proksi_tbptb.frontend.absensi.component.BoxAbsensi
@@ -74,6 +77,7 @@ fun AbsensiScreen(modifier: Modifier = Modifier) {
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.spacedBy(2.dp) // Jarak antar item
                 ) {
+                    val item = ApiConfig.api.lihatAbsensi()
                     items(10) { index ->  // 5 adalah contoh jumlah item yang ingin ditampilkan
                         BoxAbsensi(
                             text = "Absensi ${index + 1}", // Menampilkan "Absensi 1", "Absensi 2", dll.
