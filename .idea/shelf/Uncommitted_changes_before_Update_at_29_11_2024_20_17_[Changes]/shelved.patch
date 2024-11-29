@@ -1,0 +1,1084 @@
+Index: app/src/main/java/com/example/proksi_tbptb/frontend/TambahDetailProker/TambahDetailScreen.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/proksi_tbptb/frontend/TambahDetailProker/TambahDetailScreen.kt b/app/src/main/java/com/example/proksi_tbptb/frontend/TambahDetailProker/screen/TambahDetailScreen.kt
+rename from app/src/main/java/com/example/proksi_tbptb/frontend/TambahDetailProker/TambahDetailScreen.kt
+rename to app/src/main/java/com/example/proksi_tbptb/frontend/TambahDetailProker/screen/TambahDetailScreen.kt
+--- a/app/src/main/java/com/example/proksi_tbptb/frontend/TambahDetailProker/TambahDetailScreen.kt	(revision bcadd467f2c9ab460bfebb51cb6d53ef394d56cf)
++++ b/app/src/main/java/com/example/proksi_tbptb/frontend/TambahDetailProker/screen/TambahDetailScreen.kt	(date 1732875767928)
+@@ -1,200 +1,113 @@
+-package com.example.proksi_tbptb.frontend.TambahDetailProker
++package com.example.proksi_tbptb.frontend.TambahDetailProker.screen
+ 
+-import android.app.DatePickerDialog
+-import android.os.Bundle
+-import androidx.compose.foundation.border
+-import androidx.compose.ui.graphics.Color
+-import androidx.compose.ui.unit.dp
+-import android.widget.Toast
+-import androidx.activity.ComponentActivity
+-import androidx.activity.compose.setContent
+ import androidx.compose.foundation.background
+ import androidx.compose.foundation.layout.*
++import androidx.compose.foundation.border
+ import androidx.compose.foundation.shape.RoundedCornerShape
+-import androidx.compose.material.icons.Icons
+-import androidx.compose.material.icons.filled.CalendarToday
+-import androidx.compose.material.icons.filled.PhotoLibrary
+ import androidx.compose.material3.*
+ import androidx.compose.runtime.*
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
+-import androidx.compose.ui.platform.LocalContext
++import androidx.compose.ui.graphics.Color
++import androidx.compose.ui.unit.dp
+ import androidx.compose.ui.tooling.preview.Preview
+ import com.example.proksi_tbptb.frontend.Component.BottomBar
+ import com.example.proksi_tbptb.frontend.Component.TopBar
+-import java.util.*
++import com.example.proksi_tbptb.frontend.TambahDetailProker.component.InputTanggal
++import com.example.proksi_tbptb.frontend.TambahDetailProker.component.BoxAmbilGambar
++import com.example.proksi_tbptb.frontend.TambahDetailProker.component.ButtonSelesai
+ 
+-class TambahDetailProkerActivity : ComponentActivity() {
+-    override fun onCreate(savedInstanceState: Bundle?) {
+-        super.onCreate(savedInstanceState)
+-        setContent {
+-            TambahDetailProkerScreen()
+-        }
+-    }
+-}
+ 
+ @OptIn(ExperimentalMaterial3Api::class)
+ @Composable
+-fun TambahDetailProkerScreen() {
+-    val context = LocalContext.current
++fun TambahDetailProkerScreen(
++    onProkerAdded: () -> Unit,
++    onGalleryFeatureRequested: () -> Unit
++) {
+     var judul by remember { mutableStateOf("") }
+     var tanggal by remember { mutableStateOf("") }
+     var buktiFoto by remember { mutableStateOf("") }
+ 
+-    Scaffold(
+-        topBar = { TopBar(pageTitle = "Tambah Proker") },
+-        content = { padding ->
+-            Box(
+-                modifier = Modifier
+-                    .fillMaxSize()
+-                    .background(Color(0xFFFAF3E1)) // Background di luar kolom
+-                    .padding(padding)
+-            ) {
+-                Column(
+-                    modifier = Modifier
+-                        .fillMaxSize()
+-                        .padding(16.dp), // Padding dalam kolom
+-                    verticalArrangement = Arrangement.Top,
+-                    horizontalAlignment = Alignment.Start
+-                ) {
+-                    // Teks di atas "Judul Proker"
+-                    Text(
+-                        text = "Detail Proker",
+-                        style = MaterialTheme.typography.titleLarge,
+-                        modifier = Modifier.padding(bottom = 16.dp)
+-                    )
++    Box(
++        modifier = Modifier
++            .fillMaxSize()
++            .background(Color(0xFFFAF3E1))
++    ) {
++        // TopBar di bagian atas
++        TopBar(
++            pageTitle = "Proker",
++            modifier = Modifier
++                .fillMaxWidth()
++                .background(MaterialTheme.colorScheme.primary)
++        )
++
++        Column(
++            modifier = Modifier
++                .fillMaxSize()
++                .padding(horizontal = 30.dp) // Padding horizontal saja
++                .padding(top = 70.dp), // Tambahkan padding untuk memberi ruang di bawah TopBar
++            verticalArrangement = Arrangement.Top,
++            horizontalAlignment = Alignment.Start
++        ) {
++            Text(
++                text = "Detail Proker",
++                style = MaterialTheme.typography.titleLarge,
++                modifier = Modifier.padding(bottom = 16.dp)
++            )
+ 
+-                    // Judul Proker
+-                    Text("Judul", style = MaterialTheme.typography.titleMedium)
+-                    OutlinedTextField(
+-                        value = judul,
+-                        onValueChange = { judul = it },
+-                        label = { Text("Masukkan Judul Proker") },
+-                        modifier = Modifier
+-                            .fillMaxWidth()
+-                            .padding(bottom = 16.dp) // Jarak antar komponen
+-                            .border(2.dp, Color.Black, RoundedCornerShape(8.dp))
+-                            .background(Color(0xFFF5E7C6), RoundedCornerShape(8.dp)),
+-                        colors = OutlinedTextFieldDefaults.colors(
+-                            focusedBorderColor = Color(0xFFFDF0D5), // Border saat fokus dengan warna 0xFFFDF0D5
+-                            unfocusedBorderColor = Color(0xFFFDF0D5) // Border saat tidak fokus dengan warna 0xFFFDF0D5
+-                        )
+-                    )
++            // Input Judul
++            Text("Judul", style = MaterialTheme.typography.titleMedium)
++            OutlinedTextField(
++                value = judul,
++                onValueChange = { judul = it },
++                label = { Text("Masukkan Judul Proker") },
++                modifier = Modifier
++                    .fillMaxWidth()
++                    .padding(bottom = 16.dp)
++                    .border(2.dp, Color.Black, RoundedCornerShape(8.dp))
++                    .background(Color(0xFFF5E7C6), RoundedCornerShape(8.dp))
++            )
+ 
+-                    // Tanggal Proker
+-                    Text("Tanggal", style = MaterialTheme.typography.titleMedium)
+-                    OutlinedTextField(
+-                        value = tanggal,
+-                        onValueChange = { tanggal = it },
+-                        label = { Text("Pilih Tanggal") },
+-                        placeholder = { Text("yyyy-mm-dd") },
+-                        modifier = Modifier
+-                            .fillMaxWidth()
+-                            .padding(bottom = 16.dp) // Jarak antar komponen
+-                         .border(2.dp, Color.Black, RoundedCornerShape(8.dp))
+-                         .background(Color(0xFFF5E7C6), RoundedCornerShape(8.dp)),
+-                        readOnly = true, // Membuat input hanya bisa diisi dengan DatePicker
+-                        trailingIcon = { // Ikon di sebelah kanan
+-                            IconButton(onClick = {
+-                                val calendar = Calendar.getInstance()
+-                                val year = calendar.get(Calendar.YEAR)
+-                                val month = calendar.get(Calendar.MONTH)
+-                                val day = calendar.get(Calendar.DAY_OF_MONTH)
+-                                DatePickerDialog(
+-                                    context,
+-                                    { _, selectedYear, selectedMonth, selectedDay ->
+-                                        tanggal = "$selectedYear-${selectedMonth + 1}-$selectedDay"
+-                                    },
+-                                    year, month, day
+-                                ).show()
+-                            }) {
+-                                Icon(
+-                                    imageVector = Icons.Filled.CalendarToday,
+-                                    contentDescription = "Pilih Tanggal"
+-                                )
+-                            }
+-                        },
+-                        colors = OutlinedTextFieldDefaults.colors(
+-                            focusedBorderColor = Color(0xFFF5E7C6),
+-                            unfocusedBorderColor = Color(0xFFF5E7C6)
+-                        )
+-                    )
++            // Input Tanggal
++            Text("Tanggal", style = MaterialTheme.typography.titleMedium)
++            InputTanggal(
++                value = tanggal,
++                onValueChange = { tanggal = it }
++            )
+ 
+-                    // Bukti Foto
+-                    Text("Bukti Foto", style = MaterialTheme.typography.titleMedium)
+-                    OutlinedTextField(
+-                        value = buktiFoto,
+-                        onValueChange = { buktiFoto = it },
+-                        label = { Text("Ambil Foto dari Galeri") },
+-                        placeholder = { Text("Masukkan URL atau pilih dari galeri") },
+-                        modifier = Modifier
+-                            .fillMaxWidth()
+-                            .padding(bottom = 32.dp) // Jarak antar komponen
+-                            .border(2.dp, Color.Black, RoundedCornerShape(8.dp))
+-                            .background(Color(0xFFF5E7C6), RoundedCornerShape(8.dp)),
+-                        readOnly = true, // Membuat input hanya bisa diisi dengan memilih foto
+-                        trailingIcon = { // Ikon di sebelah kanan
+-                            IconButton(onClick = {
+-                                Toast.makeText(context, "Fitur galeri akan ditambahkan!", Toast.LENGTH_SHORT).show()
+-                                // Logika memilih gambar dari galeri dapat ditambahkan di sini.
+-                            }) {
+-                                Icon(
+-                                    imageVector = Icons.Filled.PhotoLibrary,
+-                                    contentDescription = "Ambil Foto dari Galeri"
+-                                )
+-                            }
+-                        },
+-                        colors = OutlinedTextFieldDefaults.colors(
+-                            focusedBorderColor = Color(0xFFF5E7C6),
+-                            unfocusedBorderColor = Color(0xFFF5E7C6)
+-                        )
+-                    )
++            // Input Bukti Foto
++            Text("Bukti Foto", style = MaterialTheme.typography.titleMedium)
++            BoxAmbilGambar(
++                value = buktiFoto,
++                onValueChange = { buktiFoto = it }
++            )
+ 
+-                    // Tombol Selesai
+-                    Button(
+-                        onClick = {
+-                            if (judul.isNotEmpty() && tanggal.isNotEmpty() && buktiFoto.isNotEmpty()) {
+-                                Toast.makeText(
+-                                    context,
+-                                    "Proker berhasil ditambahkan!",
+-                                    Toast.LENGTH_SHORT
+-                                ).show()
+-                            } else {
+-                                Toast.makeText(
+-                                    context,
+-                                    "Harap lengkapi semua field!",
+-                                    Toast.LENGTH_SHORT
+-                                ).show()
+-                            }
+-                        },
+-                        modifier = Modifier
+-                            .fillMaxWidth()
+-                            .height(48.dp)
+-                            .padding(horizontal = 16.dp), // Padding kiri dan kanan untuk tombol
+-                        colors = ButtonDefaults.buttonColors(
+-                            containerColor = Color(0xFFFF6F00) // Warna tombol
+-                        )
+-                    ) {
+-                        Text(
+-                            "Selesai",
+-                            color = Color.White // Teks tombol berwarna putih
+-                        )
+-                    }
+-                }
++            // Tombol Selesai
++            ButtonSelesai(
++                onClick = {
++                    if (judul.isNotEmpty() && tanggal.isNotEmpty() && buktiFoto.isNotEmpty()) {
++                        onProkerAdded()
++                    }
++                },
++                modifier = Modifier.padding(top = 16.dp)
++            )
+ 
+-                // Menambahkan kembali BottomBar di bagian bawah
+-                BottomBar(
+-                    modifier = Modifier
+-                        .fillMaxWidth()
+-                        .align(Alignment.BottomCenter)
+-                )
+-            }
+-        }
+-    )
++        }
++        // BottomBar di bagian bawah layar
++        BottomBar(
++            modifier = Modifier
++                .fillMaxWidth()
++                .align(Alignment.BottomCenter)
++        )
++    }
+ }
+ 
+ @Preview(showBackground = true)
+ @Composable
+-fun TambahDetailProkerPreview() {
+-    TambahDetailProkerScreen()
+-}
++fun TambahDetailProkerScreenPreview() {
++    // Fungsi kosong untuk callback
++    TambahDetailProkerScreen(
++        onProkerAdded = {},
++        onGalleryFeatureRequested = {}
++    )
++}
+\ No newline at end of file
+Index: app/build.gradle.kts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>plugins {\r\n    alias(libs.plugins.android.application)\r\n    alias(libs.plugins.kotlin.android)\r\n    kotlin(\"kapt\")\r\n}\r\n\r\nandroid {\r\n    namespace = \"com.example.proksi_tbptb\"\r\n    compileSdk = 34\r\n\r\n    defaultConfig {\r\n        applicationId = \"com.example.proksi_tbptb\"\r\n        minSdk = 24\r\n        targetSdk = 34\r\n        versionCode = 1\r\n        versionName = \"1.0\"\r\n\r\n        testInstrumentationRunner = \"androidx.test.runner.AndroidJUnitRunner\"\r\n        buildConfigField(\"String\", \"BASE_URL\",\"\\\"http://10.0.2.2:3000/\\\"\")\r\n        vectorDrawables {\r\n            useSupportLibrary = true\r\n        }\r\n    }\r\n\r\n    buildTypes {\r\n        release {\r\n            isMinifyEnabled = false\r\n            proguardFiles(\r\n                getDefaultProguardFile(\"proguard-android-optimize.txt\"),\r\n                \"proguard-rules.pro\"\r\n            )\r\n        }\r\n    }\r\n    compileOptions {\r\n        sourceCompatibility = JavaVersion.VERSION_1_8\r\n        targetCompatibility = JavaVersion.VERSION_1_8\r\n    }\r\n    kotlinOptions {\r\n        jvmTarget = \"1.8\"\r\n    }\r\n    buildFeatures {\r\n        compose = true\r\n        buildConfig = true\r\n\r\n    }\r\n    composeOptions {\r\n        kotlinCompilerExtensionVersion = \"1.5.1\"\r\n    }\r\n    packaging {\r\n        resources {\r\n            excludes += \"/META-INF/{AL2.0,LGPL2.1}\"\r\n        }\r\n    }\r\n}\r\n\r\ndependencies {\r\n\r\n    implementation(libs.androidx.core.ktx)\r\n    implementation(libs.androidx.lifecycle.runtime.ktx)\r\n    implementation(libs.androidx.activity.compose)\r\n    implementation(platform(libs.androidx.compose.bom))\r\n    implementation(libs.androidx.ui)\r\n    implementation(libs.androidx.ui.graphics)\r\n    implementation(libs.androidx.ui.tooling.preview)\r\n    implementation(libs.androidx.material3)\r\n    implementation(libs.androidx.datastore.core.android)\r\n    testImplementation(libs.junit)\r\n    androidTestImplementation(libs.androidx.junit)\r\n    androidTestImplementation(libs.androidx.espresso.core)\r\n    androidTestImplementation(platform(libs.androidx.compose.bom))\r\n    androidTestImplementation(libs.androidx.ui.test.junit4)\r\n    debugImplementation(libs.androidx.ui.tooling)\r\n    debugImplementation(libs.androidx.ui.test.manifest)\r\n    implementation(\"androidx.navigation:navigation-compose:2.7.3\")\r\n    implementation (\"androidx.compose.material:material-icons-core:1.5.1\")\r\n    implementation (\"androidx.compose.material:material-icons-extended:1.5.1\")\r\n    implementation (\"androidx.compose.foundation:foundation:1.5.1\")\r\n\r\n//    DataStore\r\n    implementation(libs.androidx.datastore)\r\n\r\n//    Caroutine\r\n    implementation(libs.kotlinx.coroutines.android)\r\n\r\n//    Retrofit\r\n    implementation(libs.retrofit)\r\n    implementation(libs.converter.gson)\r\n\r\n//    Dagger\r\n    implementation(libs.hilt.android)\r\n    kapt(libs.hilt.android.compiler)\r\n\r\n//    Hilt\r\n    implementation(libs.androidx.hilt.navigation.compose)\r\n}\r\n\r\nkapt{\r\n    correctErrorTypes = true\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/build.gradle.kts b/app/build.gradle.kts
+--- a/app/build.gradle.kts	(revision bcadd467f2c9ab460bfebb51cb6d53ef394d56cf)
++++ b/app/build.gradle.kts	(date 1732873650977)
+@@ -1,6 +1,7 @@
+ plugins {
+     alias(libs.plugins.android.application)
+     alias(libs.plugins.kotlin.android)
++    id("com.google.dagger.hilt.android")
+     kotlin("kapt")
+ }
+ 
+@@ -71,10 +72,10 @@
+     androidTestImplementation(libs.androidx.ui.test.junit4)
+     debugImplementation(libs.androidx.ui.tooling)
+     debugImplementation(libs.androidx.ui.test.manifest)
+-    implementation("androidx.navigation:navigation-compose:2.7.3")
+-    implementation ("androidx.compose.material:material-icons-core:1.5.1")
+-    implementation ("androidx.compose.material:material-icons-extended:1.5.1")
+-    implementation ("androidx.compose.foundation:foundation:1.5.1")
++    implementation(libs.androidx.navigation.compose)
++    implementation (libs.androidx.material.icons.core)
++    implementation (libs.androidx.material.icons.extended)
++    implementation (libs.androidx.foundation)
+ 
+ //    DataStore
+     implementation(libs.androidx.datastore)
+@@ -87,11 +88,13 @@
+     implementation(libs.converter.gson)
+ 
+ //    Dagger
+-    implementation(libs.hilt.android)
+-    kapt(libs.hilt.android.compiler)
++//    implementation(libs.hilt.android)
++//    kapt(libs.hilt.android.compiler)
+ 
+ //    Hilt
+     implementation(libs.androidx.hilt.navigation.compose)
++    implementation(libs.hilt.android)
++    kapt(libs.hilt.android.compiler)
+ }
+ 
+ kapt{
+Index: gradle/libs.versions.toml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>[versions]\r\nagp = \"8.6.0\"\r\nconverterGson = \"2.9.0\"\r\ndatastore = \"1.1.1\"\r\nhiltAndroid = \"2.48\"\r\nhiltAndroidCompiler = \"2.44\"\r\nhiltNavigationCompose = \"1.2.0\"\r\nkotlin = \"1.9.0\"\r\ncoreKtx = \"1.13.1\"\r\njunit = \"4.13.2\"\r\njunitVersion = \"1.2.1\"\r\nespressoCore = \"3.6.1\"\r\nkotlinxCoroutinesAndroid = \"1.7.3\"\r\nlifecycleRuntimeKtx = \"2.8.6\"\r\nactivityCompose = \"1.9.3\"\r\ncomposeBom = \"2024.04.01\"\r\ndatastoreCoreAndroid = \"1.1.1\"\r\nretrofit = \"2.9.0\"\r\n\r\n[libraries]\r\nandroidx-core-ktx = { group = \"androidx.core\", name = \"core-ktx\", version.ref = \"coreKtx\" }\r\nandroidx-datastore = { module = \"androidx.datastore:datastore\", version.ref = \"datastore\" }\r\nandroidx-hilt-navigation-compose = { module = \"androidx.hilt:hilt-navigation-compose\", version.ref = \"hiltNavigationCompose\" }\r\nconverter-gson = { module = \"com.squareup.retrofit2:converter-gson\", version.ref = \"converterGson\" }\r\nhilt-android = { module = \"com.google.dagger:hilt-android\", version.ref = \"hiltAndroid\" }\r\nhilt-android-compiler = { module = \"com.google.dagger:hilt-android-compiler\", version.ref = \"hiltAndroidCompiler\" }\r\njunit = { group = \"junit\", name = \"junit\", version.ref = \"junit\" }\r\nandroidx-junit = { group = \"androidx.test.ext\", name = \"junit\", version.ref = \"junitVersion\" }\r\nandroidx-espresso-core = { group = \"androidx.test.espresso\", name = \"espresso-core\", version.ref = \"espressoCore\" }\r\nandroidx-lifecycle-runtime-ktx = { group = \"androidx.lifecycle\", name = \"lifecycle-runtime-ktx\", version.ref = \"lifecycleRuntimeKtx\" }\r\nandroidx-activity-compose = { group = \"androidx.activity\", name = \"activity-compose\", version.ref = \"activityCompose\" }\r\nandroidx-compose-bom = { group = \"androidx.compose\", name = \"compose-bom\", version.ref = \"composeBom\" }\r\nandroidx-ui = { group = \"androidx.compose.ui\", name = \"ui\" }\r\nandroidx-ui-graphics = { group = \"androidx.compose.ui\", name = \"ui-graphics\" }\r\nandroidx-ui-tooling = { group = \"androidx.compose.ui\", name = \"ui-tooling\" }\r\nandroidx-ui-tooling-preview = { group = \"androidx.compose.ui\", name = \"ui-tooling-preview\" }\r\nandroidx-ui-test-manifest = { group = \"androidx.compose.ui\", name = \"ui-test-manifest\" }\r\nandroidx-ui-test-junit4 = { group = \"androidx.compose.ui\", name = \"ui-test-junit4\" }\r\nandroidx-material3 = { group = \"androidx.compose.material3\", name = \"material3\" }\r\nandroidx-datastore-core-android = { group = \"androidx.datastore\", name = \"datastore-core-android\", version.ref = \"datastoreCoreAndroid\" }\r\nkotlinx-coroutines-android = { module = \"org.jetbrains.kotlinx:kotlinx-coroutines-android\", version.ref = \"kotlinxCoroutinesAndroid\" }\r\nretrofit = { module = \"com.squareup.retrofit2:retrofit\", version.ref = \"retrofit\" }\r\n\r\n[plugins]\r\nandroid-application = { id = \"com.android.application\", version.ref = \"agp\" }\r\nkotlin-android = { id = \"org.jetbrains.kotlin.android\", version.ref = \"kotlin\" }\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/gradle/libs.versions.toml b/gradle/libs.versions.toml
+--- a/gradle/libs.versions.toml	(revision bcadd467f2c9ab460bfebb51cb6d53ef394d56cf)
++++ b/gradle/libs.versions.toml	(date 1732873725903)
+@@ -2,8 +2,9 @@
+ agp = "8.6.0"
+ converterGson = "2.9.0"
+ datastore = "1.1.1"
++foundation = "1.7.5"
+ hiltAndroid = "2.48"
+-hiltAndroidCompiler = "2.44"
++hiltAndroidCompiler = "2.48"
+ hiltNavigationCompose = "1.2.0"
+ kotlin = "1.9.0"
+ coreKtx = "1.13.1"
+@@ -15,12 +16,19 @@
+ activityCompose = "1.9.3"
+ composeBom = "2024.04.01"
+ datastoreCoreAndroid = "1.1.1"
++materialIconsCore = "1.7.5"
++materialIconsExtended = "1.7.5"
++navigationCompose = "2.8.4"
+ retrofit = "2.9.0"
+ 
+ [libraries]
+ androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+ androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
++androidx-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "foundation" }
+ androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
++androidx-material-icons-core = { module = "androidx.compose.material:material-icons-core", version.ref = "materialIconsCore" }
++androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
++androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+ converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
+ hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
+ hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroidCompiler" }
+Index: app/src/main/java/com/example/proksi_tbptb/frontend/Proker/component/ButtonIcon.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.proksi_tbptb.frontend.Proker.component\r\n\r\nimport androidx.compose.foundation.layout.padding\r\nimport androidx.compose.foundation.shape.RoundedCornerShape\r\nimport androidx.compose.material3.Button\r\nimport androidx.compose.material3.ButtonDefaults\r\nimport androidx.compose.material3.Text\r\nimport androidx.compose.runtime.Composable\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.compose.ui.graphics.Color\r\nimport androidx.compose.ui.tooling.preview.Preview\r\nimport androidx.compose.ui.unit.dp\r\n\r\n@Composable\r\nfun CustomButtonProker(\r\n    text: String,\r\n    onClick: () -> Unit,\r\n    modifier: Modifier = Modifier,\r\n    buttonColor: Color = Color.Blue,  // Parameter untuk warna latar belakang\r\n    contentColor: Color = Color.White // Parameter untuk warna teks\r\n) {\r\n    Button(\r\n        onClick = onClick,\r\n        modifier = modifier,\r\n        colors = ButtonDefaults.buttonColors(\r\n            containerColor = buttonColor,  // Warna latar belakang tombol\r\n            contentColor = contentColor    // Warna teks pada tombol\r\n        ),\r\n        shape = RoundedCornerShape(12.dp)  // Memberikan sudut membulat pada tombol\r\n    ) {\r\n        Text(\r\n            text = text// Menambahkan padding pada teks, jika perlu\r\n        )\r\n    }\r\n}\r\n\r\n@Preview\r\n@Composable\r\nfun CustomButtonPreview() {\r\n    CustomButtonProker(\r\n        text = \"Proker\",\r\n        onClick = { println(\"Proker diklik\") },\r\n        buttonColor = Color(0xFFF9B683),  // Warna latar belakang\r\n        contentColor = Color.Black       // Warna teks\r\n    )\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/proksi_tbptb/frontend/Proker/component/ButtonIcon.kt b/app/src/main/java/com/example/proksi_tbptb/frontend/Proker/component/ButtonIcon.kt
+--- a/app/src/main/java/com/example/proksi_tbptb/frontend/Proker/component/ButtonIcon.kt	(revision bcadd467f2c9ab460bfebb51cb6d53ef394d56cf)
++++ b/app/src/main/java/com/example/proksi_tbptb/frontend/Proker/component/ButtonIcon.kt	(date 1732867085022)
+@@ -38,8 +38,8 @@
+ @Composable
+ fun CustomButtonPreview() {
+     CustomButtonProker(
+-        text = "Proker",
+-        onClick = { println("Proker diklik") },
++        text = "Divisi",
++        onClick = { println("Divisi diklik") },
+         buttonColor = Color(0xFFF9B683),  // Warna latar belakang
+         contentColor = Color.Black       // Warna teks
+     )
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_22_11_2024_11_56_[Changes]/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_22_11_2024_11_56_[Changes]/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Update_at_22_11_2024_11_56_[Changes]/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_22_11_2024_11_56_[Changes]/shelved.patch	(revision bcadd467f2c9ab460bfebb51cb6d53ef394d56cf)
++++ /dev/null	(revision bcadd467f2c9ab460bfebb51cb6d53ef394d56cf)
+@@ -1,38 +0,0 @@
+-Index: .idea/misc.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ExternalStorageConfigurationManager\" enabled=\"true\" />\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_17\" default=\"true\" project-jdk-name=\"jbr-17\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/build/classes\" />\r\n  </component>\r\n  <component name=\"ProjectType\">\r\n    <option name=\"id\" value=\"Android\" />\r\n  </component>\r\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/.idea/misc.xml b/.idea/misc.xml
+---- a/.idea/misc.xml	(revision fbe9b53077880e0d86f9b8db5b7498b52ee14bca)
+-+++ b/.idea/misc.xml	(date 1732251364675)
+-@@ -1,7 +1,7 @@
+- <?xml version="1.0" encoding="UTF-8"?>
+- <project version="4">
+-   <component name="ExternalStorageConfigurationManager" enabled="true" />
+--  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="jbr-17" project-jdk-type="JavaSDK">
+-+  <component name="ProjectRootManager" version="2" languageLevel="JDK_20" default="true" project-jdk-name="20" project-jdk-type="JavaSDK">
+-     <output url="file://$PROJECT_DIR$/build/classes" />
+-   </component>
+-   <component name="ProjectType">
+-Index: .idea/gradle.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"GradleMigrationSettings\" migrationVersion=\"1\" />\r\n  <component name=\"GradleSettings\">\r\n    <option name=\"linkedExternalProjectsSettings\">\r\n      <GradleProjectSettings>\r\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$\" />\r\n        <option name=\"gradleJvm\" value=\"#GRADLE_LOCAL_JAVA_HOME\" />\r\n        <option name=\"modules\">\r\n          <set>\r\n            <option value=\"$PROJECT_DIR$\" />\r\n            <option value=\"$PROJECT_DIR$/app\" />\r\n          </set>\r\n        </option>\r\n        <option name=\"resolveExternalAnnotations\" value=\"false\" />\r\n      </GradleProjectSettings>\r\n    </option>\r\n  </component>\r\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/.idea/gradle.xml b/.idea/gradle.xml
+---- a/.idea/gradle.xml	(revision fbe9b53077880e0d86f9b8db5b7498b52ee14bca)
+-+++ b/.idea/gradle.xml	(date 1732251364685)
+-@@ -5,7 +5,7 @@
+-     <option name="linkedExternalProjectsSettings">
+-       <GradleProjectSettings>
+-         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+--        <option name="gradleJvm" value="#GRADLE_LOCAL_JAVA_HOME" />
+-+        <option name="gradleJvm" value="#JAVA_HOME" />
+-         <option name="modules">
+-           <set>
+-             <option value="$PROJECT_DIR$" />
+Index: .idea/shelf/Uncommitted_changes_before_Checkout_at_22_11_2024_12_57_[Changes]1/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Checkout_at_22_11_2024_12_57_[Changes]1/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Checkout_at_22_11_2024_12_57_[Changes]1/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Checkout_at_22_11_2024_12_57_[Changes]1/shelved.patch	(revision bcadd467f2c9ab460bfebb51cb6d53ef394d56cf)
++++ /dev/null	(revision bcadd467f2c9ab460bfebb51cb6d53ef394d56cf)
+@@ -1,122 +0,0 @@
+-Index: .idea/workspace.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AndroidLayouts\">\r\n    <shared>\r\n      <config />\r\n    </shared>\r\n  </component>\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"NONE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"be060b70-b93a-4b5d-83bf-0338580f6e42\" name=\"Changes\" comment=\"Login\" />\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"ClangdSettings\">\r\n    <option name=\"formatViaClangd\" value=\"false\" />\r\n  </component>\r\n  <component name=\"ExecutionTargetManager\" SELECTED_TARGET=\"device_and_snapshot_combo_box_target[DeviceId(pluginId=LocalEmulator, isTemplate=false, identifier=path=C:\\Users\\acer\\.android\\avd\\Medium_Phone_API_35.avd)]\" />\r\n  <component name=\"ExternalProjectsData\">\r\n    <projectState path=\"$PROJECT_DIR$\">\r\n      <ProjectState />\r\n    </projectState>\r\n  </component>\r\n  <component name=\"ExternalProjectsManager\">\r\n    <system id=\"GRADLE\">\r\n      <state>\r\n        <task path=\"$PROJECT_DIR$/app\">\r\n          <activation />\r\n        </task>\r\n        <projects_view>\r\n          <tree_state>\r\n            <expand>\r\n              <path>\r\n                <item name=\"\" type=\"6a2764b6:ExternalProjectsStructure$RootNode\" />\r\n                <item name=\"ProkSI_TBPTB\" type=\"f1a62948:ProjectNode\" />\r\n              </path>\r\n              <path>\r\n                <item name=\"\" type=\"6a2764b6:ExternalProjectsStructure$RootNode\" />\r\n                <item name=\"ProkSI_TBPTB\" type=\"f1a62948:ProjectNode\" />\r\n                <item name=\"app\" type=\"2d1252cf:ModuleNode\" />\r\n              </path>\r\n              <path>\r\n                <item name=\"\" type=\"6a2764b6:ExternalProjectsStructure$RootNode\" />\r\n                <item name=\"ProkSI_TBPTB\" type=\"f1a62948:ProjectNode\" />\r\n                <item name=\"app\" type=\"2d1252cf:ModuleNode\" />\r\n                <item name=\"Tasks\" type=\"e4a08cd1:TasksNode\" />\r\n              </path>\r\n              <path>\r\n                <item name=\"\" type=\"6a2764b6:ExternalProjectsStructure$RootNode\" />\r\n                <item name=\"ProkSI_TBPTB\" type=\"f1a62948:ProjectNode\" />\r\n                <item name=\"app\" type=\"2d1252cf:ModuleNode\" />\r\n                <item name=\"Tasks\" type=\"e4a08cd1:TasksNode\" />\r\n                <item name=\"other\" type=\"c8890929:TasksNode$1\" />\r\n              </path>\r\n            </expand>\r\n            <select />\r\n          </tree_state>\r\n        </projects_view>\r\n      </state>\r\n    </system>\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Kotlin File\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_BRANCH_BY_REPOSITORY\">\r\n      <map>\r\n        <entry key=\"$PROJECT_DIR$\" value=\"Login\" />\r\n      </map>\r\n    </option>\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n    <option name=\"ROOT_SYNC\" value=\"SYNC\" />\r\n  </component>\r\n  <component name=\"GitHubPullRequestSearchHistory\">{\r\n  &quot;lastFilter&quot;: {\r\n    &quot;state&quot;: &quot;OPEN&quot;,\r\n    &quot;assignee&quot;: &quot;AzhraMeisa09&quot;\r\n  }\r\n}</component>\r\n  <component name=\"GithubPullRequestsUISettings\">{\r\n  &quot;selectedUrlAndAccountId&quot;: {\r\n    &quot;url&quot;: &quot;https://github.com/nadia1624/TBPTB_Kel5_ProkSI.git&quot;,\r\n    &quot;accountId&quot;: &quot;35e9bd23-3269-4a76-a976-db0468eb4385&quot;\r\n  }\r\n}</component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 4\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"2oLWqNcWNj9vydUIAusi0RiUbGY\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"Android App.app.executor\": \"Run\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"RunOnceActivity.cidr.known.project.marker\": \"true\",\r\n    \"RunOnceActivity.readMode.enableVisualFormatting\": \"true\",\r\n    \"cf.first.check.clang-format\": \"false\",\r\n    \"cidr.known.project.marker\": \"true\",\r\n    \"git-widget-placeholder\": \"Merging main\",\r\n    \"kotlin-language-version-configured\": \"true\",\r\n    \"last_opened_file_path\": \"D:/SEMESTER 5/PTB/TBPTB_Kel5_ProkSI\"\r\n  },\r\n  \"keyToStringList\": {\r\n    \"kotlin-gradle-user-dirs\": [\r\n      \"C:\\\\Users\\\\acer\\\\.gradle\"\r\n    ]\r\n  }\r\n}]]></component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"CopyFile.RECENT_KEYS\">\r\n      <recent name=\"D:\\SEMESTER 5\\PTB\\TBPTB_Kel5_ProkSI\\app\\src\\main\\res\\drawable\" />\r\n    </key>\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"D:\\SEMESTER 5\\PTB\\TBPTB_Kel5_ProkSI\\app\\src\\main\\res\\drawable\" />\r\n      <recent name=\"D:\\SEMESTER 5\\PTB\\TBPTB_Kel5_ProkSI\\app\\src\\main\\res\\drawable\\login.png\" />\r\n      <recent name=\"D:\\SEMESTER 5\\PTB\\TBPTB_Kel5_ProkSI\\app\\src\\main\\java\\com\\example\\proksi_tbptb\\ui\\theme\\theme\" />\r\n      <recent name=\"D:\\SEMESTER 5\\PTB\\TBPTB_Kel5_ProkSI\\app\\src\\main\\java\\com\\example\\proksi_tbptb\\theme\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"app\" type=\"AndroidRunConfigurationType\" factoryName=\"Android App\" activateToolWindowBeforeRun=\"false\">\r\n      <module name=\"ProkSI_TBPTB.app.main\" />\r\n      <option name=\"DEPLOY\" value=\"true\" />\r\n      <option name=\"DEPLOY_APK_FROM_BUNDLE\" value=\"false\" />\r\n      <option name=\"DEPLOY_AS_INSTANT\" value=\"false\" />\r\n      <option name=\"ARTIFACT_NAME\" value=\"\" />\r\n      <option name=\"PM_INSTALL_OPTIONS\" value=\"\" />\r\n      <option name=\"ALL_USERS\" value=\"false\" />\r\n      <option name=\"ALWAYS_INSTALL_WITH_PM\" value=\"false\" />\r\n      <option name=\"CLEAR_APP_STORAGE\" value=\"false\" />\r\n      <option name=\"DYNAMIC_FEATURES_DISABLED_LIST\" value=\"\" />\r\n      <option name=\"ACTIVITY_EXTRA_FLAGS\" value=\"\" />\r\n      <option name=\"MODE\" value=\"default_activity\" />\r\n      <option name=\"CLEAR_LOGCAT\" value=\"false\" />\r\n      <option name=\"SHOW_LOGCAT_AUTOMATICALLY\" value=\"false\" />\r\n      <option name=\"TARGET_SELECTION_MODE\" value=\"DEVICE_AND_SNAPSHOT_COMBO_BOX\" />\r\n      <option name=\"SELECTED_CLOUD_MATRIX_CONFIGURATION_ID\" value=\"-1\" />\r\n      <option name=\"SELECTED_CLOUD_MATRIX_PROJECT_ID\" value=\"\" />\r\n      <option name=\"DEBUGGER_TYPE\" value=\"Auto\" />\r\n      <Auto>\r\n        <option name=\"USE_JAVA_AWARE_DEBUGGER\" value=\"false\" />\r\n        <option name=\"SHOW_STATIC_VARS\" value=\"true\" />\r\n        <option name=\"WORKING_DIR\" value=\"\" />\r\n        <option name=\"TARGET_LOGGING_CHANNELS\" value=\"lldb process:gdb-remote packets\" />\r\n        <option name=\"SHOW_OPTIMIZED_WARNING\" value=\"true\" />\r\n        <option name=\"ATTACH_ON_WAIT_FOR_DEBUGGER\" value=\"false\" />\r\n        <option name=\"DEBUG_SANDBOX_SDK\" value=\"false\" />\r\n      </Auto>\r\n      <Hybrid>\r\n        <option name=\"USE_JAVA_AWARE_DEBUGGER\" value=\"false\" />\r\n        <option name=\"SHOW_STATIC_VARS\" value=\"true\" />\r\n        <option name=\"WORKING_DIR\" value=\"\" />\r\n        <option name=\"TARGET_LOGGING_CHANNELS\" value=\"lldb process:gdb-remote packets\" />\r\n        <option name=\"SHOW_OPTIMIZED_WARNING\" value=\"true\" />\r\n        <option name=\"ATTACH_ON_WAIT_FOR_DEBUGGER\" value=\"false\" />\r\n        <option name=\"DEBUG_SANDBOX_SDK\" value=\"false\" />\r\n      </Hybrid>\r\n      <Java>\r\n        <option name=\"ATTACH_ON_WAIT_FOR_DEBUGGER\" value=\"false\" />\r\n        <option name=\"DEBUG_SANDBOX_SDK\" value=\"false\" />\r\n      </Java>\r\n      <Native>\r\n        <option name=\"USE_JAVA_AWARE_DEBUGGER\" value=\"false\" />\r\n        <option name=\"SHOW_STATIC_VARS\" value=\"true\" />\r\n        <option name=\"WORKING_DIR\" value=\"\" />\r\n        <option name=\"TARGET_LOGGING_CHANNELS\" value=\"lldb process:gdb-remote packets\" />\r\n        <option name=\"SHOW_OPTIMIZED_WARNING\" value=\"true\" />\r\n        <option name=\"ATTACH_ON_WAIT_FOR_DEBUGGER\" value=\"false\" />\r\n        <option name=\"DEBUG_SANDBOX_SDK\" value=\"false\" />\r\n      </Native>\r\n      <Profilers>\r\n        <option name=\"ADVANCED_PROFILING_ENABLED\" value=\"false\" />\r\n        <option name=\"STARTUP_PROFILING_ENABLED\" value=\"false\" />\r\n        <option name=\"STARTUP_CPU_PROFILING_ENABLED\" value=\"false\" />\r\n        <option name=\"STARTUP_CPU_PROFILING_CONFIGURATION_NAME\" value=\"Java/Kotlin Method Sample (legacy)\" />\r\n        <option name=\"STARTUP_NATIVE_MEMORY_PROFILING_ENABLED\" value=\"false\" />\r\n        <option name=\"NATIVE_MEMORY_SAMPLE_RATE_BYTES\" value=\"2048\" />\r\n      </Profilers>\r\n      <option name=\"DEEP_LINK\" value=\"\" />\r\n      <option name=\"ACTIVITY_CLASS\" value=\"\" />\r\n      <option name=\"SEARCH_ACTIVITY_IN_GLOBAL_SCOPE\" value=\"false\" />\r\n      <option name=\"SKIP_ACTIVITY_VALIDATION\" value=\"false\" />\r\n      <method v=\"2\">\r\n        <option name=\"Android.Gradle.BeforeRunTask\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"be060b70-b93a-4b5d-83bf-0338580f6e42\" name=\"Changes\" comment=\"\" />\r\n      <created>1730649525945</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1730649525945</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"Login\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1730874383263</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1730874383263</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"2\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"Login\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"Login\" />\r\n  </component>\r\n  <component name=\"XDebuggerManager\">\r\n    <breakpoint-manager>\r\n      <breakpoints>\r\n        <line-breakpoint enabled=\"true\" type=\"kotlin-line\">\r\n          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/proksi_tbptb/MainActivity.kt</url>\r\n          <line>18</line>\r\n          <option name=\"timeStamp\" value=\"1\" />\r\n        </line-breakpoint>\r\n      </breakpoints>\r\n    </breakpoint-manager>\r\n  </component>\r\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+---- a/.idea/workspace.xml	
+-+++ b/.idea/workspace.xml	
+-@@ -9,7 +9,13 @@
+-     <option name="autoReloadType" value="NONE" />
+-   </component>
+-   <component name="ChangeListManager">
+--    <list default="true" id="be060b70-b93a-4b5d-83bf-0338580f6e42" name="Changes" comment="Login" />
+-+    <list default="true" id="be060b70-b93a-4b5d-83bf-0338580f6e42" name="Changes" comment="Login">
+-+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+-+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+-+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml" afterDir="false" />
+-+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/proksi_tbptb/ui/theme/pages/LoginPage.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/proksi_tbptb/ui/theme/pages/LoginPage.kt" afterDir="false" />
+-+    </list>
+-     <option name="SHOW_DIALOG" value="false" />
+-     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+-     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+-@@ -18,7 +24,7 @@
+-   <component name="ClangdSettings">
+-     <option name="formatViaClangd" value="false" />
+-   </component>
+--  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=LocalEmulator, isTemplate=false, identifier=path=C:\Users\acer\.android\avd\Medium_Phone_API_35.avd)]" />
+-+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=LocalEmulator, isTemplate=false, identifier=path=C:\Users\LENOVO\.android\avd\Medium_Phone_API_35.avd)]" />
+-   <component name="ExternalProjectsData">
+-     <projectState path="$PROJECT_DIR$">
+-       <ProjectState />
+-@@ -72,7 +78,7 @@
+-   <component name="Git.Settings">
+-     <option name="RECENT_BRANCH_BY_REPOSITORY">
+-       <map>
+--        <entry key="$PROJECT_DIR$" value="Login" />
+-+        <entry key="$PROJECT_DIR$" value="main" />
+-       </map>
+-     </option>
+-     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+-@@ -99,24 +105,24 @@
+-     <option name="hideEmptyMiddlePackages" value="true" />
+-     <option name="showLibraryContents" value="true" />
+-   </component>
+--  <component name="PropertiesComponent"><![CDATA[{
+--  "keyToString": {
+--    "Android App.app.executor": "Run",
+--    "RunOnceActivity.ShowReadmeOnStart": "true",
+--    "RunOnceActivity.cidr.known.project.marker": "true",
+--    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+--    "cf.first.check.clang-format": "false",
+--    "cidr.known.project.marker": "true",
+--    "git-widget-placeholder": "Merging main",
+--    "kotlin-language-version-configured": "true",
+--    "last_opened_file_path": "D:/SEMESTER 5/PTB/TBPTB_Kel5_ProkSI"
+-+  <component name="PropertiesComponent">{
+-+  &quot;keyToString&quot;: {
+-+    &quot;Android App.app.executor&quot;: &quot;Run&quot;,
+-+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+-+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+-+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+-+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+-+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+-+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+-+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+-+    &quot;last_opened_file_path&quot;: &quot;D:/SEMESTER 5/PTB/TBPTB_Kel5_ProkSI&quot;
+-   },
+--  "keyToStringList": {
+--    "kotlin-gradle-user-dirs": [
+--      "C:\\Users\\acer\\.gradle"
+-+  &quot;keyToStringList&quot;: {
+-+    &quot;kotlin-gradle-user-dirs&quot;: [
+-+      &quot;C:\\Users\\acer\\.gradle&quot;
+-     ]
+-   }
+--}]]></component>
+-+}</component>
+-   <component name="RecentsManager">
+-     <key name="CopyFile.RECENT_KEYS">
+-       <recent name="D:\SEMESTER 5\PTB\TBPTB_Kel5_ProkSI\app\src\main\res\drawable" />
+-Index: .idea/misc.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ExternalStorageConfigurationManager\" enabled=\"true\" />\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_17\" default=\"true\" project-jdk-name=\"jbr-17\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/build/classes\" />\r\n  </component>\r\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/.idea/misc.xml b/.idea/misc.xml
+---- a/.idea/misc.xml	
+-+++ b/.idea/misc.xml	
+-@@ -1,7 +1,7 @@
+- <?xml version="1.0" encoding="UTF-8"?>
+- <project version="4">
+-   <component name="ExternalStorageConfigurationManager" enabled="true" />
+--  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="jbr-17" project-jdk-type="JavaSDK">
+-+  <component name="ProjectRootManager" version="2" languageLevel="JDK_20" default="true" project-jdk-name="20" project-jdk-type="JavaSDK">
+-     <output url="file://$PROJECT_DIR$/build/classes" />
+-   </component>
+- </project>
+-\ No newline at end of file
+-Index: .idea/gradle.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"GradleSettings\">\r\n    <option name=\"linkedExternalProjectsSettings\">\r\n      <GradleProjectSettings>\r\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$\" />\r\n        <option name=\"gradleJvm\" value=\"#GRADLE_LOCAL_JAVA_HOME\" />\r\n        <option name=\"modules\">\r\n          <set>\r\n            <option value=\"$PROJECT_DIR$\" />\r\n            <option value=\"$PROJECT_DIR$/app\" />\r\n          </set>\r\n        </option>\r\n        <option name=\"resolveExternalAnnotations\" value=\"false\" />\r\n      </GradleProjectSettings>\r\n    </option>\r\n  </component>\r\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/.idea/gradle.xml b/.idea/gradle.xml
+---- a/.idea/gradle.xml	
+-+++ b/.idea/gradle.xml	
+-@@ -4,7 +4,7 @@
+-     <option name="linkedExternalProjectsSettings">
+-       <GradleProjectSettings>
+-         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+--        <option name="gradleJvm" value="#GRADLE_LOCAL_JAVA_HOME" />
+-+        <option name="gradleJvm" value="#JAVA_HOME" />
+-         <option name="modules">
+-           <set>
+-             <option value="$PROJECT_DIR$" />
+Index: app/src/main/java/com/example/proksi_tbptb/frontend/pages/LoginPage.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/proksi_tbptb/frontend/pages/LoginPage.kt b/app/src/main/java/com/example/proksi_tbptb/frontend/pages/LoginPage.kt
+deleted file mode 100644
+--- a/app/src/main/java/com/example/proksi_tbptb/frontend/pages/LoginPage.kt	(revision bcadd467f2c9ab460bfebb51cb6d53ef394d56cf)
++++ /dev/null	(revision bcadd467f2c9ab460bfebb51cb6d53ef394d56cf)
+@@ -1,129 +0,0 @@
+-package com.example.proksi_tbptb.frontend.pages
+-
+-import androidx.compose.foundation.Image
+-import androidx.compose.foundation.background
+-import androidx.compose.foundation.layout.*
+-import androidx.compose.material3.Button
+-import androidx.compose.material3.OutlinedTextField
+-import androidx.compose.material3.Text
+-import androidx.compose.runtime.*
+-import androidx.compose.ui.Alignment
+-import androidx.compose.ui.Modifier
+-import androidx.compose.ui.res.painterResource
+-import androidx.compose.ui.text.font.FontWeight
+-import androidx.compose.ui.text.input.PasswordVisualTransformation
+-import androidx.compose.ui.tooling.preview.Preview
+-import androidx.compose.ui.unit.dp
+-import androidx.compose.ui.unit.sp
+-import com.example.proksi_tbptb.R
+-import com.example.proksi_tbptb.ui.theme.BackgroundColor
+-import com.example.proksi_tbptb.ui.theme.PrimaryButtonColor
+-import com.example.proksi_tbptb.ui.theme.TextColor
+-import androidx.compose.foundation.shape.RoundedCornerShape
+-import androidx.compose.material3.ButtonDefaults
+-
+-
+-
+-@Composable
+-fun LoginPage() {
+-    Column(
+-        modifier = Modifier
+-            .fillMaxSize()
+-            .background(BackgroundColor)
+-            .padding(28.dp)
+-    ) {
+-        Row(
+-            modifier = Modifier
+-                .fillMaxWidth()
+-                .padding(bottom = 16.dp),
+-            horizontalArrangement = Arrangement.Start
+-        ) {
+-            Image(
+-                painter = painterResource(R.drawable.logoproksi),
+-                contentDescription = "Logo",
+-                modifier = Modifier.size(50.dp)
+-            )
+-        }
+-
+-        Column(
+-            modifier = Modifier
+-                .fillMaxWidth()
+-                .padding(horizontal = 16.dp),
+-            horizontalAlignment = Alignment.CenterHorizontally,
+-            verticalArrangement = Arrangement.Center
+-        ) {
+-            Image(
+-                painter = painterResource(R.drawable.logo),
+-                contentDescription = "Company Logo",
+-                modifier = Modifier
+-                    .fillMaxWidth()
+-                    .height(150.dp)
+-            )
+-
+-            Spacer(modifier = Modifier.height(1.dp))
+-
+-            Image(
+-                painter = painterResource(R.drawable.proksi),
+-                contentDescription = "Mascot Image",
+-                modifier = Modifier.size(150.dp)
+-            )
+-
+-            Spacer(modifier = Modifier.height(8.dp))
+-
+-            Text(
+-                text = "Welcome!",
+-                fontSize = 40.sp,
+-                color = TextColor,
+-                fontWeight = FontWeight.Bold
+-            )
+-
+-            Spacer(modifier = Modifier.height(24.dp))
+-
+-            var email by remember { mutableStateOf("") }
+-            var password by remember { mutableStateOf("") }
+-
+-            OutlinedTextField(
+-                value = email,
+-                onValueChange = { email = it },
+-                label = { Text("EMAIL") },
+-                placeholder = { Text("Enter your email") },
+-                modifier = Modifier.fillMaxWidth(),
+-                singleLine = true
+-            )
+-
+-            Spacer(modifier = Modifier.height(16.dp))
+-
+-            OutlinedTextField(
+-                value = password,
+-                onValueChange = { password = it },
+-                label = { Text("PASSWORD") },
+-                placeholder = { Text("Enter your password") },
+-                modifier = Modifier.fillMaxWidth(),
+-                singleLine = true,
+-                visualTransformation = PasswordVisualTransformation()
+-            )
+-
+-            Spacer(modifier = Modifier.height(24.dp))
+-
+-            Button(
+-                onClick = { /* Handle login logic here */ },
+-                modifier = Modifier
+-                    .fillMaxWidth()
+-                    .height(48.dp),
+-                colors = ButtonDefaults.buttonColors(PrimaryButtonColor),
+-                shape = RoundedCornerShape(5.dp)
+-            ) {
+-                Text(
+-                    text = "Login",
+-                    fontSize = 16.sp
+-                )
+-            }
+-        }
+-    }
+-}
+-
+-@Preview(showBackground = true)
+-@Composable
+-fun PreviewLoginPage() {
+-    LoginPage() // `remember` seharusnya bekerja jika hanya untuk Preview
+-}
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_22_11_2024_13_01_[Changes]/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_22_11_2024_13_01_[Changes]/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Update_at_22_11_2024_13_01_[Changes]/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_22_11_2024_13_01_[Changes]/shelved.patch	(revision bcadd467f2c9ab460bfebb51cb6d53ef394d56cf)
++++ /dev/null	(revision bcadd467f2c9ab460bfebb51cb6d53ef394d56cf)
+@@ -1,25 +0,0 @@
+-Index: .idea/modules/app/ProkSI_TBPTB.app.iml
+-===================================================================
+-diff --git a/.idea/modules/app/ProkSI_TBPTB.app.iml b/.idea/modules/app/ProkSI_TBPTB.app.iml
+-deleted file mode 100644
+---- a/.idea/modules/app/ProkSI_TBPTB.app.iml	(revision 802b8e0066dac75d8273ab5d1be11f2b7562d13b)
+-+++ /dev/null	(revision 802b8e0066dac75d8273ab5d1be11f2b7562d13b)
+-@@ -1,17 +0,0 @@
+--<?xml version="1.0" encoding="UTF-8"?>
+--<module version="4">
+--  <component name="ModuleClassLoaderOverlays">
+--    <paths>
+--      <option value="C:\Users\LENOVO\AppData\Local\Temp\overlay1921964067556220279" />
+--      <option value="C:\Users\LENOVO\AppData\Local\Temp\overlay13578979669646063437" />
+--      <option value="C:\Users\LENOVO\AppData\Local\Temp\overlay6299578781609350441" />
+--      <option value="C:\Users\LENOVO\AppData\Local\Temp\overlay11601627294702330190" />
+--      <option value="C:\Users\LENOVO\AppData\Local\Temp\overlay17138444949774220162" />
+--      <option value="C:\Users\LENOVO\AppData\Local\Temp\overlay536902827652692018" />
+--      <option value="C:\Users\LENOVO\AppData\Local\Temp\overlay17137293020550018372" />
+--      <option value="C:\Users\LENOVO\AppData\Local\Temp\overlay17376847272629041589" />
+--      <option value="C:\Users\LENOVO\AppData\Local\Temp\overlay8185664074281982631" />
+--      <option value="C:\Users\LENOVO\AppData\Local\Temp\overlay1582067193557454563" />
+--    </paths>
+--  </component>
+--</module>
+-\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Checkout_at_22_11_2024_12_57__Changes_1.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Checkout_at_22_11_2024_12_57__Changes_1.xml b/.idea/shelf/Uncommitted_changes_before_Checkout_at_22_11_2024_12_57__Changes_1.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Checkout_at_22_11_2024_12_57__Changes_1.xml	(revision bcadd467f2c9ab460bfebb51cb6d53ef394d56cf)
++++ /dev/null	(revision bcadd467f2c9ab460bfebb51cb6d53ef394d56cf)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Checkout_at_22_11_2024_12_57_[Changes]1" date="1732255073319" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_22_11_2024_12_57_[Changes]1/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Checkout at 22/11/2024 12:57 [Changes]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_22_11_2024_11_56__Changes_.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_22_11_2024_11_56__Changes_.xml b/.idea/shelf/Uncommitted_changes_before_Update_at_22_11_2024_11_56__Changes_.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_22_11_2024_11_56__Changes_.xml	(revision bcadd467f2c9ab460bfebb51cb6d53ef394d56cf)
++++ /dev/null	(revision bcadd467f2c9ab460bfebb51cb6d53ef394d56cf)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Update_at_22_11_2024_11_56_[Changes]" date="1732251456964" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_22_11_2024_11_56_[Changes]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Update at 22/11/2024 11:56 [Changes]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_22_11_2024_13_01__Changes_.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_22_11_2024_13_01__Changes_.xml b/.idea/shelf/Uncommitted_changes_before_Update_at_22_11_2024_13_01__Changes_.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_22_11_2024_13_01__Changes_.xml	(revision bcadd467f2c9ab460bfebb51cb6d53ef394d56cf)
++++ /dev/null	(revision bcadd467f2c9ab460bfebb51cb6d53ef394d56cf)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Update_at_22_11_2024_13_01_[Changes]" date="1732255320298" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_22_11_2024_13_01_[Changes]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Update at 22/11/2024 13:01 [Changes]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ExternalStorageConfigurationManager\" enabled=\"true\" />\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_20\" default=\"true\" project-jdk-name=\"20\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/build/classes\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision bcadd467f2c9ab460bfebb51cb6d53ef394d56cf)
++++ b/.idea/misc.xml	(date 1732806416650)
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="ExternalStorageConfigurationManager" enabled="true" />
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_20" default="true" project-jdk-name="20" project-jdk-type="JavaSDK">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="temurin-17" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/build/classes" />
+   </component>
+ </project>
+\ No newline at end of file
+Index: .idea/compiler.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"CompilerConfiguration\">\r\n    <bytecodeTargetLevel target=\"20\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/compiler.xml b/.idea/compiler.xml
+--- a/.idea/compiler.xml	(revision bcadd467f2c9ab460bfebb51cb6d53ef394d56cf)
++++ b/.idea/compiler.xml	(date 1732806416658)
+@@ -1,6 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="CompilerConfiguration">
+-    <bytecodeTargetLevel target="20" />
++    <bytecodeTargetLevel target="17" />
+   </component>
+ </project>
+\ No newline at end of file
+Index: app/src/main/java/com/example/proksi_tbptb/frontend/Component/TopBar.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.proksi_tbptb.frontend.Component\r\n\r\nimport androidx.compose.foundation.Image\r\nimport androidx.compose.foundation.background\r\nimport androidx.compose.foundation.layout.Arrangement\r\nimport androidx.compose.foundation.layout.Row\r\nimport androidx.compose.foundation.layout.fillMaxWidth\r\nimport androidx.compose.foundation.layout.height\r\nimport androidx.compose.foundation.layout.padding\r\nimport androidx.compose.foundation.layout.size\r\nimport androidx.compose.material.icons.Icons\r\nimport androidx.compose.material.icons.filled.Notifications\r\nimport androidx.compose.material3.Icon\r\nimport androidx.compose.material3.IconButton\r\nimport androidx.compose.material3.MaterialTheme\r\nimport androidx.compose.material3.Text\r\nimport androidx.compose.runtime.Composable\r\nimport androidx.compose.ui.Alignment\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.compose.ui.graphics.Color\r\nimport androidx.compose.ui.res.painterResource\r\nimport androidx.compose.ui.text.style.TextAlign\r\nimport androidx.compose.ui.tooling.preview.Preview\r\nimport androidx.compose.ui.unit.dp\r\nimport com.example.proksi_tbptb.R\r\n\r\n@Composable\r\nfun TopBar(\r\n    modifier: Modifier = Modifier,\r\n    pageTitle: String = \"Home\",\r\n    onNotificationClick: () -> Unit = {}\r\n) {\r\n    Row(\r\n        modifier = modifier\r\n            .fillMaxWidth()\r\n            .height(64.dp)\r\n            .background(Color(0xFFF5E7C6)),\r\n        verticalAlignment = Alignment.CenterVertically,\r\n        horizontalArrangement = Arrangement.SpaceBetween\r\n    ) {\r\n        // Logo (Kiri) Menggunakan gambar dari drawable\r\n        Image(\r\n            painter = painterResource(id = R.drawable.logoproksi), // Ganti dengan nama file gambar Anda\r\n            contentDescription = \"Logo\",\r\n            modifier = Modifier\r\n                .size(48.dp) // Anda bisa sesuaikan ukuran logo\r\n                .padding(start = 16.dp)\r\n        )\r\n\r\n        // Nama Halaman (Tengah)\r\n        Text(\r\n            text = pageTitle,\r\n            style = MaterialTheme.typography.titleMedium,\r\n            color = Color(0xFF222222),\r\n            modifier = Modifier.weight(1f),\r\n            textAlign = TextAlign.Center\r\n        )\r\n\r\n        // Icon Notifikasi (Kanan)\r\n        IconButton(\r\n            onClick = onNotificationClick,\r\n            modifier = Modifier\r\n                .padding(end = 16.dp)\r\n                .size(52.dp)\r\n        ) {\r\n            Icon(\r\n                imageVector = Icons.Default.Notifications,\r\n                contentDescription = \"Notifikasi\",\r\n                tint = Color(0xFFFF6E1F)\r\n            )\r\n        }\r\n    }\r\n}\r\n\r\n\r\n@Preview\r\n@Composable\r\nfun TopBarPreview(){\r\n    TopBar()\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/proksi_tbptb/frontend/Component/TopBar.kt b/app/src/main/java/com/example/proksi_tbptb/frontend/Component/TopBar.kt
+--- a/app/src/main/java/com/example/proksi_tbptb/frontend/Component/TopBar.kt	(revision bcadd467f2c9ab460bfebb51cb6d53ef394d56cf)
++++ b/app/src/main/java/com/example/proksi_tbptb/frontend/Component/TopBar.kt	(date 1732861580505)
+@@ -60,7 +60,7 @@
+         IconButton(
+             onClick = onNotificationClick,
+             modifier = Modifier
+-                .padding(end = 16.dp)
++                .padding(end = 2.dp)
+                 .size(52.dp)
+         ) {
+             Icon(
+Index: app/src/main/java/com/example/proksi_tbptb/frontend/TambahDetailProker/component/InputTanggal.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/proksi_tbptb/frontend/TambahDetailProker/component/InputTanggal.kt b/app/src/main/java/com/example/proksi_tbptb/frontend/TambahDetailProker/component/InputTanggal.kt
+new file mode 100644
+--- /dev/null	(date 1732874166323)
++++ b/app/src/main/java/com/example/proksi_tbptb/frontend/TambahDetailProker/component/InputTanggal.kt	(date 1732874166323)
+@@ -0,0 +1,83 @@
++package com.example.proksi_tbptb.frontend.TambahDetailProker.component
++
++import android.app.DatePickerDialog
++import androidx.compose.foundation.background
++import androidx.compose.foundation.border
++import androidx.compose.foundation.layout.fillMaxWidth
++import androidx.compose.foundation.layout.padding
++import androidx.compose.foundation.shape.RoundedCornerShape
++import androidx.compose.material.icons.Icons
++import androidx.compose.material.icons.filled.CalendarToday
++import androidx.compose.material3.*
++import androidx.compose.runtime.Composable
++import androidx.compose.ui.tooling.preview.Preview
++import androidx.compose.runtime.getValue
++import androidx.compose.runtime.remember
++import androidx.compose.runtime.mutableStateOf
++import androidx.compose.runtime.setValue
++import androidx.compose.ui.Modifier
++import androidx.compose.ui.graphics.Color
++import androidx.compose.ui.platform.LocalContext
++import androidx.compose.ui.unit.dp
++import java.util.*
++
++
++@OptIn(ExperimentalMaterial3Api::class)
++@Composable
++fun InputTanggal(
++    value: String,
++    onValueChange: (String) -> Unit,
++    modifier: Modifier = Modifier
++) {
++    val context = LocalContext.current
++
++    OutlinedTextField(
++        value = value,
++        onValueChange = onValueChange,
++        label = { Text("Pilih Tanggal") },
++        placeholder = { Text("yyyy-mm-dd") },
++        modifier = modifier
++            .fillMaxWidth()
++            .padding(bottom = 16.dp)
++            .border(2.dp, Color.Black, RoundedCornerShape(8.dp))
++            .background(Color(0xFFF5E7C6), RoundedCornerShape(8.dp)),
++        readOnly = true,
++        trailingIcon = {
++            IconButton(onClick = {
++                val calendar = Calendar.getInstance()
++                val year = calendar.get(Calendar.YEAR)
++                val month = calendar.get(Calendar.MONTH)
++                val day = calendar.get(Calendar.DAY_OF_MONTH)
++                DatePickerDialog(
++                    context,
++                    { _, selectedYear, selectedMonth, selectedDay ->
++                        onValueChange("$selectedYear-${selectedMonth + 1}-$selectedDay")
++                    },
++                    year, month, day
++                ).show()
++            }) {
++                Icon(
++                    imageVector = Icons.Filled.CalendarToday,
++                    contentDescription = "Pilih Tanggal"
++                )
++            }
++        },
++        colors = OutlinedTextFieldDefaults.colors(
++            focusedBorderColor = Color(0xFFF5E7C6),
++            unfocusedBorderColor = Color(0xFFF5E7C6)
++        )
++    )
++}
++
++@Preview(showBackground = true)
++@Composable
++fun InputTanggalPreview() {
++    // Menggunakan remember di dalam Preview
++    var value by remember { mutableStateOf("") }
++
++    // Menampilkan komponen InputTanggal
++    InputTanggal(
++        value = value,
++        onValueChange = { value = it }
++    )
++}
+Index: app/src/main/java/com/example/proksi_tbptb/frontend/TambahDetailProker/component/BoxAmbilGambar.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/proksi_tbptb/frontend/TambahDetailProker/component/BoxAmbilGambar.kt b/app/src/main/java/com/example/proksi_tbptb/frontend/TambahDetailProker/component/BoxAmbilGambar.kt
+new file mode 100644
+--- /dev/null	(date 1732868604869)
++++ b/app/src/main/java/com/example/proksi_tbptb/frontend/TambahDetailProker/component/BoxAmbilGambar.kt	(date 1732868604869)
+@@ -0,0 +1,71 @@
++package com.example.proksi_tbptb.frontend.TambahDetailProker.component
++
++import android.widget.Toast
++import androidx.compose.foundation.background
++import androidx.compose.foundation.border
++import androidx.compose.foundation.layout.fillMaxWidth
++import androidx.compose.foundation.layout.padding
++import androidx.compose.foundation.shape.RoundedCornerShape
++import androidx.compose.material3.*
++import androidx.compose.runtime.Composable
++import androidx.compose.ui.tooling.preview.Preview
++import androidx.compose.ui.Modifier
++import androidx.compose.ui.graphics.Color
++import androidx.compose.ui.platform.LocalContext
++import androidx.compose.ui.res.painterResource
++import androidx.compose.ui.unit.dp
++import com.example.proksi_tbptb.R
++import androidx.compose.runtime.remember
++import androidx.compose.runtime.mutableStateOf
++import androidx.compose.runtime.getValue
++import androidx.compose.runtime.setValue
++
++@OptIn(ExperimentalMaterial3Api::class)
++@Composable
++fun BoxAmbilGambar(
++    value: String,
++    onValueChange: (String) -> Unit,
++    modifier: Modifier = Modifier
++) {
++    val context = LocalContext.current
++
++    OutlinedTextField(
++        value = value,
++        onValueChange = onValueChange,
++        label = { Text("Ambil Foto dari Galeri") },
++        placeholder = { Text("Masukkan URL atau pilih dari galeri") },
++        modifier = modifier
++            .fillMaxWidth()
++            .padding(bottom = 32.dp)
++            .border(2.dp, Color.Black, RoundedCornerShape(8.dp))
++            .background(Color(0xFFF5E7C6), RoundedCornerShape(8.dp)),
++        readOnly = true,
++        trailingIcon = {
++            IconButton(onClick = {
++                Toast.makeText(context, "Fitur galeri akan ditambahkan!", Toast.LENGTH_SHORT).show()
++            }) {
++                Icon(
++                    painter = painterResource(id = R.drawable.ic_upload),
++                    contentDescription = "Upload"
++                )
++            }
++        },
++        colors = OutlinedTextFieldDefaults.colors(
++            focusedBorderColor = Color(0xFFF5E7C6),
++            unfocusedBorderColor = Color(0xFFF5E7C6)
++        )
++    )
++}
++
++@Preview(showBackground = true)
++@Composable
++fun BoxAmbilGambarPreview() {
++    // Membuat state untuk value dan onValueChange
++    var value by remember { mutableStateOf("") }
++
++    // Menampilkan komponen BoxAmbilGambar
++    BoxAmbilGambar(
++        value = value,
++        onValueChange = { value = it }
++    )
++}
+Index: local.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>## This file must *NOT* be checked into Version Control Systems,\r\n# as it contains information specific to your local configuration.\r\n#\r\n# Location of the SDK. This is only used by Gradle.\r\n# For customization when using a Version Control System, please read the\r\n# header note.\r\n#Fri Nov 22 18:22:45 WIB 2024\r\nsdk.dir=C\\:\\\\Users\\\\LENOVO\\\\AppData\\\\Local\\\\Android\\\\Sdk\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>ISO-8859-1
+===================================================================
+diff --git a/local.properties b/local.properties
+--- a/local.properties	(revision bcadd467f2c9ab460bfebb51cb6d53ef394d56cf)
++++ b/local.properties	(date 1732790859103)
+@@ -4,5 +4,5 @@
+ # Location of the SDK. This is only used by Gradle.
+ # For customization when using a Version Control System, please read the
+ # header note.
+-#Fri Nov 22 18:22:45 WIB 2024
+-sdk.dir=C\:\\Users\\LENOVO\\AppData\\Local\\Android\\Sdk
++#Thu Nov 28 17:47:39 WIB 2024
++sdk.dir=C\:\\Users\\acer\\AppData\\Local\\Android\\Sdk
+Index: app/src/main/java/com/example/proksi_tbptb/frontend/TambahDetailProker/component/ButtonSelesai.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/proksi_tbptb/frontend/TambahDetailProker/component/ButtonSelesai.kt b/app/src/main/java/com/example/proksi_tbptb/frontend/TambahDetailProker/component/ButtonSelesai.kt
+new file mode 100644
+--- /dev/null	(date 1732874188454)
++++ b/app/src/main/java/com/example/proksi_tbptb/frontend/TambahDetailProker/component/ButtonSelesai.kt	(date 1732874188454)
+@@ -0,0 +1,37 @@
++package com.example.proksi_tbptb.frontend.TambahDetailProker.component
++
++import androidx.compose.foundation.layout.*
++import androidx.compose.material3.*
++import androidx.compose.runtime.Composable
++import androidx.compose.ui.Modifier
++import androidx.compose.ui.graphics.Color
++import androidx.compose.ui.tooling.preview.Preview
++import androidx.compose.ui.unit.dp
++import com.example.proksi_tbptb.frontend.Proker.component.CustomButtonProker
++
++@Composable
++fun ButtonSelesai(
++    onClick: () -> Unit,
++    modifier: Modifier = Modifier
++) {
++    Button(
++        onClick = onClick,
++        modifier = modifier
++            .height(48.dp),
++        colors = ButtonDefaults.buttonColors(
++            containerColor = Color(0xFFFF6F00) // Warna tombol
++        )
++    ) {
++        Text("Selesai", color = Color.White)
++    }
++}
++@Preview
++@Composable
++fun CustomButtonPreview() {
++    CustomButtonProker(
++        text = "Selesai",
++        onClick = { println("Selesai diklik") },
++        buttonColor = Color(0xFFF9B683),  // Warna latar belakang
++        contentColor = Color.Black       // Warna teks
++    )
++}
+\ No newline at end of file
