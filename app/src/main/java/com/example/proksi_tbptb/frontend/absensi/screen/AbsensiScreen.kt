@@ -19,6 +19,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.proksi_tbptb.R
 import com.example.proksi_tbptb.data.remote.retrofit.ApiConfig
 import com.example.proksi_tbptb.data.remote.retrofit.ApiService
@@ -29,7 +32,7 @@ import com.example.proksi_tbptb.frontend.absensi.component.CustomButtonAbsensi
 import com.example.proksi_tbptb.frontend.absensi.component.CustomButtonWithIcon
 
 @Composable
-fun AbsensiScreen(modifier: Modifier = Modifier) {
+fun AbsensiScreen(modifier: Modifier = Modifier, navController: NavHostController) {
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -77,7 +80,7 @@ fun AbsensiScreen(modifier: Modifier = Modifier) {
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.spacedBy(2.dp) // Jarak antar item
                 ) {
-                    val item = ApiConfig.api.lihatAbsensi()
+//                    val item = ApiConfig.api.lihatAbsensi()
                     items(10) { index ->  // 5 adalah contoh jumlah item yang ingin ditampilkan
                         BoxAbsensi(
                             text = "Absensi ${index + 1}", // Menampilkan "Absensi 1", "Absensi 2", dll.
@@ -101,5 +104,6 @@ fun AbsensiScreen(modifier: Modifier = Modifier) {
 @Preview
 @Composable
 fun AbsensiScreenPreview() {
-    AbsensiScreen()
+    val navController = rememberNavController()
+    AbsensiScreen(navController = navController)
 }

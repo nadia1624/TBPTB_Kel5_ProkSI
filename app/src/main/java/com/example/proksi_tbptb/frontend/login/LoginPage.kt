@@ -1,39 +1,43 @@
 package com.example.proksi_tbptb.frontend.login
 
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.proksi_tbptb.R
 import com.example.proksi_tbptb.ui.theme.BackgroundColor
 import com.example.proksi_tbptb.ui.theme.PrimaryButtonColor
 import com.example.proksi_tbptb.ui.theme.TextColor
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-
 
 @Composable
 fun LoginPage(navController: NavHostController, loginViewModel: LoginViewModel = viewModel()) {
     // State untuk email dan password
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+
+    // Mengambil state dari ViewModel
+    val isLoading by loginViewModel.isLoading.observeAsState(false)
+    val errorMessage by loginViewModel.errorMessage.observeAsState()
+    val loginResponse by loginViewModel.loginResponse.observeAsState()
+
+    val context = LocalContext.current
 
     // Kolom utama untuk layout
     Column(
@@ -119,7 +123,7 @@ fun LoginPage(navController: NavHostController, loginViewModel: LoginViewModel =
             Spacer(modifier = Modifier.height(24.dp))
 
             // Menampilkan CircularProgressIndicator saat loading
-            if (loginViewModel.isLoading.value == true) {
+            if (isLoading) {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
             } else {
                 // Tombol Login
@@ -141,7 +145,7 @@ fun LoginPage(navController: NavHostController, loginViewModel: LoginViewModel =
             }
 
             // Menampilkan pesan error jika login gagal
-            loginViewModel.errorMessage.value?.let {
+            errorMessage?.let {
                 Text(
                     text = it,
                     color = androidx.compose.ui.graphics.Color.Red,
@@ -150,16 +154,27 @@ fun LoginPage(navController: NavHostController, loginViewModel: LoginViewModel =
             }
 
             // Menampilkan pesan sukses jika login berhasil
-            loginViewModel.loginResponse.value?.let {
-                Toast.makeText(LocalContext.current, "Login Successful", Toast.LENGTH_SHORT).show()
-                navController.navigate("detailProkerScreen")
+            loginResponse?.let {
+                LaunchedEffect(it) {
+                    // Menampilkan Toast setelah login berhasil
+                    Toast.makeText(context, "Login Successful", Toast.LENGTH_SHORT).show()
+
+                    // Simpan status login menggunakan SharedPreferences
+                    val sharedPreferences = context.getSharedPreferences("ProksiPrefs", Context.MODE_PRIVATE)
+                    sharedPreferences.edit().putBoolean("isLoggedIn", true).apply()
+
+                    // Navigasi ke HomeScreen
+                    navController.navigate("home") {
+                        popUpTo("login") { inclusive = true }
+                    }
+                }
             }
         }
     }
 }
-
-@Preview(showBackground = true)
+@Preview
 @Composable
 fun PreviewLoginPage() {
     val navController = rememberNavController()
-    LoginPage(navController = navController)}
+    LoginPage(navController = navController)
+}
