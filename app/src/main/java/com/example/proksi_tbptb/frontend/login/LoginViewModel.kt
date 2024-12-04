@@ -1,46 +1,52 @@
 package com.example.proksi_tbptb.frontend.login
 
 import android.app.Application
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.proksi_tbptb.data.remote.response.LoginResponse
 import com.example.proksi_tbptb.data.remote.retrofit.ApiConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
-    val isLoading = MutableLiveData(false)
-    val errorMessage = MutableLiveData<String?>()
-    val loginResponse = MutableLiveData<LoginResponse?>()
+    // Status Loading
+    private val _isLoading = MutableLiveData(false)
+    val isLoading: LiveData<Boolean> = _isLoading
+
+    // Pesan Error
+    private val _errorMessage = MutableLiveData<String?>()
+    val errorMessage: LiveData<String?> = _errorMessage
+
+    // Response Login
+    private val _loginResponse = MutableLiveData<LoginResponse?>()
+    val loginResponse: LiveData<LoginResponse?> = _loginResponse
+
     private val apiService = ApiConfig.api
 
-    // Fungsi login
+    // Fungsi Login
     fun loginUser(email: String, password: String) {
-        isLoading.value = true
-        errorMessage.value = null
+        _isLoading.value = true
+        _errorMessage.value = null
 
-        // Menggunakan Retrofit untuk memanggil API
-        val call = apiService.login(email, password)
-        call.enqueue(object : Callback<LoginResponse> {
-            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                isLoading.value = false
+        // Memanggil API secara Asinkron menggunakan Coroutine
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val response = apiService.loginSuspend(email, password)
+
+                // Pastikan menggunakan 'response.body()' jika responsnya sukses
                 if (response.isSuccessful) {
-                    loginResponse.value = response.body()
+                    _loginResponse.postValue(response.body()) // Post value di thread utama
                 } else {
-                    errorMessage.value = "Login failed: ${response.message()}"
+                    _errorMessage.postValue("Login failed: ${response.message()}")
                 }
+            } catch (e: Exception) {
+                _errorMessage.postValue("Error: ${e.localizedMessage}")
+            } finally {
+                _isLoading.postValue(false)
             }
-
-            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                isLoading.value = false
-                errorMessage.value = "Error: ${t.localizedMessage}"
-            }
-        })
+        }
     }
 }

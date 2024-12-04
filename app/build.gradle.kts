@@ -65,6 +65,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.datastore.core.android)
+    implementation(libs.androidx.runtime.livedata)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -81,9 +82,21 @@ dependencies {
 
 //    DataStore
     implementation(libs.androidx.datastore)
+    implementation (libs.androidx.datastore.preferences)
+
+    // Lifecycle and ViewModel
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
 
 //   Caroutine
-    implementation(libs.kotlinx.coroutines.android)
+    implementation (libs.kotlinx.coroutines.core)
+    implementation (libs.kotlinx.coroutines.android)
+
+//    Auth0 JWT (Optional, for JWT parsing)
+    implementation ("com.auth0.android:jwtdecode:2.0.1")
+
+//    Navigation (Optional)
+    implementation ("androidx.navigation:navigation-compose:2.7.4")
 
 //    Retrofit
     implementation(libs.retrofit)
