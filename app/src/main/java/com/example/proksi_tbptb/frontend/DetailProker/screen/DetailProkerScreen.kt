@@ -15,6 +15,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.proksi_tbptb.frontend.Component.BottomBar
 import com.example.proksi_tbptb.frontend.Component.TopBar
 import com.example.proksi_tbptb.frontend.DetailProker.component.BoxDetailProker
@@ -26,7 +28,8 @@ import com.example.proksi_tbptb.frontend.DetailProker.component.getStatusByName
 fun DetailProkerScreen(
     prokerDetails: List<Pair<String, String>>, // Parameter untuk daftar nama dan tanggal proker
     status: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navController: NavHostController
 ) {
     val statusObj = getStatusByName(status)
 
@@ -134,7 +137,8 @@ fun DetailProkerScreen(
         BottomBar(
             modifier = Modifier
                 .fillMaxWidth()
-                .align(Alignment.BottomCenter) // Menempatkan di bagian bawah layar
+                .align(Alignment.BottomCenter), // Menempatkan di bagian bawah layar
+            navController = navController
         )
     }
 }
@@ -142,12 +146,14 @@ fun DetailProkerScreen(
 @Preview
 @Composable
 fun DetailProkerScreenPreview() {
+    val navController = rememberNavController()
     DetailProkerScreen(
         prokerDetails = listOf(
             "Seminar Hasil 1" to "27 Nov 2024",
             "Seminar Hasil 2" to "30 Nov 2024",
             "Seminar Hasil 3" to "5 Des 2024"
         ),
-        status = "Done"
+        status = "Done",
+        navController = navController
     )
 }

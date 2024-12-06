@@ -11,6 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.proksi_tbptb.frontend.Component.BottomBar
 import com.example.proksi_tbptb.frontend.Component.TopBar
 import com.example.proksi_tbptb.frontend.Proker.component.BoxProker
@@ -22,7 +25,8 @@ data class ProkerItem(val name: String, val status: String)
 @Composable
 fun ProkerScreen(
     data: List<ProkerItem> = listOf(), // Data diterima sebagai parameter
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navController: NavHostController
 ) {
     Box(
         modifier = modifier
@@ -56,7 +60,7 @@ fun ProkerScreen(
                     )
                     CustomButtonProker(
                         text = "All",
-                        onClick = { println("All diklik") },
+                        onClick = { navController.navigate("all-proker") },
                         modifier = Modifier.weight(1f),
                         buttonColor = Color(0xFFF5E7C6),
                         contentColor = Color.Black
@@ -83,7 +87,8 @@ fun ProkerScreen(
         BottomBar(
             modifier = Modifier
                 .fillMaxWidth()
-                .align(Alignment.BottomCenter)
+                .align(Alignment.BottomCenter),
+            navController = navController
         )
     }
 }
@@ -98,5 +103,6 @@ fun ProkerScreenPreview() {
             ProkerItem("Mahasiswa Prestasi", "Not Started")
         )
     }
-    ProkerScreen(data = dummyData)
+    val navController = rememberNavController()
+    ProkerScreen(data = dummyData, navController = navController)
 }

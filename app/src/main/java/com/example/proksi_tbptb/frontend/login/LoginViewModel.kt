@@ -1,51 +1,52 @@
 package com.example.proksi_tbptb.frontend.login
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import android.content.Context
+import android.util.Log
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.proksi_tbptb.data.remote.response.LoginResponse
+import com.example.proksi_tbptb.data.local.UserPreferences
 import com.example.proksi_tbptb.data.remote.retrofit.ApiConfig
-import kotlinx.coroutines.Dispatchers
+import com.example.proksi_tbptb.data.remote.retrofit.ApiService
+import com.example.proksi_tbptb.data.remote.response.LoginResponse
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 
-class LoginViewModel(application: Application) : AndroidViewModel(application) {
+class LoginViewModel(
+    private val apiService: ApiService = ApiConfig.api, // Dependency injection or default
+    private val userPreferences: UserPreferences = UserPreferences() // UserPreferences sebagai dependensi
+) : ViewModel() {
 
-    // Status Loading
-    private val _isLoading = MutableLiveData(false)
-    val isLoading: LiveData<Boolean> = _isLoading
+    // Fungsi untuk melakukan login
+    fun login(email: String, password: String, context: Context, onError: (String?) -> Unit) {
+        // Cek jika email dan password kosong
+        if (email.isBlank() || password.isBlank()) {
+            onError("Email and password cannot be empty")
+            return
+        }
 
-    // Pesan Error
-    private val _errorMessage = MutableLiveData<String?>()
-    val errorMessage: LiveData<String?> = _errorMessage
-
-    // Response Login
-    private val _loginResponse = MutableLiveData<LoginResponse?>()
-    val loginResponse: LiveData<LoginResponse?> = _loginResponse
-
-    private val apiService = ApiConfig.api
-
-    // Fungsi Login
-    fun loginUser(email: String, password: String) {
-        _isLoading.value = true
-        _errorMessage.value = null
-
-        // Memanggil API secara Asinkron menggunakan Coroutine
-        viewModelScope.launch(Dispatchers.IO) {
+        // Menjalankan login secara asinkron menggunakan Coroutine
+        viewModelScope.launch {
             try {
-                val response = apiService.loginSuspend(email, password)
+                // Memanggil API untuk login dan mendapatkan response
+                val response = apiService.login(email, password)
 
-                // Pastikan menggunakan 'response.body()' jika responsnya sukses
-                if (response.isSuccessful) {
-                    _loginResponse.postValue(response.body()) // Post value di thread utama
+                // Menyimpan token jika login berhasil
+                if (response.isSuccessful && response.body() != null) {
+                    val loginResponse: LoginResponse? = response.body()
+                    loginResponse?.token?.let {
+                        userPreferences.saveToken(context, it)
+                        Log.d("LoginViewModel", "Token: $it")
+                        onError(null)  // Tidak ada error
+                    }
                 } else {
-                    _errorMessage.postValue("Login failed: ${response.message()}")
+                    onError("Login failed: ${response.message()}")
                 }
+            } catch (e: HttpException) {
+                // Menangani kesalahan HTTP
+                onError("HTTP error: ${e.message() ?: "An error occurred"}")
             } catch (e: Exception) {
-                _errorMessage.postValue("Error: ${e.localizedMessage}")
-            } finally {
-                _isLoading.postValue(false)
+                // Menangani kesalahan lainnya
+                onError("Unexpected error: ${e.message}")
             }
         }
     }
