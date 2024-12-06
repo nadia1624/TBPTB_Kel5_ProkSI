@@ -13,6 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.proksi_tbptb.frontend.Component.BottomBar
 import com.example.proksi_tbptb.frontend.Component.TopBar
 import com.example.proksi_tbptb.frontend.IsiAbsensi.component.AnimasiAbsensi
@@ -21,7 +23,7 @@ import com.example.proksi_tbptb.frontend.IsiAbsensi.component.HeaderIsiAbsensi
 import com.example.proksi_tbptb.frontend.IsiAbsensi.component.UploadGambarAbsensi
 
 @Composable
-fun IsiAbsensi (modifier: Modifier = Modifier){
+fun IsiAbsensiScreen (modifier: Modifier = Modifier, navController: NavHostController){
     Box(
         modifier = modifier
         .fillMaxSize()
@@ -55,7 +57,8 @@ fun IsiAbsensi (modifier: Modifier = Modifier){
         BottomBar(
             modifier = Modifier
                 .fillMaxWidth()
-                .align(Alignment.BottomCenter) // Menempatkan di bagian bawah layar
+                .align(Alignment.BottomCenter), // Menempatkan di bagian bawah layar
+            navController = navController
         )
 
     }
@@ -64,5 +67,6 @@ fun IsiAbsensi (modifier: Modifier = Modifier){
 @Preview
 @Composable
 fun IsiAbsensiPreview(){
-    IsiAbsensi()
+    val navController = rememberNavController()
+    IsiAbsensiScreen(navController = navController)
 }

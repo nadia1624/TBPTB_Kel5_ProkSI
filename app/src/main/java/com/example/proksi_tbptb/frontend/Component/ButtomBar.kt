@@ -18,13 +18,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 
 @Composable
 fun BottomBar(
-    onHomeClick: () -> Unit = {},
-    onPaperClick: () -> Unit = {},
-    onTaskClick: () -> Unit = {},
-    onProfileClick: () -> Unit = {},
+    navController: NavController, // Tambahkan NavController
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -37,7 +36,7 @@ fun BottomBar(
     ) {
         // Home Icon
         IconButton(
-            onClick = onHomeClick,
+            onClick = { navController.navigate("home") }, // Navigasi ke Home
             modifier = Modifier.weight(1f)
         ) {
             Icon(
@@ -48,23 +47,23 @@ fun BottomBar(
         }
         // Paper Icon
         IconButton(
-            onClick = onPaperClick,
+            onClick = { navController.navigate("absensi") }, // Navigasi ke Paper
             modifier = Modifier.weight(1f)
         ) {
             Icon(
-                imageVector = Icons.Default.DateRange, // Use a different icon
-                contentDescription = "Paper",
+                imageVector = Icons.Default.DateRange,
+                contentDescription = "absensi",
                 tint = Color(0xFF222222) // Customize color
             )
         }
 
         // Task Icon
         IconButton(
-            onClick = onTaskClick,
+            onClick = { navController.navigate("proker") }, // Navigasi ke Task
             modifier = Modifier.weight(1f)
         ) {
             Icon(
-                imageVector = Icons.Default.Menu, // Task icon
+                imageVector = Icons.Default.Menu,
                 contentDescription = "Task",
                 tint = Color(0xFF222222) // Customize color
             )
@@ -72,7 +71,7 @@ fun BottomBar(
 
         // Profile Icon
         IconButton(
-            onClick = onProfileClick,
+            onClick = { navController.navigate("profile") }, // Navigasi ke Profile
             modifier = Modifier.weight(1f)
         ) {
             Icon(
@@ -86,7 +85,10 @@ fun BottomBar(
 
 @Preview
 @Composable
-fun BottomBarPreview() {
-    BottomBar()
+fun ButtomBarPreview (){
+    val navController = rememberNavController()
+    BottomBar(navController = navController)
 }
+
+
 

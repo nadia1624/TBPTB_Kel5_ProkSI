@@ -15,6 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.proksi_tbptb.frontend.AbsensiTerkirim.component.AnimasiAbsensiTercatat
 import com.example.proksi_tbptb.frontend.AbsensiTerkirim.component.BuktiFoto
 import com.example.proksi_tbptb.frontend.AbsensiTerkirim.component.HeaderAbsensiTerkirim
@@ -23,7 +25,7 @@ import com.example.proksi_tbptb.frontend.Component.TopBar
 
 
 @Composable
-fun AbsensiTerkirimScreen (modifier: Modifier = Modifier){
+fun AbsensiTerkirimScreen (modifier: Modifier = Modifier, navController: NavHostController){
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -60,7 +62,8 @@ fun AbsensiTerkirimScreen (modifier: Modifier = Modifier){
         BottomBar(
             modifier = Modifier
                 .fillMaxWidth()
-                .align(Alignment.BottomCenter) // Menempatkan di bagian bawah layar
+                .align(Alignment.BottomCenter),// Menempatkan di bagian bawah layar
+            navController = navController
         )
     }
 }
@@ -68,5 +71,6 @@ fun AbsensiTerkirimScreen (modifier: Modifier = Modifier){
 @Preview
 @Composable
 fun PreviewAbsensiTerkirim (){
-    AbsensiTerkirimScreen()
+    val navController = rememberNavController()
+    AbsensiTerkirimScreen(navController = navController)
 }

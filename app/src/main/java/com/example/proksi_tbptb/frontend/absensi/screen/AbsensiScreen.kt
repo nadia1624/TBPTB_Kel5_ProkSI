@@ -1,38 +1,48 @@
 package com.example.proksi_tbptb.frontend.absensi.screen
 
-
+import android.content.Context
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.proksi_tbptb.R
-import com.example.proksi_tbptb.data.remote.retrofit.ApiConfig
-import com.example.proksi_tbptb.data.remote.retrofit.ApiService
 import com.example.proksi_tbptb.frontend.Component.BottomBar
 import com.example.proksi_tbptb.frontend.Component.TopBar
 import com.example.proksi_tbptb.frontend.absensi.component.BoxAbsensi
 import com.example.proksi_tbptb.frontend.absensi.component.CustomButtonAbsensi
 import com.example.proksi_tbptb.frontend.absensi.component.CustomButtonWithIcon
+import com.example.proksi_tbptb.frontend.absensi.viewmodel.AbsensiViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun AbsensiScreen(modifier: Modifier = Modifier, navController: NavHostController) {
+fun AbsensiScreen(
+    modifier: Modifier = Modifier,
+    navController: NavHostController,
+    context: Context,
+    absensiViewModel: AbsensiViewModel = viewModel() // Menyuntikkan ViewModel
+) {
+    // Mengambil data absensi dan status loading/error dari ViewModel
+    val absensiList = absensiViewModel.absensiList.collectAsState().value
+    val isLoading = absensiViewModel.isLoading.collectAsState().value
+    val errorMessage = absensiViewModel.errorMessage.collectAsState().value
+
+    // Fetch absensi saat layar pertama kali ditampilkan
+    LaunchedEffect(true) {
+        absensiViewModel.fetchAbsensi(context)
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -57,7 +67,7 @@ fun AbsensiScreen(modifier: Modifier = Modifier, navController: NavHostControlle
                 Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                     CustomButtonAbsensi(
                         text = "Piket",
-                        onClick = { println("Piket diklik") },
+                        onClick = { navController.navigate("absensi") },
                         modifier = Modifier.weight(1f),
                         buttonColor = Color(0xFFF9B683),
                         contentColor = Color.Black
@@ -71,22 +81,56 @@ fun AbsensiScreen(modifier: Modifier = Modifier, navController: NavHostControlle
                     )
                     Spacer(modifier = Modifier.width(64.dp))
                     CustomButtonWithIcon(
-                        onClick = { println("Tambah diklik") },
+                        onClick = { navController.navigate("tambah-absensi") },
                         modifier = Modifier,
                         buttonColor = Color(0xFFF9B683)
                     )
                 }
+
+                // Menampilkan status loading atau error jika ada
+                if (isLoading) {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+                } else if (errorMessage != null) {
+                    Text(
+                        text = "Error: $errorMessage",
+                        color = Color.Red,
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                    )
+                }
+
+                // Menampilkan daftar absensi
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.spacedBy(2.dp) // Jarak antar item
                 ) {
-//                    val item = ApiConfig.api.lihatAbsensi()
-                    items(10) { index ->  // 5 adalah contoh jumlah item yang ingin ditampilkan
-                        BoxAbsensi(
-                            text = "Absensi ${index + 1}", // Menampilkan "Absensi 1", "Absensi 2", dll.
-                            painter = painterResource(id = R.drawable.ceklis), // Gambar yang ditampilkan
-                            onClick = { println("Absensi ${index + 1} diklik") } // Fungsi ketika diklik
-                        )
+                    // Cek apakah absensiList kosong atau tidak
+                    if (absensiList.isNotEmpty()) {
+                        items(absensiList.size) { index ->
+                            val absensiItem = absensiList[index]
+                            // Tentukan gambar berdasarkan status absensi
+                            val status = absensiItem.status // Asumsikan absensiItem memiliki properti `status`
+                            val imageRes = when (status) {
+                                0 -> R.drawable.pending
+                                1 -> R.drawable.ceklis
+                                2 -> R.drawable.decline
+                                else -> R.drawable.pending
+                            }
+                            BoxAbsensi(
+                                text = absensiItem.idRekapan?.toString()
+                                    ?: "Absensi ${index + 1}", // ID Rekapan atau fallback
+                                painter = painterResource(id = imageRes), // Gambar yang ditampilkan (bisa diubah dengan gambar lain)
+                                onClick = { println("Absensi ${absensiItem.idRekapan} diklik") } // Fungsi ketika diklik
+                            )
+                        }
+                    } else {
+                        // Jika list kosong, tampilkan pesan
+                        item {
+                            Text(
+                                text = "Tidak ada data absensi",
+                                color = Color.Gray,
+                                modifier = Modifier.align(Alignment.CenterHorizontally)
+                            )
+                        }
                     }
                 }
             }
@@ -96,7 +140,8 @@ fun AbsensiScreen(modifier: Modifier = Modifier, navController: NavHostControlle
         BottomBar(
             modifier = Modifier
                 .fillMaxWidth()
-                .align(Alignment.BottomCenter) // Menempatkan di bagian bawah layar
+                .align(Alignment.BottomCenter), // Menempatkan di bagian bawah layar
+            navController = navController
         )
     }
 }
@@ -105,5 +150,5 @@ fun AbsensiScreen(modifier: Modifier = Modifier, navController: NavHostControlle
 @Composable
 fun AbsensiScreenPreview() {
     val navController = rememberNavController()
-    AbsensiScreen(navController = navController)
+    AbsensiScreen(navController = navController, context = androidx.compose.ui.platform.LocalContext.current)
 }

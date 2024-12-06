@@ -20,6 +20,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.proksi_tbptb.frontend.Component.BottomBar
 import com.example.proksi_tbptb.frontend.Component.TopBar
 import java.util.*
@@ -28,14 +30,14 @@ class TambahDetailProkerActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            TambahDetailProkerScreen()
+            TambahDetailProkerScreen(navController = rememberNavController())
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TambahDetailProkerScreen() {
+fun TambahDetailProkerScreen(navController: NavHostController) {
     val context = LocalContext.current
     var judul by remember { mutableStateOf("") }
     var tanggal by remember { mutableStateOf("") }
@@ -186,7 +188,8 @@ fun TambahDetailProkerScreen() {
                 BottomBar(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .align(Alignment.BottomCenter)
+                        .align(Alignment.BottomCenter),
+                    navController = navController
                 )
             }
         }
@@ -196,5 +199,6 @@ fun TambahDetailProkerScreen() {
 @Preview(showBackground = true)
 @Composable
 fun TambahDetailProkerPreview() {
-    TambahDetailProkerScreen()
+    val navController = rememberNavController()
+    TambahDetailProkerScreen(navController = navController)
 }

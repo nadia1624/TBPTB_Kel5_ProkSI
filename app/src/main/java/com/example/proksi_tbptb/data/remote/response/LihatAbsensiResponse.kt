@@ -2,11 +2,8 @@ package com.example.proksi_tbptb.data.remote.response
 
 import com.google.gson.annotations.SerializedName
 
-data class LihatAbsensiResponse(
+typealias LihatAbsensiResponse = List<LihatAbsensiResponseItem>
 
-	@field:SerializedName("LihatAbsensiResponse")
-	val lihatAbsensiResponse: List<LihatAbsensiResponseItem?>? = null
-)
 
 data class LihatAbsensiResponseItem(
 
