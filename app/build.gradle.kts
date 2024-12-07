@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id("com.google.dagger.hilt.android")
     kotlin("kapt")
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -17,7 +18,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "BASE_URL","\"https://8shnf50m-3000.asse.devtunnels.ms/\"")
+//        buildConfigField("String", "BASE_URL","\"https://8shnf50m-3000.asse.devtunnels.ms/\"")
+        buildConfigField("String", "BASE_URL", "\"http://10.0.2.2:3000/\"")
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -85,18 +87,17 @@ dependencies {
     implementation (libs.androidx.datastore.preferences)
 
     // Lifecycle and ViewModel
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
+    implementation (libs.androidx.lifecycle.viewmodel.ktx)
+    implementation (libs.androidx.lifecycle.viewmodel.compose)
 
 //   Caroutine
     implementation (libs.kotlinx.coroutines.core)
     implementation (libs.kotlinx.coroutines.android)
 
 //    Auth0 JWT (Optional, for JWT parsing)
-    implementation ("com.auth0.android:jwtdecode:2.0.1")
+    implementation (libs.jwtdecode)
 
 //    Navigation (Optional)
-    implementation ("androidx.navigation:navigation-compose:2.7.4")
 
 //    Retrofit
     implementation(libs.retrofit)
