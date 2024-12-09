@@ -44,7 +44,6 @@ fun KegiatanScreen(
     val rekapAbsensi by viewModel.rekapAbsensi.observeAsState()
     val errorMessage by viewModel.errorMessage.observeAsState()
 
-    // Ambil token dan userId dari DataStore
     LaunchedEffect(Unit) {
         token.value = userPreferences.getToken(context).orEmpty()
         userId.value = userPreferences.getUserId(context)
@@ -112,7 +111,9 @@ fun KegiatanScreen(
                             BoxAbsensi(
                                 text = absensi?.kegiatan?.namaKegiatan.orEmpty(),
                                 status = absensi?.statusAbsensi ?: 0,
-                                onClick = { println("Klik kegiatan: ${absensi?.kegiatan?.namaKegiatan}") }
+                                jamKegiatan = absensi?.kegiatan?.jamKegiatan.orEmpty(),  // Passing jamKegiatan
+                                tanggal = absensi?.kegiatan?.tanggalKegiatan.orEmpty(),
+                                onClick = { navController.navigate("tambah-kegiatan/${absensi?.idKegiatan}") }
                             )
                         }
                     }
