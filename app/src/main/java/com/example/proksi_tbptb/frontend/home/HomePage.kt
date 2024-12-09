@@ -11,8 +11,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.proksi_tbptb.frontend.Component.BottomBar
@@ -20,7 +22,8 @@ import com.example.proksi_tbptb.frontend.Component.TopBar
 
 
 @Composable
-fun HomePage(modifier: Modifier = Modifier, navController: NavController) {
+fun HomePage(modifier: Modifier = Modifier, navController: NavController, viewModel: HomeViewModel = viewModel()) {
+    val context = LocalContext.current // Mendapatkan Context dari LocalContext
     Box(
         modifier = Modifier.fillMaxSize() // Gunakan Box untuk tata letak layar penuh
     ) {
@@ -32,7 +35,11 @@ fun HomePage(modifier: Modifier = Modifier, navController: NavController) {
             TopBar(pageTitle = "Home")
             Text(text = "Home Page")
             Button(
-                onClick = {},
+                onClick = {
+                    viewModel.logout(context)
+                    navController.navigate("login") {
+                        popUpTo("login") { inclusive = true }
+                    }},
                 modifier = Modifier.padding(top = 16.dp),
                 content = {
                     Text(text = "Logout")
