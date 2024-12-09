@@ -21,10 +21,6 @@ class KegiatanViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val response: Response<RekapAbsenResponse> = ApiConfig.api.rekapAbsensi("Bearer $token", userId)
-                Log.d("KegiatanViewModel", "Status code: ${response.code()}")
-                Log.d("KegiatanViewModel", "Response body: ${response.body()}")
-                Log.d("KegiatanViewModel", "Token: $token")
-                Log.d("KegiatanViewModel", "User ID: $userId")
                 if (response.isSuccessful) {
                     _rekapAbsensi.value = response.body()
                     Log.d("KegiatanViewModel", "Riwayat absensi berhasil diambil: ${response.body()}")
