@@ -1,11 +1,13 @@
 package com.example.proksi_tbptb
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -17,6 +19,8 @@ import com.example.proksi_tbptb.frontend.Proker.screen.ProkerScreen
 import com.example.proksi_tbptb.frontend.absensi.screen.AbsensiScreen
 import com.example.proksi_tbptb.frontend.allproker.screen.AllProker
 import com.example.proksi_tbptb.frontend.home.HomePage
+import com.example.proksi_tbptb.frontend.isikegiatan.IsiKegiatanViewModel
+import com.example.proksi_tbptb.frontend.isikegiatan.screen.IsiKegiatanScreen
 import com.example.proksi_tbptb.frontend.kegiatan.screen.KegiatanScreen
 import com.example.proksi_tbptb.frontend.login.LoginPage
 import com.example.proksi_tbptb.ui.theme.ProkSI_TBPTBTheme
@@ -33,6 +37,7 @@ class MainActivity : ComponentActivity() {
 
         CoroutineScope(Dispatchers.Main).launch {
             val isLoggedIn = userPreferences.getLoginState(this@MainActivity)
+            val token = userPreferences.getToken(this@MainActivity)
 
             setContent {
                 ProkSI_TBPTBTheme {
@@ -52,6 +57,20 @@ class MainActivity : ComponentActivity() {
                             composable("tambah-absensi") { IsiAbsensiScreen(navController = navController) }
                             composable("all-proker") { AllProker(navController = navController) }
                             composable("all-kegiatan") { KegiatanScreen(navController = navController) }
+                            composable("tambah-kegiatan/{id_kegiatan}") { backStackEntry ->
+                                val idKegiatan = backStackEntry.arguments?.getString("id_kegiatan")?.toIntOrNull()
+                                Log.d("IsiKegiatanScreen", "idKegiatan: $idKegiatan")
+                                val viewModel: IsiKegiatanViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+
+                                LaunchedEffect(idKegiatan) {
+                                    idKegiatan?.let {
+                                        viewModel.fetchDetailKegiatan(token = token.toString(), idKegiatan = it)
+                                    }
+                                }
+                                IsiKegiatanScreen(
+                                    navController = navController,
+                                )
+                            }
                         }
                     }
                 }

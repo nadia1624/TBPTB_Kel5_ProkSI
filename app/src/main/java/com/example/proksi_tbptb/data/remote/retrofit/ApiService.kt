@@ -2,6 +2,7 @@ package com.example.proksi_tbptb.data.remote.retrofit
 
 import com.example.proksi_tbptb.data.remote.response.CreateAbsensiResponse
 import com.example.proksi_tbptb.data.remote.response.DetailAbsensiResponse
+import com.example.proksi_tbptb.data.remote.response.IsiKegiatanResponse
 import com.example.proksi_tbptb.data.remote.response.LihatAbsensiResponse
 import com.example.proksi_tbptb.data.remote.response.LoginResponse
 import com.example.proksi_tbptb.data.remote.response.RekapAbsenResponse
@@ -11,6 +12,7 @@ import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
@@ -41,4 +43,10 @@ interface ApiService {
         @Header("Authorization") token : String,
         @Query("userId") userId: Int
     ) : Response<RekapAbsenResponse>
+
+    @GET("api/kegiatan/{id_kegiatan}")
+    suspend fun absensiKegiatan(
+        @Header("Authorization") token: String,
+        @Path("id_kegiatan") id_kegiatan: Int // Gunakan @Path karena id_kegiatan ada di URL
+    ): Response<IsiKegiatanResponse>
 }
