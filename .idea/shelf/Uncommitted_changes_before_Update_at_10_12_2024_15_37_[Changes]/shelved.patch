@@ -1,0 +1,2035 @@
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\">\r\n\r\n    <uses-permission android:name=\"android.permission.INTERNET\"/>\r\n\r\n    <application\r\n        android:name=\".ProksiApp\"\r\n        android:allowBackup=\"true\"\r\n        android:usesCleartextTraffic=\"true\"\r\n        android:dataExtractionRules=\"@xml/data_extraction_rules\"\r\n        android:fullBackupContent=\"@xml/backup_rules\"\r\n        android:icon=\"@mipmap/ic_launcher\"\r\n        android:label=\"@string/app_name\"\r\n        android:roundIcon=\"@mipmap/ic_launcher_round\"\r\n        android:supportsRtl=\"true\"\r\n        android:theme=\"@style/Theme.ProkSI_TBPTB\"\r\n        tools:targetApi=\"31\">\r\n        <activity\r\n            android:name=\".MainActivity\"\r\n            android:exported=\"true\"\r\n            android:label=\"@string/app_name\"\r\n            android:theme=\"@style/Theme.ProkSI_TBPTB\">\r\n            <intent-filter>\r\n                <action android:name=\"android.intent.action.MAIN\" />\r\n\r\n                <category android:name=\"android.intent.category.LAUNCHER\" />\r\n            </intent-filter>\r\n        </activity>\r\n    </application>\r\n\r\n</manifest>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
+--- a/app/src/main/AndroidManifest.xml	(revision d367f89d90ffbfc7f16dfe575dd25408bf8a3162)
++++ b/app/src/main/AndroidManifest.xml	(date 1733819297552)
+@@ -3,6 +3,7 @@
+     xmlns:tools="http://schemas.android.com/tools">
+ 
+     <uses-permission android:name="android.permission.INTERNET"/>
++    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+ 
+     <application
+         android:name=".ProksiApp"
+Index: .gradle/8.7/dependencies-accessors/b1ffc27f4af1996f4ce6ced33b5602827e29dc72/sources/org/gradle/accessors/dm/LibrariesForLibs.java
+===================================================================
+diff --git a/.gradle/8.7/dependencies-accessors/b1ffc27f4af1996f4ce6ced33b5602827e29dc72/sources/org/gradle/accessors/dm/LibrariesForLibs.java b/.gradle/8.7/dependencies-accessors/b1ffc27f4af1996f4ce6ced33b5602827e29dc72/sources/org/gradle/accessors/dm/LibrariesForLibs.java
+deleted file mode 100644
+--- a/.gradle/8.7/dependencies-accessors/b1ffc27f4af1996f4ce6ced33b5602827e29dc72/sources/org/gradle/accessors/dm/LibrariesForLibs.java	(revision d367f89d90ffbfc7f16dfe575dd25408bf8a3162)
++++ /dev/null	(revision d367f89d90ffbfc7f16dfe575dd25408bf8a3162)
+@@ -1,821 +0,0 @@
+-package org.gradle.accessors.dm;
+-
+-import org.gradle.api.NonNullApi;
+-import org.gradle.api.artifacts.MinimalExternalModuleDependency;
+-import org.gradle.plugin.use.PluginDependency;
+-import org.gradle.api.artifacts.ExternalModuleDependencyBundle;
+-import org.gradle.api.artifacts.MutableVersionConstraint;
+-import org.gradle.api.provider.Provider;
+-import org.gradle.api.model.ObjectFactory;
+-import org.gradle.api.provider.ProviderFactory;
+-import org.gradle.api.internal.catalog.AbstractExternalDependencyFactory;
+-import org.gradle.api.internal.catalog.DefaultVersionCatalog;
+-import java.util.Map;
+-import org.gradle.api.internal.attributes.ImmutableAttributesFactory;
+-import org.gradle.api.internal.artifacts.dsl.CapabilityNotationParser;
+-import javax.inject.Inject;
+-
+-/**
+- * A catalog of dependencies accessible via the {@code libs} extension.
+- */
+-@NonNullApi
+-public class LibrariesForLibs extends AbstractExternalDependencyFactory {
+-
+-    private final AbstractExternalDependencyFactory owner = this;
+-    private final AndroidxLibraryAccessors laccForAndroidxLibraryAccessors = new AndroidxLibraryAccessors(owner);
+-    private final ConverterLibraryAccessors laccForConverterLibraryAccessors = new ConverterLibraryAccessors(owner);
+-    private final HiltLibraryAccessors laccForHiltLibraryAccessors = new HiltLibraryAccessors(owner);
+-    private final KotlinxLibraryAccessors laccForKotlinxLibraryAccessors = new KotlinxLibraryAccessors(owner);
+-    private final VersionAccessors vaccForVersionAccessors = new VersionAccessors(providers, config);
+-    private final BundleAccessors baccForBundleAccessors = new BundleAccessors(objects, providers, config, attributesFactory, capabilityNotationParser);
+-    private final PluginAccessors paccForPluginAccessors = new PluginAccessors(providers, config);
+-
+-    @Inject
+-    public LibrariesForLibs(DefaultVersionCatalog config, ProviderFactory providers, ObjectFactory objects, ImmutableAttributesFactory attributesFactory, CapabilityNotationParser capabilityNotationParser) {
+-        super(config, providers, objects, attributesFactory, capabilityNotationParser);
+-    }
+-
+-    /**
+-     * Dependency provider for <b>junit</b> with <b>junit:junit</b> coordinates and
+-     * with version reference <b>junit</b>
+-     * <p>
+-     * This dependency was declared in catalog libs.versions.toml
+-     */
+-    public Provider<MinimalExternalModuleDependency> getJunit() {
+-        return create("junit");
+-    }
+-
+-    /**
+-     * Dependency provider for <b>retrofit</b> with <b>com.squareup.retrofit2:retrofit</b> coordinates and
+-     * with version reference <b>retrofit</b>
+-     * <p>
+-     * This dependency was declared in catalog libs.versions.toml
+-     */
+-    public Provider<MinimalExternalModuleDependency> getRetrofit() {
+-        return create("retrofit");
+-    }
+-
+-    /**
+-     * Group of libraries at <b>androidx</b>
+-     */
+-    public AndroidxLibraryAccessors getAndroidx() {
+-        return laccForAndroidxLibraryAccessors;
+-    }
+-
+-    /**
+-     * Group of libraries at <b>converter</b>
+-     */
+-    public ConverterLibraryAccessors getConverter() {
+-        return laccForConverterLibraryAccessors;
+-    }
+-
+-    /**
+-     * Group of libraries at <b>hilt</b>
+-     */
+-    public HiltLibraryAccessors getHilt() {
+-        return laccForHiltLibraryAccessors;
+-    }
+-
+-    /**
+-     * Group of libraries at <b>kotlinx</b>
+-     */
+-    public KotlinxLibraryAccessors getKotlinx() {
+-        return laccForKotlinxLibraryAccessors;
+-    }
+-
+-    /**
+-     * Group of versions at <b>versions</b>
+-     */
+-    public VersionAccessors getVersions() {
+-        return vaccForVersionAccessors;
+-    }
+-
+-    /**
+-     * Group of bundles at <b>bundles</b>
+-     */
+-    public BundleAccessors getBundles() {
+-        return baccForBundleAccessors;
+-    }
+-
+-    /**
+-     * Group of plugins at <b>plugins</b>
+-     */
+-    public PluginAccessors getPlugins() {
+-        return paccForPluginAccessors;
+-    }
+-
+-    public static class AndroidxLibraryAccessors extends SubDependencyFactory {
+-        private final AndroidxActivityLibraryAccessors laccForAndroidxActivityLibraryAccessors = new AndroidxActivityLibraryAccessors(owner);
+-        private final AndroidxComposeLibraryAccessors laccForAndroidxComposeLibraryAccessors = new AndroidxComposeLibraryAccessors(owner);
+-        private final AndroidxCoreLibraryAccessors laccForAndroidxCoreLibraryAccessors = new AndroidxCoreLibraryAccessors(owner);
+-        private final AndroidxDatastoreLibraryAccessors laccForAndroidxDatastoreLibraryAccessors = new AndroidxDatastoreLibraryAccessors(owner);
+-        private final AndroidxEspressoLibraryAccessors laccForAndroidxEspressoLibraryAccessors = new AndroidxEspressoLibraryAccessors(owner);
+-        private final AndroidxHiltLibraryAccessors laccForAndroidxHiltLibraryAccessors = new AndroidxHiltLibraryAccessors(owner);
+-        private final AndroidxLifecycleLibraryAccessors laccForAndroidxLifecycleLibraryAccessors = new AndroidxLifecycleLibraryAccessors(owner);
+-        private final AndroidxMaterialLibraryAccessors laccForAndroidxMaterialLibraryAccessors = new AndroidxMaterialLibraryAccessors(owner);
+-        private final AndroidxUiLibraryAccessors laccForAndroidxUiLibraryAccessors = new AndroidxUiLibraryAccessors(owner);
+-
+-        public AndroidxLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Dependency provider for <b>junit</b> with <b>androidx.test.ext:junit</b> coordinates and
+-         * with version reference <b>junitVersion</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         */
+-        public Provider<MinimalExternalModuleDependency> getJunit() {
+-            return create("androidx.junit");
+-        }
+-
+-        /**
+-         * Dependency provider for <b>material3</b> with <b>androidx.compose.material3:material3</b> coordinates and
+-         * with <b>no version specified</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         */
+-        public Provider<MinimalExternalModuleDependency> getMaterial3() {
+-            return create("androidx.material3");
+-        }
+-
+-        /**
+-         * Group of libraries at <b>androidx.activity</b>
+-         */
+-        public AndroidxActivityLibraryAccessors getActivity() {
+-            return laccForAndroidxActivityLibraryAccessors;
+-        }
+-
+-        /**
+-         * Group of libraries at <b>androidx.compose</b>
+-         */
+-        public AndroidxComposeLibraryAccessors getCompose() {
+-            return laccForAndroidxComposeLibraryAccessors;
+-        }
+-
+-        /**
+-         * Group of libraries at <b>androidx.core</b>
+-         */
+-        public AndroidxCoreLibraryAccessors getCore() {
+-            return laccForAndroidxCoreLibraryAccessors;
+-        }
+-
+-        /**
+-         * Group of libraries at <b>androidx.datastore</b>
+-         */
+-        public AndroidxDatastoreLibraryAccessors getDatastore() {
+-            return laccForAndroidxDatastoreLibraryAccessors;
+-        }
+-
+-        /**
+-         * Group of libraries at <b>androidx.espresso</b>
+-         */
+-        public AndroidxEspressoLibraryAccessors getEspresso() {
+-            return laccForAndroidxEspressoLibraryAccessors;
+-        }
+-
+-        /**
+-         * Group of libraries at <b>androidx.hilt</b>
+-         */
+-        public AndroidxHiltLibraryAccessors getHilt() {
+-            return laccForAndroidxHiltLibraryAccessors;
+-        }
+-
+-        /**
+-         * Group of libraries at <b>androidx.lifecycle</b>
+-         */
+-        public AndroidxLifecycleLibraryAccessors getLifecycle() {
+-            return laccForAndroidxLifecycleLibraryAccessors;
+-        }
+-
+-        /**
+-         * Group of libraries at <b>androidx.material</b>
+-         */
+-        public AndroidxMaterialLibraryAccessors getMaterial() {
+-            return laccForAndroidxMaterialLibraryAccessors;
+-        }
+-
+-        /**
+-         * Group of libraries at <b>androidx.ui</b>
+-         */
+-        public AndroidxUiLibraryAccessors getUi() {
+-            return laccForAndroidxUiLibraryAccessors;
+-        }
+-
+-    }
+-
+-    public static class AndroidxActivityLibraryAccessors extends SubDependencyFactory {
+-
+-        public AndroidxActivityLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Dependency provider for <b>compose</b> with <b>androidx.activity:activity-compose</b> coordinates and
+-         * with version reference <b>activityCompose</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         */
+-        public Provider<MinimalExternalModuleDependency> getCompose() {
+-            return create("androidx.activity.compose");
+-        }
+-
+-    }
+-
+-    public static class AndroidxComposeLibraryAccessors extends SubDependencyFactory {
+-
+-        public AndroidxComposeLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Dependency provider for <b>bom</b> with <b>androidx.compose:compose-bom</b> coordinates and
+-         * with version reference <b>composeBom</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         */
+-        public Provider<MinimalExternalModuleDependency> getBom() {
+-            return create("androidx.compose.bom");
+-        }
+-
+-    }
+-
+-    public static class AndroidxCoreLibraryAccessors extends SubDependencyFactory {
+-
+-        public AndroidxCoreLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Dependency provider for <b>ktx</b> with <b>androidx.core:core-ktx</b> coordinates and
+-         * with version reference <b>coreKtx</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         */
+-        public Provider<MinimalExternalModuleDependency> getKtx() {
+-            return create("androidx.core.ktx");
+-        }
+-
+-    }
+-
+-    public static class AndroidxDatastoreLibraryAccessors extends SubDependencyFactory implements DependencyNotationSupplier {
+-        private final AndroidxDatastoreCoreLibraryAccessors laccForAndroidxDatastoreCoreLibraryAccessors = new AndroidxDatastoreCoreLibraryAccessors(owner);
+-
+-        public AndroidxDatastoreLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Dependency provider for <b>datastore</b> with <b>androidx.datastore:datastore</b> coordinates and
+-         * with version reference <b>datastore</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         */
+-        public Provider<MinimalExternalModuleDependency> asProvider() {
+-            return create("androidx.datastore");
+-        }
+-
+-        /**
+-         * Group of libraries at <b>androidx.datastore.core</b>
+-         */
+-        public AndroidxDatastoreCoreLibraryAccessors getCore() {
+-            return laccForAndroidxDatastoreCoreLibraryAccessors;
+-        }
+-
+-    }
+-
+-    public static class AndroidxDatastoreCoreLibraryAccessors extends SubDependencyFactory {
+-
+-        public AndroidxDatastoreCoreLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Dependency provider for <b>android</b> with <b>androidx.datastore:datastore-core-android</b> coordinates and
+-         * with version reference <b>datastoreCoreAndroid</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         */
+-        public Provider<MinimalExternalModuleDependency> getAndroid() {
+-            return create("androidx.datastore.core.android");
+-        }
+-
+-    }
+-
+-    public static class AndroidxEspressoLibraryAccessors extends SubDependencyFactory {
+-
+-        public AndroidxEspressoLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Dependency provider for <b>core</b> with <b>androidx.test.espresso:espresso-core</b> coordinates and
+-         * with version reference <b>espressoCore</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         */
+-        public Provider<MinimalExternalModuleDependency> getCore() {
+-            return create("androidx.espresso.core");
+-        }
+-
+-    }
+-
+-    public static class AndroidxHiltLibraryAccessors extends SubDependencyFactory {
+-        private final AndroidxHiltNavigationLibraryAccessors laccForAndroidxHiltNavigationLibraryAccessors = new AndroidxHiltNavigationLibraryAccessors(owner);
+-
+-        public AndroidxHiltLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Group of libraries at <b>androidx.hilt.navigation</b>
+-         */
+-        public AndroidxHiltNavigationLibraryAccessors getNavigation() {
+-            return laccForAndroidxHiltNavigationLibraryAccessors;
+-        }
+-
+-    }
+-
+-    public static class AndroidxHiltNavigationLibraryAccessors extends SubDependencyFactory {
+-
+-        public AndroidxHiltNavigationLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Dependency provider for <b>compose</b> with <b>androidx.hilt:hilt-navigation-compose</b> coordinates and
+-         * with version reference <b>hiltNavigationCompose</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         */
+-        public Provider<MinimalExternalModuleDependency> getCompose() {
+-            return create("androidx.hilt.navigation.compose");
+-        }
+-
+-    }
+-
+-    public static class AndroidxLifecycleLibraryAccessors extends SubDependencyFactory {
+-        private final AndroidxLifecycleRuntimeLibraryAccessors laccForAndroidxLifecycleRuntimeLibraryAccessors = new AndroidxLifecycleRuntimeLibraryAccessors(owner);
+-
+-        public AndroidxLifecycleLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Group of libraries at <b>androidx.lifecycle.runtime</b>
+-         */
+-        public AndroidxLifecycleRuntimeLibraryAccessors getRuntime() {
+-            return laccForAndroidxLifecycleRuntimeLibraryAccessors;
+-        }
+-
+-    }
+-
+-    public static class AndroidxLifecycleRuntimeLibraryAccessors extends SubDependencyFactory {
+-
+-        public AndroidxLifecycleRuntimeLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Dependency provider for <b>ktx</b> with <b>androidx.lifecycle:lifecycle-runtime-ktx</b> coordinates and
+-         * with version reference <b>lifecycleRuntimeKtx</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         */
+-        public Provider<MinimalExternalModuleDependency> getKtx() {
+-            return create("androidx.lifecycle.runtime.ktx");
+-        }
+-
+-    }
+-
+-    public static class AndroidxMaterialLibraryAccessors extends SubDependencyFactory {
+-        private final AndroidxMaterialIconsLibraryAccessors laccForAndroidxMaterialIconsLibraryAccessors = new AndroidxMaterialIconsLibraryAccessors(owner);
+-
+-        public AndroidxMaterialLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Group of libraries at <b>androidx.material.icons</b>
+-         */
+-        public AndroidxMaterialIconsLibraryAccessors getIcons() {
+-            return laccForAndroidxMaterialIconsLibraryAccessors;
+-        }
+-
+-    }
+-
+-    public static class AndroidxMaterialIconsLibraryAccessors extends SubDependencyFactory {
+-
+-        public AndroidxMaterialIconsLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Dependency provider for <b>core</b> with <b>androidx.compose.material:material-icons-core</b> coordinates and
+-         * with version reference <b>materialIconsCore</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         */
+-        public Provider<MinimalExternalModuleDependency> getCore() {
+-            return create("androidx.material.icons.core");
+-        }
+-
+-    }
+-
+-    public static class AndroidxUiLibraryAccessors extends SubDependencyFactory implements DependencyNotationSupplier {
+-        private final AndroidxUiTestLibraryAccessors laccForAndroidxUiTestLibraryAccessors = new AndroidxUiTestLibraryAccessors(owner);
+-        private final AndroidxUiToolingLibraryAccessors laccForAndroidxUiToolingLibraryAccessors = new AndroidxUiToolingLibraryAccessors(owner);
+-
+-        public AndroidxUiLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Dependency provider for <b>ui</b> with <b>androidx.compose.ui:ui</b> coordinates and
+-         * with <b>no version specified</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         */
+-        public Provider<MinimalExternalModuleDependency> asProvider() {
+-            return create("androidx.ui");
+-        }
+-
+-        /**
+-         * Dependency provider for <b>graphics</b> with <b>androidx.compose.ui:ui-graphics</b> coordinates and
+-         * with <b>no version specified</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         */
+-        public Provider<MinimalExternalModuleDependency> getGraphics() {
+-            return create("androidx.ui.graphics");
+-        }
+-
+-        /**
+-         * Group of libraries at <b>androidx.ui.test</b>
+-         */
+-        public AndroidxUiTestLibraryAccessors getTest() {
+-            return laccForAndroidxUiTestLibraryAccessors;
+-        }
+-
+-        /**
+-         * Group of libraries at <b>androidx.ui.tooling</b>
+-         */
+-        public AndroidxUiToolingLibraryAccessors getTooling() {
+-            return laccForAndroidxUiToolingLibraryAccessors;
+-        }
+-
+-    }
+-
+-    public static class AndroidxUiTestLibraryAccessors extends SubDependencyFactory {
+-
+-        public AndroidxUiTestLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Dependency provider for <b>junit4</b> with <b>androidx.compose.ui:ui-test-junit4</b> coordinates and
+-         * with <b>no version specified</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         */
+-        public Provider<MinimalExternalModuleDependency> getJunit4() {
+-            return create("androidx.ui.test.junit4");
+-        }
+-
+-        /**
+-         * Dependency provider for <b>manifest</b> with <b>androidx.compose.ui:ui-test-manifest</b> coordinates and
+-         * with <b>no version specified</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         */
+-        public Provider<MinimalExternalModuleDependency> getManifest() {
+-            return create("androidx.ui.test.manifest");
+-        }
+-
+-    }
+-
+-    public static class AndroidxUiToolingLibraryAccessors extends SubDependencyFactory implements DependencyNotationSupplier {
+-
+-        public AndroidxUiToolingLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Dependency provider for <b>tooling</b> with <b>androidx.compose.ui:ui-tooling</b> coordinates and
+-         * with <b>no version specified</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         */
+-        public Provider<MinimalExternalModuleDependency> asProvider() {
+-            return create("androidx.ui.tooling");
+-        }
+-
+-        /**
+-         * Dependency provider for <b>preview</b> with <b>androidx.compose.ui:ui-tooling-preview</b> coordinates and
+-         * with <b>no version specified</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         */
+-        public Provider<MinimalExternalModuleDependency> getPreview() {
+-            return create("androidx.ui.tooling.preview");
+-        }
+-
+-    }
+-
+-    public static class ConverterLibraryAccessors extends SubDependencyFactory {
+-
+-        public ConverterLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Dependency provider for <b>gson</b> with <b>com.squareup.retrofit2:converter-gson</b> coordinates and
+-         * with version reference <b>converterGson</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         */
+-        public Provider<MinimalExternalModuleDependency> getGson() {
+-            return create("converter.gson");
+-        }
+-
+-    }
+-
+-    public static class HiltLibraryAccessors extends SubDependencyFactory {
+-        private final HiltAndroidLibraryAccessors laccForHiltAndroidLibraryAccessors = new HiltAndroidLibraryAccessors(owner);
+-
+-        public HiltLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Group of libraries at <b>hilt.android</b>
+-         */
+-        public HiltAndroidLibraryAccessors getAndroid() {
+-            return laccForHiltAndroidLibraryAccessors;
+-        }
+-
+-    }
+-
+-    public static class HiltAndroidLibraryAccessors extends SubDependencyFactory implements DependencyNotationSupplier {
+-
+-        public HiltAndroidLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Dependency provider for <b>android</b> with <b>com.google.dagger:hilt-android</b> coordinates and
+-         * with version reference <b>hiltAndroid</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         */
+-        public Provider<MinimalExternalModuleDependency> asProvider() {
+-            return create("hilt.android");
+-        }
+-
+-        /**
+-         * Dependency provider for <b>compiler</b> with <b>com.google.dagger:hilt-android-compiler</b> coordinates and
+-         * with version reference <b>hiltAndroidCompiler</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         */
+-        public Provider<MinimalExternalModuleDependency> getCompiler() {
+-            return create("hilt.android.compiler");
+-        }
+-
+-    }
+-
+-    public static class KotlinxLibraryAccessors extends SubDependencyFactory {
+-        private final KotlinxCoroutinesLibraryAccessors laccForKotlinxCoroutinesLibraryAccessors = new KotlinxCoroutinesLibraryAccessors(owner);
+-
+-        public KotlinxLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Group of libraries at <b>kotlinx.coroutines</b>
+-         */
+-        public KotlinxCoroutinesLibraryAccessors getCoroutines() {
+-            return laccForKotlinxCoroutinesLibraryAccessors;
+-        }
+-
+-    }
+-
+-    public static class KotlinxCoroutinesLibraryAccessors extends SubDependencyFactory {
+-
+-        public KotlinxCoroutinesLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Dependency provider for <b>android</b> with <b>org.jetbrains.kotlinx:kotlinx-coroutines-android</b> coordinates and
+-         * with version reference <b>kotlinxCoroutinesAndroid</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         */
+-        public Provider<MinimalExternalModuleDependency> getAndroid() {
+-            return create("kotlinx.coroutines.android");
+-        }
+-
+-    }
+-
+-    public static class VersionAccessors extends VersionFactory  {
+-
+-        public VersionAccessors(ProviderFactory providers, DefaultVersionCatalog config) { super(providers, config); }
+-
+-        /**
+-         * Version alias <b>activityCompose</b> with value <b>1.9.3</b>
+-         * <p>
+-         * If the version is a rich version and cannot be represented as a
+-         * single version string, an empty string is returned.
+-         * <p>
+-         * This version was declared in catalog libs.versions.toml
+-         */
+-        public Provider<String> getActivityCompose() { return getVersion("activityCompose"); }
+-
+-        /**
+-         * Version alias <b>agp</b> with value <b>8.6.0</b>
+-         * <p>
+-         * If the version is a rich version and cannot be represented as a
+-         * single version string, an empty string is returned.
+-         * <p>
+-         * This version was declared in catalog libs.versions.toml
+-         */
+-        public Provider<String> getAgp() { return getVersion("agp"); }
+-
+-        /**
+-         * Version alias <b>composeBom</b> with value <b>2024.04.01</b>
+-         * <p>
+-         * If the version is a rich version and cannot be represented as a
+-         * single version string, an empty string is returned.
+-         * <p>
+-         * This version was declared in catalog libs.versions.toml
+-         */
+-        public Provider<String> getComposeBom() { return getVersion("composeBom"); }
+-
+-        /**
+-         * Version alias <b>converterGson</b> with value <b>2.9.0</b>
+-         * <p>
+-         * If the version is a rich version and cannot be represented as a
+-         * single version string, an empty string is returned.
+-         * <p>
+-         * This version was declared in catalog libs.versions.toml
+-         */
+-        public Provider<String> getConverterGson() { return getVersion("converterGson"); }
+-
+-        /**
+-         * Version alias <b>coreKtx</b> with value <b>1.13.1</b>
+-         * <p>
+-         * If the version is a rich version and cannot be represented as a
+-         * single version string, an empty string is returned.
+-         * <p>
+-         * This version was declared in catalog libs.versions.toml
+-         */
+-        public Provider<String> getCoreKtx() { return getVersion("coreKtx"); }
+-
+-        /**
+-         * Version alias <b>datastore</b> with value <b>1.1.1</b>
+-         * <p>
+-         * If the version is a rich version and cannot be represented as a
+-         * single version string, an empty string is returned.
+-         * <p>
+-         * This version was declared in catalog libs.versions.toml
+-         */
+-        public Provider<String> getDatastore() { return getVersion("datastore"); }
+-
+-        /**
+-         * Version alias <b>datastoreCoreAndroid</b> with value <b>1.1.1</b>
+-         * <p>
+-         * If the version is a rich version and cannot be represented as a
+-         * single version string, an empty string is returned.
+-         * <p>
+-         * This version was declared in catalog libs.versions.toml
+-         */
+-        public Provider<String> getDatastoreCoreAndroid() { return getVersion("datastoreCoreAndroid"); }
+-
+-        /**
+-         * Version alias <b>espressoCore</b> with value <b>3.6.1</b>
+-         * <p>
+-         * If the version is a rich version and cannot be represented as a
+-         * single version string, an empty string is returned.
+-         * <p>
+-         * This version was declared in catalog libs.versions.toml
+-         */
+-        public Provider<String> getEspressoCore() { return getVersion("espressoCore"); }
+-
+-        /**
+-         * Version alias <b>hiltAndroid</b> with value <b>2.48</b>
+-         * <p>
+-         * If the version is a rich version and cannot be represented as a
+-         * single version string, an empty string is returned.
+-         * <p>
+-         * This version was declared in catalog libs.versions.toml
+-         */
+-        public Provider<String> getHiltAndroid() { return getVersion("hiltAndroid"); }
+-
+-        /**
+-         * Version alias <b>hiltAndroidCompiler</b> with value <b>2.44</b>
+-         * <p>
+-         * If the version is a rich version and cannot be represented as a
+-         * single version string, an empty string is returned.
+-         * <p>
+-         * This version was declared in catalog libs.versions.toml
+-         */
+-        public Provider<String> getHiltAndroidCompiler() { return getVersion("hiltAndroidCompiler"); }
+-
+-        /**
+-         * Version alias <b>hiltNavigationCompose</b> with value <b>1.2.0</b>
+-         * <p>
+-         * If the version is a rich version and cannot be represented as a
+-         * single version string, an empty string is returned.
+-         * <p>
+-         * This version was declared in catalog libs.versions.toml
+-         */
+-        public Provider<String> getHiltNavigationCompose() { return getVersion("hiltNavigationCompose"); }
+-
+-        /**
+-         * Version alias <b>junit</b> with value <b>4.13.2</b>
+-         * <p>
+-         * If the version is a rich version and cannot be represented as a
+-         * single version string, an empty string is returned.
+-         * <p>
+-         * This version was declared in catalog libs.versions.toml
+-         */
+-        public Provider<String> getJunit() { return getVersion("junit"); }
+-
+-        /**
+-         * Version alias <b>junitVersion</b> with value <b>1.2.1</b>
+-         * <p>
+-         * If the version is a rich version and cannot be represented as a
+-         * single version string, an empty string is returned.
+-         * <p>
+-         * This version was declared in catalog libs.versions.toml
+-         */
+-        public Provider<String> getJunitVersion() { return getVersion("junitVersion"); }
+-
+-        /**
+-         * Version alias <b>kotlin</b> with value <b>1.9.0</b>
+-         * <p>
+-         * If the version is a rich version and cannot be represented as a
+-         * single version string, an empty string is returned.
+-         * <p>
+-         * This version was declared in catalog libs.versions.toml
+-         */
+-        public Provider<String> getKotlin() { return getVersion("kotlin"); }
+-
+-        /**
+-         * Version alias <b>kotlinxCoroutinesAndroid</b> with value <b>1.7.3</b>
+-         * <p>
+-         * If the version is a rich version and cannot be represented as a
+-         * single version string, an empty string is returned.
+-         * <p>
+-         * This version was declared in catalog libs.versions.toml
+-         */
+-        public Provider<String> getKotlinxCoroutinesAndroid() { return getVersion("kotlinxCoroutinesAndroid"); }
+-
+-        /**
+-         * Version alias <b>lifecycleRuntimeKtx</b> with value <b>2.8.6</b>
+-         * <p>
+-         * If the version is a rich version and cannot be represented as a
+-         * single version string, an empty string is returned.
+-         * <p>
+-         * This version was declared in catalog libs.versions.toml
+-         */
+-        public Provider<String> getLifecycleRuntimeKtx() { return getVersion("lifecycleRuntimeKtx"); }
+-
+-        /**
+-         * Version alias <b>materialIconsCore</b> with value <b>1.7.5</b>
+-         * <p>
+-         * If the version is a rich version and cannot be represented as a
+-         * single version string, an empty string is returned.
+-         * <p>
+-         * This version was declared in catalog libs.versions.toml
+-         */
+-        public Provider<String> getMaterialIconsCore() { return getVersion("materialIconsCore"); }
+-
+-        /**
+-         * Version alias <b>retrofit</b> with value <b>2.9.0</b>
+-         * <p>
+-         * If the version is a rich version and cannot be represented as a
+-         * single version string, an empty string is returned.
+-         * <p>
+-         * This version was declared in catalog libs.versions.toml
+-         */
+-        public Provider<String> getRetrofit() { return getVersion("retrofit"); }
+-
+-    }
+-
+-    public static class BundleAccessors extends BundleFactory {
+-
+-        public BundleAccessors(ObjectFactory objects, ProviderFactory providers, DefaultVersionCatalog config, ImmutableAttributesFactory attributesFactory, CapabilityNotationParser capabilityNotationParser) { super(objects, providers, config, attributesFactory, capabilityNotationParser); }
+-
+-    }
+-
+-    public static class PluginAccessors extends PluginFactory {
+-        private final AndroidPluginAccessors paccForAndroidPluginAccessors = new AndroidPluginAccessors(providers, config);
+-        private final KotlinPluginAccessors paccForKotlinPluginAccessors = new KotlinPluginAccessors(providers, config);
+-
+-        public PluginAccessors(ProviderFactory providers, DefaultVersionCatalog config) { super(providers, config); }
+-
+-        /**
+-         * Group of plugins at <b>plugins.android</b>
+-         */
+-        public AndroidPluginAccessors getAndroid() {
+-            return paccForAndroidPluginAccessors;
+-        }
+-
+-        /**
+-         * Group of plugins at <b>plugins.kotlin</b>
+-         */
+-        public KotlinPluginAccessors getKotlin() {
+-            return paccForKotlinPluginAccessors;
+-        }
+-
+-    }
+-
+-    public static class AndroidPluginAccessors extends PluginFactory {
+-
+-        public AndroidPluginAccessors(ProviderFactory providers, DefaultVersionCatalog config) { super(providers, config); }
+-
+-        /**
+-         * Plugin provider for <b>android.application</b> with plugin id <b>com.android.application</b> and
+-         * with version reference <b>agp</b>
+-         * <p>
+-         * This plugin was declared in catalog libs.versions.toml
+-         */
+-        public Provider<PluginDependency> getApplication() { return createPlugin("android.application"); }
+-
+-    }
+-
+-    public static class KotlinPluginAccessors extends PluginFactory {
+-
+-        public KotlinPluginAccessors(ProviderFactory providers, DefaultVersionCatalog config) { super(providers, config); }
+-
+-        /**
+-         * Plugin provider for <b>kotlin.android</b> with plugin id <b>org.jetbrains.kotlin.android</b> and
+-         * with version reference <b>kotlin</b>
+-         * <p>
+-         * This plugin was declared in catalog libs.versions.toml
+-         */
+-        public Provider<PluginDependency> getAndroid() { return createPlugin("kotlin.android"); }
+-
+-    }
+-
+-}
+Index: .gradle/8.7/dependencies-accessors/b1ffc27f4af1996f4ce6ced33b5602827e29dc72/sources/org/gradle/accessors/dm/LibrariesForLibsInPluginsBlock.java
+===================================================================
+diff --git a/.gradle/8.7/dependencies-accessors/b1ffc27f4af1996f4ce6ced33b5602827e29dc72/sources/org/gradle/accessors/dm/LibrariesForLibsInPluginsBlock.java b/.gradle/8.7/dependencies-accessors/b1ffc27f4af1996f4ce6ced33b5602827e29dc72/sources/org/gradle/accessors/dm/LibrariesForLibsInPluginsBlock.java
+deleted file mode 100644
+--- a/.gradle/8.7/dependencies-accessors/b1ffc27f4af1996f4ce6ced33b5602827e29dc72/sources/org/gradle/accessors/dm/LibrariesForLibsInPluginsBlock.java	(revision d367f89d90ffbfc7f16dfe575dd25408bf8a3162)
++++ /dev/null	(revision d367f89d90ffbfc7f16dfe575dd25408bf8a3162)
+@@ -1,1089 +0,0 @@
+-package org.gradle.accessors.dm;
+-
+-import org.gradle.api.NonNullApi;
+-import org.gradle.api.artifacts.MinimalExternalModuleDependency;
+-import org.gradle.plugin.use.PluginDependency;
+-import org.gradle.api.artifacts.ExternalModuleDependencyBundle;
+-import org.gradle.api.artifacts.MutableVersionConstraint;
+-import org.gradle.api.provider.Provider;
+-import org.gradle.api.model.ObjectFactory;
+-import org.gradle.api.provider.ProviderFactory;
+-import org.gradle.api.internal.catalog.AbstractExternalDependencyFactory;
+-import org.gradle.api.internal.catalog.DefaultVersionCatalog;
+-import java.util.Map;
+-import org.gradle.api.internal.attributes.ImmutableAttributesFactory;
+-import org.gradle.api.internal.artifacts.dsl.CapabilityNotationParser;
+-import javax.inject.Inject;
+-
+-/**
+- * A catalog of dependencies accessible via the {@code libs} extension.
+- */
+-@NonNullApi
+-public class LibrariesForLibsInPluginsBlock extends AbstractExternalDependencyFactory {
+-
+-    private final AbstractExternalDependencyFactory owner = this;
+-    private final AndroidxLibraryAccessors laccForAndroidxLibraryAccessors = new AndroidxLibraryAccessors(owner);
+-    private final ConverterLibraryAccessors laccForConverterLibraryAccessors = new ConverterLibraryAccessors(owner);
+-    private final HiltLibraryAccessors laccForHiltLibraryAccessors = new HiltLibraryAccessors(owner);
+-    private final KotlinxLibraryAccessors laccForKotlinxLibraryAccessors = new KotlinxLibraryAccessors(owner);
+-    private final VersionAccessors vaccForVersionAccessors = new VersionAccessors(providers, config);
+-    private final BundleAccessors baccForBundleAccessors = new BundleAccessors(objects, providers, config, attributesFactory, capabilityNotationParser);
+-    private final PluginAccessors paccForPluginAccessors = new PluginAccessors(providers, config);
+-
+-    @Inject
+-    public LibrariesForLibsInPluginsBlock(DefaultVersionCatalog config, ProviderFactory providers, ObjectFactory objects, ImmutableAttributesFactory attributesFactory, CapabilityNotationParser capabilityNotationParser) {
+-        super(config, providers, objects, attributesFactory, capabilityNotationParser);
+-    }
+-
+-    /**
+-     * Dependency provider for <b>junit</b> with <b>junit:junit</b> coordinates and
+-     * with version reference <b>junit</b>
+-     * <p>
+-     * This dependency was declared in catalog libs.versions.toml
+-     *
+-     * @deprecated Will be removed in Gradle 9.0.
+-     */
+-    @Deprecated
+-    public Provider<MinimalExternalModuleDependency> getJunit() {
+-        org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-        return create("junit");
+-    }
+-
+-    /**
+-     * Dependency provider for <b>retrofit</b> with <b>com.squareup.retrofit2:retrofit</b> coordinates and
+-     * with version reference <b>retrofit</b>
+-     * <p>
+-     * This dependency was declared in catalog libs.versions.toml
+-     *
+-     * @deprecated Will be removed in Gradle 9.0.
+-     */
+-    @Deprecated
+-    public Provider<MinimalExternalModuleDependency> getRetrofit() {
+-        org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-        return create("retrofit");
+-    }
+-
+-    /**
+-     * Group of libraries at <b>androidx</b>
+-     *
+-     * @deprecated Will be removed in Gradle 9.0.
+-     */
+-    @Deprecated
+-    public AndroidxLibraryAccessors getAndroidx() {
+-        org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-        return laccForAndroidxLibraryAccessors;
+-    }
+-
+-    /**
+-     * Group of libraries at <b>converter</b>
+-     *
+-     * @deprecated Will be removed in Gradle 9.0.
+-     */
+-    @Deprecated
+-    public ConverterLibraryAccessors getConverter() {
+-        org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-        return laccForConverterLibraryAccessors;
+-    }
+-
+-    /**
+-     * Group of libraries at <b>hilt</b>
+-     *
+-     * @deprecated Will be removed in Gradle 9.0.
+-     */
+-    @Deprecated
+-    public HiltLibraryAccessors getHilt() {
+-        org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-        return laccForHiltLibraryAccessors;
+-    }
+-
+-    /**
+-     * Group of libraries at <b>kotlinx</b>
+-     *
+-     * @deprecated Will be removed in Gradle 9.0.
+-     */
+-    @Deprecated
+-    public KotlinxLibraryAccessors getKotlinx() {
+-        org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-        return laccForKotlinxLibraryAccessors;
+-    }
+-
+-    /**
+-     * Group of versions at <b>versions</b>
+-     */
+-    public VersionAccessors getVersions() {
+-        return vaccForVersionAccessors;
+-    }
+-
+-    /**
+-     * Group of bundles at <b>bundles</b>
+-     *
+-     * @deprecated Will be removed in Gradle 9.0.
+-     */
+-    @Deprecated
+-    public BundleAccessors getBundles() {
+-        org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-        return baccForBundleAccessors;
+-    }
+-
+-    /**
+-     * Group of plugins at <b>plugins</b>
+-     */
+-    public PluginAccessors getPlugins() {
+-        return paccForPluginAccessors;
+-    }
+-
+-    /**
+-     * @deprecated Will be removed in Gradle 9.0.
+-     */
+-    @Deprecated
+-    public static class AndroidxLibraryAccessors extends SubDependencyFactory {
+-        private final AndroidxActivityLibraryAccessors laccForAndroidxActivityLibraryAccessors = new AndroidxActivityLibraryAccessors(owner);
+-        private final AndroidxComposeLibraryAccessors laccForAndroidxComposeLibraryAccessors = new AndroidxComposeLibraryAccessors(owner);
+-        private final AndroidxCoreLibraryAccessors laccForAndroidxCoreLibraryAccessors = new AndroidxCoreLibraryAccessors(owner);
+-        private final AndroidxDatastoreLibraryAccessors laccForAndroidxDatastoreLibraryAccessors = new AndroidxDatastoreLibraryAccessors(owner);
+-        private final AndroidxEspressoLibraryAccessors laccForAndroidxEspressoLibraryAccessors = new AndroidxEspressoLibraryAccessors(owner);
+-        private final AndroidxHiltLibraryAccessors laccForAndroidxHiltLibraryAccessors = new AndroidxHiltLibraryAccessors(owner);
+-        private final AndroidxLifecycleLibraryAccessors laccForAndroidxLifecycleLibraryAccessors = new AndroidxLifecycleLibraryAccessors(owner);
+-        private final AndroidxMaterialLibraryAccessors laccForAndroidxMaterialLibraryAccessors = new AndroidxMaterialLibraryAccessors(owner);
+-        private final AndroidxUiLibraryAccessors laccForAndroidxUiLibraryAccessors = new AndroidxUiLibraryAccessors(owner);
+-
+-        public AndroidxLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Dependency provider for <b>junit</b> with <b>androidx.test.ext:junit</b> coordinates and
+-         * with version reference <b>junitVersion</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public Provider<MinimalExternalModuleDependency> getJunit() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return create("androidx.junit");
+-        }
+-
+-        /**
+-         * Dependency provider for <b>material3</b> with <b>androidx.compose.material3:material3</b> coordinates and
+-         * with <b>no version specified</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public Provider<MinimalExternalModuleDependency> getMaterial3() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return create("androidx.material3");
+-        }
+-
+-        /**
+-         * Group of libraries at <b>androidx.activity</b>
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public AndroidxActivityLibraryAccessors getActivity() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return laccForAndroidxActivityLibraryAccessors;
+-        }
+-
+-        /**
+-         * Group of libraries at <b>androidx.compose</b>
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public AndroidxComposeLibraryAccessors getCompose() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return laccForAndroidxComposeLibraryAccessors;
+-        }
+-
+-        /**
+-         * Group of libraries at <b>androidx.core</b>
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public AndroidxCoreLibraryAccessors getCore() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return laccForAndroidxCoreLibraryAccessors;
+-        }
+-
+-        /**
+-         * Group of libraries at <b>androidx.datastore</b>
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public AndroidxDatastoreLibraryAccessors getDatastore() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return laccForAndroidxDatastoreLibraryAccessors;
+-        }
+-
+-        /**
+-         * Group of libraries at <b>androidx.espresso</b>
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public AndroidxEspressoLibraryAccessors getEspresso() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return laccForAndroidxEspressoLibraryAccessors;
+-        }
+-
+-        /**
+-         * Group of libraries at <b>androidx.hilt</b>
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public AndroidxHiltLibraryAccessors getHilt() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return laccForAndroidxHiltLibraryAccessors;
+-        }
+-
+-        /**
+-         * Group of libraries at <b>androidx.lifecycle</b>
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public AndroidxLifecycleLibraryAccessors getLifecycle() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return laccForAndroidxLifecycleLibraryAccessors;
+-        }
+-
+-        /**
+-         * Group of libraries at <b>androidx.material</b>
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public AndroidxMaterialLibraryAccessors getMaterial() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return laccForAndroidxMaterialLibraryAccessors;
+-        }
+-
+-        /**
+-         * Group of libraries at <b>androidx.ui</b>
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public AndroidxUiLibraryAccessors getUi() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return laccForAndroidxUiLibraryAccessors;
+-        }
+-
+-    }
+-
+-    /**
+-     * @deprecated Will be removed in Gradle 9.0.
+-     */
+-    @Deprecated
+-    public static class AndroidxActivityLibraryAccessors extends SubDependencyFactory {
+-
+-        public AndroidxActivityLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Dependency provider for <b>compose</b> with <b>androidx.activity:activity-compose</b> coordinates and
+-         * with version reference <b>activityCompose</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public Provider<MinimalExternalModuleDependency> getCompose() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return create("androidx.activity.compose");
+-        }
+-
+-    }
+-
+-    /**
+-     * @deprecated Will be removed in Gradle 9.0.
+-     */
+-    @Deprecated
+-    public static class AndroidxComposeLibraryAccessors extends SubDependencyFactory {
+-
+-        public AndroidxComposeLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Dependency provider for <b>bom</b> with <b>androidx.compose:compose-bom</b> coordinates and
+-         * with version reference <b>composeBom</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public Provider<MinimalExternalModuleDependency> getBom() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return create("androidx.compose.bom");
+-        }
+-
+-    }
+-
+-    /**
+-     * @deprecated Will be removed in Gradle 9.0.
+-     */
+-    @Deprecated
+-    public static class AndroidxCoreLibraryAccessors extends SubDependencyFactory {
+-
+-        public AndroidxCoreLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Dependency provider for <b>ktx</b> with <b>androidx.core:core-ktx</b> coordinates and
+-         * with version reference <b>coreKtx</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public Provider<MinimalExternalModuleDependency> getKtx() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return create("androidx.core.ktx");
+-        }
+-
+-    }
+-
+-    /**
+-     * @deprecated Will be removed in Gradle 9.0.
+-     */
+-    @Deprecated
+-    public static class AndroidxDatastoreLibraryAccessors extends SubDependencyFactory implements DependencyNotationSupplier {
+-        private final AndroidxDatastoreCoreLibraryAccessors laccForAndroidxDatastoreCoreLibraryAccessors = new AndroidxDatastoreCoreLibraryAccessors(owner);
+-
+-        public AndroidxDatastoreLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Dependency provider for <b>datastore</b> with <b>androidx.datastore:datastore</b> coordinates and
+-         * with version reference <b>datastore</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public Provider<MinimalExternalModuleDependency> asProvider() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return create("androidx.datastore");
+-        }
+-
+-        /**
+-         * Group of libraries at <b>androidx.datastore.core</b>
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public AndroidxDatastoreCoreLibraryAccessors getCore() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return laccForAndroidxDatastoreCoreLibraryAccessors;
+-        }
+-
+-    }
+-
+-    /**
+-     * @deprecated Will be removed in Gradle 9.0.
+-     */
+-    @Deprecated
+-    public static class AndroidxDatastoreCoreLibraryAccessors extends SubDependencyFactory {
+-
+-        public AndroidxDatastoreCoreLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Dependency provider for <b>android</b> with <b>androidx.datastore:datastore-core-android</b> coordinates and
+-         * with version reference <b>datastoreCoreAndroid</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public Provider<MinimalExternalModuleDependency> getAndroid() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return create("androidx.datastore.core.android");
+-        }
+-
+-    }
+-
+-    /**
+-     * @deprecated Will be removed in Gradle 9.0.
+-     */
+-    @Deprecated
+-    public static class AndroidxEspressoLibraryAccessors extends SubDependencyFactory {
+-
+-        public AndroidxEspressoLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Dependency provider for <b>core</b> with <b>androidx.test.espresso:espresso-core</b> coordinates and
+-         * with version reference <b>espressoCore</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public Provider<MinimalExternalModuleDependency> getCore() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return create("androidx.espresso.core");
+-        }
+-
+-    }
+-
+-    /**
+-     * @deprecated Will be removed in Gradle 9.0.
+-     */
+-    @Deprecated
+-    public static class AndroidxHiltLibraryAccessors extends SubDependencyFactory {
+-        private final AndroidxHiltNavigationLibraryAccessors laccForAndroidxHiltNavigationLibraryAccessors = new AndroidxHiltNavigationLibraryAccessors(owner);
+-
+-        public AndroidxHiltLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Group of libraries at <b>androidx.hilt.navigation</b>
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public AndroidxHiltNavigationLibraryAccessors getNavigation() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return laccForAndroidxHiltNavigationLibraryAccessors;
+-        }
+-
+-    }
+-
+-    /**
+-     * @deprecated Will be removed in Gradle 9.0.
+-     */
+-    @Deprecated
+-    public static class AndroidxHiltNavigationLibraryAccessors extends SubDependencyFactory {
+-
+-        public AndroidxHiltNavigationLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Dependency provider for <b>compose</b> with <b>androidx.hilt:hilt-navigation-compose</b> coordinates and
+-         * with version reference <b>hiltNavigationCompose</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public Provider<MinimalExternalModuleDependency> getCompose() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return create("androidx.hilt.navigation.compose");
+-        }
+-
+-    }
+-
+-    /**
+-     * @deprecated Will be removed in Gradle 9.0.
+-     */
+-    @Deprecated
+-    public static class AndroidxLifecycleLibraryAccessors extends SubDependencyFactory {
+-        private final AndroidxLifecycleRuntimeLibraryAccessors laccForAndroidxLifecycleRuntimeLibraryAccessors = new AndroidxLifecycleRuntimeLibraryAccessors(owner);
+-
+-        public AndroidxLifecycleLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Group of libraries at <b>androidx.lifecycle.runtime</b>
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public AndroidxLifecycleRuntimeLibraryAccessors getRuntime() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return laccForAndroidxLifecycleRuntimeLibraryAccessors;
+-        }
+-
+-    }
+-
+-    /**
+-     * @deprecated Will be removed in Gradle 9.0.
+-     */
+-    @Deprecated
+-    public static class AndroidxLifecycleRuntimeLibraryAccessors extends SubDependencyFactory {
+-
+-        public AndroidxLifecycleRuntimeLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Dependency provider for <b>ktx</b> with <b>androidx.lifecycle:lifecycle-runtime-ktx</b> coordinates and
+-         * with version reference <b>lifecycleRuntimeKtx</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public Provider<MinimalExternalModuleDependency> getKtx() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return create("androidx.lifecycle.runtime.ktx");
+-        }
+-
+-    }
+-
+-    /**
+-     * @deprecated Will be removed in Gradle 9.0.
+-     */
+-    @Deprecated
+-    public static class AndroidxMaterialLibraryAccessors extends SubDependencyFactory {
+-        private final AndroidxMaterialIconsLibraryAccessors laccForAndroidxMaterialIconsLibraryAccessors = new AndroidxMaterialIconsLibraryAccessors(owner);
+-
+-        public AndroidxMaterialLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Group of libraries at <b>androidx.material.icons</b>
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public AndroidxMaterialIconsLibraryAccessors getIcons() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return laccForAndroidxMaterialIconsLibraryAccessors;
+-        }
+-
+-    }
+-
+-    /**
+-     * @deprecated Will be removed in Gradle 9.0.
+-     */
+-    @Deprecated
+-    public static class AndroidxMaterialIconsLibraryAccessors extends SubDependencyFactory {
+-
+-        public AndroidxMaterialIconsLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Dependency provider for <b>core</b> with <b>androidx.compose.material:material-icons-core</b> coordinates and
+-         * with version reference <b>materialIconsCore</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public Provider<MinimalExternalModuleDependency> getCore() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return create("androidx.material.icons.core");
+-        }
+-
+-    }
+-
+-    /**
+-     * @deprecated Will be removed in Gradle 9.0.
+-     */
+-    @Deprecated
+-    public static class AndroidxUiLibraryAccessors extends SubDependencyFactory implements DependencyNotationSupplier {
+-        private final AndroidxUiTestLibraryAccessors laccForAndroidxUiTestLibraryAccessors = new AndroidxUiTestLibraryAccessors(owner);
+-        private final AndroidxUiToolingLibraryAccessors laccForAndroidxUiToolingLibraryAccessors = new AndroidxUiToolingLibraryAccessors(owner);
+-
+-        public AndroidxUiLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Dependency provider for <b>ui</b> with <b>androidx.compose.ui:ui</b> coordinates and
+-         * with <b>no version specified</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public Provider<MinimalExternalModuleDependency> asProvider() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return create("androidx.ui");
+-        }
+-
+-        /**
+-         * Dependency provider for <b>graphics</b> with <b>androidx.compose.ui:ui-graphics</b> coordinates and
+-         * with <b>no version specified</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public Provider<MinimalExternalModuleDependency> getGraphics() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return create("androidx.ui.graphics");
+-        }
+-
+-        /**
+-         * Group of libraries at <b>androidx.ui.test</b>
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public AndroidxUiTestLibraryAccessors getTest() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return laccForAndroidxUiTestLibraryAccessors;
+-        }
+-
+-        /**
+-         * Group of libraries at <b>androidx.ui.tooling</b>
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public AndroidxUiToolingLibraryAccessors getTooling() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return laccForAndroidxUiToolingLibraryAccessors;
+-        }
+-
+-    }
+-
+-    /**
+-     * @deprecated Will be removed in Gradle 9.0.
+-     */
+-    @Deprecated
+-    public static class AndroidxUiTestLibraryAccessors extends SubDependencyFactory {
+-
+-        public AndroidxUiTestLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Dependency provider for <b>junit4</b> with <b>androidx.compose.ui:ui-test-junit4</b> coordinates and
+-         * with <b>no version specified</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public Provider<MinimalExternalModuleDependency> getJunit4() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return create("androidx.ui.test.junit4");
+-        }
+-
+-        /**
+-         * Dependency provider for <b>manifest</b> with <b>androidx.compose.ui:ui-test-manifest</b> coordinates and
+-         * with <b>no version specified</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public Provider<MinimalExternalModuleDependency> getManifest() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return create("androidx.ui.test.manifest");
+-        }
+-
+-    }
+-
+-    /**
+-     * @deprecated Will be removed in Gradle 9.0.
+-     */
+-    @Deprecated
+-    public static class AndroidxUiToolingLibraryAccessors extends SubDependencyFactory implements DependencyNotationSupplier {
+-
+-        public AndroidxUiToolingLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Dependency provider for <b>tooling</b> with <b>androidx.compose.ui:ui-tooling</b> coordinates and
+-         * with <b>no version specified</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public Provider<MinimalExternalModuleDependency> asProvider() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return create("androidx.ui.tooling");
+-        }
+-
+-        /**
+-         * Dependency provider for <b>preview</b> with <b>androidx.compose.ui:ui-tooling-preview</b> coordinates and
+-         * with <b>no version specified</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public Provider<MinimalExternalModuleDependency> getPreview() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return create("androidx.ui.tooling.preview");
+-        }
+-
+-    }
+-
+-    /**
+-     * @deprecated Will be removed in Gradle 9.0.
+-     */
+-    @Deprecated
+-    public static class ConverterLibraryAccessors extends SubDependencyFactory {
+-
+-        public ConverterLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Dependency provider for <b>gson</b> with <b>com.squareup.retrofit2:converter-gson</b> coordinates and
+-         * with version reference <b>converterGson</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public Provider<MinimalExternalModuleDependency> getGson() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return create("converter.gson");
+-        }
+-
+-    }
+-
+-    /**
+-     * @deprecated Will be removed in Gradle 9.0.
+-     */
+-    @Deprecated
+-    public static class HiltLibraryAccessors extends SubDependencyFactory {
+-        private final HiltAndroidLibraryAccessors laccForHiltAndroidLibraryAccessors = new HiltAndroidLibraryAccessors(owner);
+-
+-        public HiltLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Group of libraries at <b>hilt.android</b>
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public HiltAndroidLibraryAccessors getAndroid() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return laccForHiltAndroidLibraryAccessors;
+-        }
+-
+-    }
+-
+-    /**
+-     * @deprecated Will be removed in Gradle 9.0.
+-     */
+-    @Deprecated
+-    public static class HiltAndroidLibraryAccessors extends SubDependencyFactory implements DependencyNotationSupplier {
+-
+-        public HiltAndroidLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Dependency provider for <b>android</b> with <b>com.google.dagger:hilt-android</b> coordinates and
+-         * with version reference <b>hiltAndroid</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public Provider<MinimalExternalModuleDependency> asProvider() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return create("hilt.android");
+-        }
+-
+-        /**
+-         * Dependency provider for <b>compiler</b> with <b>com.google.dagger:hilt-android-compiler</b> coordinates and
+-         * with version reference <b>hiltAndroidCompiler</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public Provider<MinimalExternalModuleDependency> getCompiler() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return create("hilt.android.compiler");
+-        }
+-
+-    }
+-
+-    /**
+-     * @deprecated Will be removed in Gradle 9.0.
+-     */
+-    @Deprecated
+-    public static class KotlinxLibraryAccessors extends SubDependencyFactory {
+-        private final KotlinxCoroutinesLibraryAccessors laccForKotlinxCoroutinesLibraryAccessors = new KotlinxCoroutinesLibraryAccessors(owner);
+-
+-        public KotlinxLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Group of libraries at <b>kotlinx.coroutines</b>
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public KotlinxCoroutinesLibraryAccessors getCoroutines() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return laccForKotlinxCoroutinesLibraryAccessors;
+-        }
+-
+-    }
+-
+-    /**
+-     * @deprecated Will be removed in Gradle 9.0.
+-     */
+-    @Deprecated
+-    public static class KotlinxCoroutinesLibraryAccessors extends SubDependencyFactory {
+-
+-        public KotlinxCoroutinesLibraryAccessors(AbstractExternalDependencyFactory owner) { super(owner); }
+-
+-        /**
+-         * Dependency provider for <b>android</b> with <b>org.jetbrains.kotlinx:kotlinx-coroutines-android</b> coordinates and
+-         * with version reference <b>kotlinxCoroutinesAndroid</b>
+-         * <p>
+-         * This dependency was declared in catalog libs.versions.toml
+-         *
+-         * @deprecated Will be removed in Gradle 9.0.
+-         */
+-        @Deprecated
+-        public Provider<MinimalExternalModuleDependency> getAndroid() {
+-            org.gradle.internal.deprecation.DeprecationLogger.deprecateBehaviour("Accessing libraries or bundles from version catalogs in the plugins block.").withAdvice("Only use versions or plugins from catalogs in the plugins block.").willBeRemovedInGradle9().withUpgradeGuideSection(8, "kotlin_dsl_deprecated_catalogs_plugins_block").nagUser();
+-            return create("kotlinx.coroutines.android");
+-        }
+-
+-    }
+-
+-    public static class VersionAccessors extends VersionFactory  {
+-
+-        public VersionAccessors(ProviderFactory providers, DefaultVersionCatalog config) { super(providers, config); }
+-
+-        /**
+-         * Version alias <b>activityCompose</b> with value <b>1.9.3</b>
+-         * <p>
+-         * If the version is a rich version and cannot be represented as a
+-         * single version string, an empty string is returned.
+-         * <p>
+-         * This version was declared in catalog libs.versions.toml
+-         */
+-        public Provider<String> getActivityCompose() { return getVersion("activityCompose"); }
+-
+-        /**
+-         * Version alias <b>agp</b> with value <b>8.6.0</b>
+-         * <p>
+-         * If the version is a rich version and cannot be represented as a
+-         * single version string, an empty string is returned.
+-         * <p>
+-         * This version was declared in catalog libs.versions.toml
+-         */
+-        public Provider<String> getAgp() { return getVersion("agp"); }
+-
+-        /**
+-         * Version alias <b>composeBom</b> with value <b>2024.04.01</b>
+-         * <p>
+-         * If the version is a rich version and cannot be represented as a
+-         * single version string, an empty string is returned.
+-         * <p>
+-         * This version was declared in catalog libs.versions.toml
+-         */
+-        public Provider<String> getComposeBom() { return getVersion("composeBom"); }
+-
+-        /**
+-         * Version alias <b>converterGson</b> with value <b>2.9.0</b>
+-         * <p>
+-         * If the version is a rich version and cannot be represented as a
+-         * single version string, an empty string is returned.
+-         * <p>
+-         * This version was declared in catalog libs.versions.toml
+-         */
+-        public Provider<String> getConverterGson() { return getVersion("converterGson"); }
+-
+-        /**
+-         * Version alias <b>coreKtx</b> with value <b>1.13.1</b>
+-         * <p>
+-         * If the version is a rich version and cannot be represented as a
+-         * single version string, an empty string is returned.
+-         * <p>
+-         * This version was declared in catalog libs.versions.toml
+-         */
+-        public Provider<String> getCoreKtx() { return getVersion("coreKtx"); }
+-
+-        /**
+-         * Version alias <b>datastore</b> with value <b>1.1.1</b>
+-         * <p>
+-         * If the version is a rich version and cannot be represented as a
+-         * single version string, an empty string is returned.
+-         * <p>
+-         * This version was declared in catalog libs.versions.toml
+-         */
+-        public Provider<String> getDatastore() { return getVersion("datastore"); }
+-
+-        /**
+-         * Version alias <b>datastoreCoreAndroid</b> with value <b>1.1.1</b>
+-         * <p>
+-         * If the version is a rich version and cannot be represented as a
+-         * single version string, an empty string is returned.
+-         * <p>
+-         * This version was declared in catalog libs.versions.toml
+-         */
+-        public Provider<String> getDatastoreCoreAndroid() { return getVersion("datastoreCoreAndroid"); }
+-
+-        /**
+-         * Version alias <b>espressoCore</b> with value <b>3.6.1</b>
+-         * <p>
+-         * If the version is a rich version and cannot be represented as a
+-         * single version string, an empty string is returned.
+-         * <p>
+-         * This version was declared in catalog libs.versions.toml
+-         */
+-        public Provider<String> getEspressoCore() { return getVersion("espressoCore"); }
+-
+-        /**
+-         * Version alias <b>hiltAndroid</b> with value <b>2.48</b>
+-         * <p>
+-         * If the version is a rich version and cannot be represented as a
+-         * single version string, an empty string is returned.
+-         * <p>
+-         * This version was declared in catalog libs.versions.toml
+-         */
+-        public Provider<String> getHiltAndroid() { return getVersion("hiltAndroid"); }
+-
+-        /**
+-         * Version alias <b>hiltAndroidCompiler</b> with value <b>2.44</b>
+-         * <p>
+-         * If the version is a rich version and cannot be represented as a
+-         * single version string, an empty string is returned.
+-         * <p>
+-         * This version was declared in catalog libs.versions.toml
+-         */
+-        public Provider<String> getHiltAndroidCompiler() { return getVersion("hiltAndroidCompiler"); }
+-
+-        /**
+-         * Version alias <b>hiltNavigationCompose</b> with value <b>1.2.0</b>
+-         * <p>
+-         * If the version is a rich version and cannot be represented as a
+-         * single version string, an empty string is returned.
+-         * <p>
+-         * This version was declared in catalog libs.versions.toml
+-         */
+-        public Provider<String> getHiltNavigationCompose() { return getVersion("hiltNavigationCompose"); }
+-
+-        /**
+-         * Version alias <b>junit</b> with value <b>4.13.2</b>
+-         * <p>
+-         * If the version is a rich version and cannot be represented as a
+-         * single version string, an empty string is returned.
+-         * <p>
+-         * This version was declared in catalog libs.versions.toml
+-         */
+-        public Provider<String> getJunit() { return getVersion("junit"); }
+-
+-        /**
+-         * Version alias <b>junitVersion</b> with value <b>1.2.1</b>
+-         * <p>
+-         * If the version is a rich version and cannot be represented as a
+-         * single version string, an empty string is returned.
+-         * <p>
+-         * This version was declared in catalog libs.versions.toml
+-         */
+-        public Provider<String> getJunitVersion() { return getVersion("junitVersion"); }
+-
+-        /**
+-         * Version alias <b>kotlin</b> with value <b>1.9.0</b>
+-         * <p>
+-         * If the version is a rich version and cannot be represented as a
+-         * single version string, an empty string is returned.
+-         * <p>
+-         * This version was declared in catalog libs.versions.toml
+-         */
+-        public Provider<String> getKotlin() { return getVersion("kotlin"); }
+-
+-        /**
+-         * Version alias <b>kotlinxCoroutinesAndroid</b> with value <b>1.7.3</b>
+-         * <p>
+-         * If the version is a rich version and cannot be represented as a
+-         * single version string, an empty string is returned.
+-         * <p>
+-         * This version was declared in catalog libs.versions.toml
+-         */
+-        public Provider<String> getKotlinxCoroutinesAndroid() { return getVersion("kotlinxCoroutinesAndroid"); }
+-
+-        /**
+-         * Version alias <b>lifecycleRuntimeKtx</b> with value <b>2.8.6</b>
+-         * <p>
+-         * If the version is a rich version and cannot be represented as a
+-         * single version string, an empty string is returned.
+-         * <p>
+-         * This version was declared in catalog libs.versions.toml
+-         */
+-        public Provider<String> getLifecycleRuntimeKtx() { return getVersion("lifecycleRuntimeKtx"); }
+-
+-        /**
+-         * Version alias <b>materialIconsCore</b> with value <b>1.7.5</b>
+-         * <p>
+-         * If the version is a rich version and cannot be represented as a
+-         * single version string, an empty string is returned.
+-         * <p>
+-         * This version was declared in catalog libs.versions.toml
+-         */
+-        public Provider<String> getMaterialIconsCore() { return getVersion("materialIconsCore"); }
+-
+-        /**
+-         * Version alias <b>retrofit</b> with value <b>2.9.0</b>
+-         * <p>
+-         * If the version is a rich version and cannot be represented as a
+-         * single version string, an empty string is returned.
+-         * <p>
+-         * This version was declared in catalog libs.versions.toml
+-         */
+-        public Provider<String> getRetrofit() { return getVersion("retrofit"); }
+-
+-    }
+-
+-    /**
+-     * @deprecated Will be removed in Gradle 9.0.
+-     */
+-    @Deprecated
+-    public static class BundleAccessors extends BundleFactory {
+-
+-        public BundleAccessors(ObjectFactory objects, ProviderFactory providers, DefaultVersionCatalog config, ImmutableAttributesFactory attributesFactory, CapabilityNotationParser capabilityNotationParser) { super(objects, providers, config, attributesFactory, capabilityNotationParser); }
+-
+-    }
+-
+-    public static class PluginAccessors extends PluginFactory {
+-        private final AndroidPluginAccessors paccForAndroidPluginAccessors = new AndroidPluginAccessors(providers, config);
+-        private final KotlinPluginAccessors paccForKotlinPluginAccessors = new KotlinPluginAccessors(providers, config);
+-
+-        public PluginAccessors(ProviderFactory providers, DefaultVersionCatalog config) { super(providers, config); }
+-
+-        /**
+-         * Group of plugins at <b>plugins.android</b>
+-         */
+-        public AndroidPluginAccessors getAndroid() {
+-            return paccForAndroidPluginAccessors;
+-        }
+-
+-        /**
+-         * Group of plugins at <b>plugins.kotlin</b>
+-         */
+-        public KotlinPluginAccessors getKotlin() {
+-            return paccForKotlinPluginAccessors;
+-        }
+-
+-    }
+-
+-    public static class AndroidPluginAccessors extends PluginFactory {
+-
+-        public AndroidPluginAccessors(ProviderFactory providers, DefaultVersionCatalog config) { super(providers, config); }
+-
+-        /**
+-         * Plugin provider for <b>android.application</b> with plugin id <b>com.android.application</b> and
+-         * with version reference <b>agp</b>
+-         * <p>
+-         * This plugin was declared in catalog libs.versions.toml
+-         */
+-        public Provider<PluginDependency> getApplication() { return createPlugin("android.application"); }
+-
+-    }
+-
+-    public static class KotlinPluginAccessors extends PluginFactory {
+-
+-        public KotlinPluginAccessors(ProviderFactory providers, DefaultVersionCatalog config) { super(providers, config); }
+-
+-        /**
+-         * Plugin provider for <b>kotlin.android</b> with plugin id <b>org.jetbrains.kotlin.android</b> and
+-         * with version reference <b>kotlin</b>
+-         * <p>
+-         * This plugin was declared in catalog libs.versions.toml
+-         */
+-        public Provider<PluginDependency> getAndroid() { return createPlugin("kotlin.android"); }
+-
+-    }
+-
+-}
+Index: .idea/compiler.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"CompilerConfiguration\">\r\n    <bytecodeTargetLevel target=\"20\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/compiler.xml b/.idea/compiler.xml
+--- a/.idea/compiler.xml	(revision d367f89d90ffbfc7f16dfe575dd25408bf8a3162)
++++ b/.idea/compiler.xml	(date 1733819297550)
+@@ -1,6 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="CompilerConfiguration">
+-    <bytecodeTargetLevel target="20" />
++    <bytecodeTargetLevel target="17" />
+   </component>
+ </project>
+\ No newline at end of file
+Index: app/build.gradle.kts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>plugins {\r\n    alias(libs.plugins.android.application)\r\n    alias(libs.plugins.kotlin.android)\r\n    id(\"com.google.dagger.hilt.android\")\r\n    kotlin(\"kapt\")\r\n}\r\n\r\nandroid {\r\n    namespace = \"com.example.proksi_tbptb\"\r\n    compileSdk = 35\r\n\r\n    defaultConfig {\r\n        applicationId = \"com.example.proksi_tbptb\"\r\n        minSdk = 24\r\n        targetSdk = 34\r\n        versionCode = 1\r\n        versionName = \"1.0\"\r\n\r\n        testInstrumentationRunner = \"androidx.test.runner.AndroidJUnitRunner\"\r\n        buildConfigField(\"String\", \"BASE_URL\",\"\\\"https://8shnf50m-3000.asse.devtunnels.ms/\\\"\")\r\n        vectorDrawables {\r\n            useSupportLibrary = true\r\n        }\r\n    }\r\n\r\n    buildTypes {\r\n        release {\r\n            isMinifyEnabled = false\r\n            proguardFiles(\r\n                getDefaultProguardFile(\"proguard-android-optimize.txt\"),\r\n                \"proguard-rules.pro\"\r\n            )\r\n        }\r\n    }\r\n    compileOptions {\r\n        sourceCompatibility = JavaVersion.VERSION_1_8\r\n        targetCompatibility = JavaVersion.VERSION_1_8\r\n    }\r\n    kotlinOptions {\r\n        jvmTarget = \"1.8\"\r\n    }\r\n    buildFeatures {\r\n        compose = true\r\n        buildConfig = true\r\n\r\n    }\r\n    composeOptions {\r\n        kotlinCompilerExtensionVersion = \"1.5.1\"\r\n    }\r\n    packaging {\r\n        resources {\r\n            excludes += \"/META-INF/{AL2.0,LGPL2.1}\"\r\n        }\r\n    }\r\n}\r\n\r\ndependencies {\r\n\r\n    implementation(libs.androidx.core.ktx)\r\n    implementation(libs.androidx.lifecycle.runtime.ktx)\r\n    implementation(libs.androidx.activity.compose)\r\n    implementation(platform(libs.androidx.compose.bom))\r\n    implementation(libs.androidx.ui)\r\n    implementation(libs.androidx.ui.graphics)\r\n    implementation(libs.androidx.ui.tooling.preview)\r\n    implementation(libs.androidx.material3)\r\n    implementation(libs.androidx.datastore.core.android)\r\n    implementation(libs.androidx.runtime.livedata)\r\n    testImplementation(libs.junit)\r\n    androidTestImplementation(libs.androidx.junit)\r\n    androidTestImplementation(libs.androidx.espresso.core)\r\n    androidTestImplementation(platform(libs.androidx.compose.bom))\r\n    androidTestImplementation(libs.androidx.ui.test.junit4)\r\n    debugImplementation(libs.androidx.ui.tooling)\r\n    debugImplementation(libs.androidx.ui.test.manifest)\r\n    implementation(libs.androidx.navigation.compose)\r\n    implementation (libs.androidx.material.icons.core)\r\n    implementation (libs.androidx.material.icons.extended)\r\n    implementation (libs.androidx.foundation)\r\n    implementation(libs.material3)\r\n\r\n\r\n//    DataStore\r\n    implementation(libs.androidx.datastore)\r\n    implementation (libs.androidx.datastore.preferences)\r\n\r\n    // Lifecycle and ViewModel\r\n    implementation (\"androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7\")\r\n    implementation (\"androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7\")\r\n\r\n//   Caroutine\r\n    implementation (libs.kotlinx.coroutines.core)\r\n    implementation (libs.kotlinx.coroutines.android)\r\n\r\n//    Auth0 JWT (Optional, for JWT parsing)\r\n    implementation (\"com.auth0.android:jwtdecode:2.0.1\")\r\n\r\n//    Navigation (Optional)\r\n    implementation (\"androidx.navigation:navigation-compose:2.7.4\")\r\n\r\n//    Retrofit\r\n    implementation(libs.retrofit)\r\n    implementation(libs.converter.gson)\r\n\r\n//    Dagger\r\n    implementation(libs.hilt.android)\r\n    kapt(libs.hilt.android.compiler)\r\n\r\n//    Hilt\r\n    implementation(libs.androidx.hilt.navigation.compose)\r\n}\r\n\r\nkapt{\r\n    correctErrorTypes = true\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/build.gradle.kts b/app/build.gradle.kts
+--- a/app/build.gradle.kts	(revision d367f89d90ffbfc7f16dfe575dd25408bf8a3162)
++++ b/app/build.gradle.kts	(date 1733819297551)
+@@ -17,7 +17,7 @@
+         versionName = "1.0"
+ 
+         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+-        buildConfigField("String", "BASE_URL","\"https://8shnf50m-3000.asse.devtunnels.ms/\"")
++        buildConfigField("String", "BASE_URL","\"http://10.0.2.2:3000/\"")
+         vectorDrawables {
+             useSupportLibrary = true
+         }
+Index: app/src/main/java/com/example/proksi_tbptb/frontend/TambahDetailProker/TambahDetailScreen.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.proksi_tbptb.frontend.TambahDetailProker\r\n\r\nimport android.app.DatePickerDialog\r\nimport android.os.Bundle\r\nimport androidx.compose.foundation.border\r\nimport androidx.compose.ui.graphics.Color\r\nimport androidx.compose.ui.unit.dp\r\nimport android.widget.Toast\r\nimport androidx.activity.ComponentActivity\r\nimport androidx.activity.compose.setContent\r\nimport androidx.compose.foundation.background\r\nimport androidx.compose.foundation.layout.*\r\nimport androidx.compose.foundation.shape.RoundedCornerShape\r\nimport androidx.compose.material.icons.Icons\r\nimport androidx.compose.material.icons.filled.CalendarToday\r\nimport androidx.compose.material.icons.filled.PhotoLibrary\r\nimport androidx.compose.material3.*\r\nimport androidx.compose.runtime.*\r\nimport androidx.compose.ui.Alignment\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.compose.ui.platform.LocalContext\r\nimport androidx.compose.ui.tooling.preview.Preview\r\nimport androidx.navigation.NavHostController\r\nimport androidx.navigation.compose.rememberNavController\r\nimport com.example.proksi_tbptb.frontend.Component.BottomBar\r\nimport com.example.proksi_tbptb.frontend.Component.TopBar\r\nimport java.util.*\r\n\r\nclass TambahDetailProkerActivity : ComponentActivity() {\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        setContent {\r\n            TambahDetailProkerScreen(navController = rememberNavController())\r\n        }\r\n    }\r\n}\r\n\r\n@OptIn(ExperimentalMaterial3Api::class)\r\n@Composable\r\nfun TambahDetailProkerScreen(navController: NavHostController) {\r\n    val context = LocalContext.current\r\n    var judul by remember { mutableStateOf(\"\") }\r\n    var tanggal by remember { mutableStateOf(\"\") }\r\n    var buktiFoto by remember { mutableStateOf(\"\") }\r\n\r\n    Scaffold(\r\n        topBar = { TopBar(pageTitle = \"Tambah Proker\") },\r\n        content = { padding ->\r\n            Box(\r\n                modifier = Modifier\r\n                    .fillMaxSize()\r\n                    .background(Color(0xFFFAF3E1)) // Background di luar kolom\r\n                    .padding(padding)\r\n            ) {\r\n                Column(\r\n                    modifier = Modifier\r\n                        .fillMaxSize()\r\n                        .padding(16.dp), // Padding dalam kolom\r\n                    verticalArrangement = Arrangement.Top,\r\n                    horizontalAlignment = Alignment.Start\r\n                ) {\r\n                    // Teks di atas \"Judul Proker\"\r\n                    Text(\r\n                        text = \"Detail Proker\",\r\n                        style = MaterialTheme.typography.titleLarge,\r\n                        modifier = Modifier.padding(bottom = 16.dp)\r\n                    )\r\n\r\n                    // Judul Proker\r\n                    Text(\"Judul\", style = MaterialTheme.typography.titleMedium)\r\n                    OutlinedTextField(\r\n                        value = judul,\r\n                        onValueChange = { judul = it },\r\n                        label = { Text(\"Masukkan Judul Proker\") },\r\n                        modifier = Modifier\r\n                            .fillMaxWidth()\r\n                            .padding(bottom = 16.dp) // Jarak antar komponen\r\n                            .border(2.dp, Color.Black, RoundedCornerShape(8.dp))\r\n                            .background(Color(0xFFF5E7C6), RoundedCornerShape(8.dp)),\r\n                        colors = OutlinedTextFieldDefaults.colors(\r\n                            focusedBorderColor = Color(0xFFFDF0D5), // Border saat fokus dengan warna 0xFFFDF0D5\r\n                            unfocusedBorderColor = Color(0xFFFDF0D5) // Border saat tidak fokus dengan warna 0xFFFDF0D5\r\n                        )\r\n                    )\r\n\r\n                    // Tanggal Proker\r\n                    Text(\"Tanggal\", style = MaterialTheme.typography.titleMedium)\r\n                    OutlinedTextField(\r\n                        value = tanggal,\r\n                        onValueChange = { tanggal = it },\r\n                        label = { Text(\"Pilih Tanggal\") },\r\n                        placeholder = { Text(\"yyyy-mm-dd\") },\r\n                        modifier = Modifier\r\n                            .fillMaxWidth()\r\n                            .padding(bottom = 16.dp) // Jarak antar komponen\r\n                         .border(2.dp, Color.Black, RoundedCornerShape(8.dp))\r\n                         .background(Color(0xFFF5E7C6), RoundedCornerShape(8.dp)),\r\n                        readOnly = true, // Membuat input hanya bisa diisi dengan DatePicker\r\n                        trailingIcon = { // Ikon di sebelah kanan\r\n                            IconButton(onClick = {\r\n                                val calendar = Calendar.getInstance()\r\n                                val year = calendar.get(Calendar.YEAR)\r\n                                val month = calendar.get(Calendar.MONTH)\r\n                                val day = calendar.get(Calendar.DAY_OF_MONTH)\r\n                                DatePickerDialog(\r\n                                    context,\r\n                                    { _, selectedYear, selectedMonth, selectedDay ->\r\n                                        tanggal = \"$selectedYear-${selectedMonth + 1}-$selectedDay\"\r\n                                    },\r\n                                    year, month, day\r\n                                ).show()\r\n                            }) {\r\n                                Icon(\r\n                                    imageVector = Icons.Filled.CalendarToday,\r\n                                    contentDescription = \"Pilih Tanggal\"\r\n                                )\r\n                            }\r\n                        },\r\n                        colors = OutlinedTextFieldDefaults.colors(\r\n                            focusedBorderColor = Color(0xFFF5E7C6),\r\n                            unfocusedBorderColor = Color(0xFFF5E7C6)\r\n                        )\r\n                    )\r\n\r\n                    // Bukti Foto\r\n                    Text(\"Bukti Foto\", style = MaterialTheme.typography.titleMedium)\r\n                    OutlinedTextField(\r\n                        value = buktiFoto,\r\n                        onValueChange = { buktiFoto = it },\r\n                        label = { Text(\"Ambil Foto dari Galeri\") },\r\n                        placeholder = { Text(\"Masukkan URL atau pilih dari galeri\") },\r\n                        modifier = Modifier\r\n                            .fillMaxWidth()\r\n                            .padding(bottom = 32.dp) // Jarak antar komponen\r\n                            .border(2.dp, Color.Black, RoundedCornerShape(8.dp))\r\n                            .background(Color(0xFFF5E7C6), RoundedCornerShape(8.dp)),\r\n                        readOnly = true, // Membuat input hanya bisa diisi dengan memilih foto\r\n                        trailingIcon = { // Ikon di sebelah kanan\r\n                            IconButton(onClick = {\r\n                                Toast.makeText(context, \"Fitur galeri akan ditambahkan!\", Toast.LENGTH_SHORT).show()\r\n                                // Logika memilih gambar dari galeri dapat ditambahkan di sini.\r\n                            }) {\r\n                                Icon(\r\n                                    imageVector = Icons.Filled.PhotoLibrary,\r\n                                    contentDescription = \"Ambil Foto dari Galeri\"\r\n                                )\r\n                            }\r\n                        },\r\n                        colors = OutlinedTextFieldDefaults.colors(\r\n                            focusedBorderColor = Color(0xFFF5E7C6),\r\n                            unfocusedBorderColor = Color(0xFFF5E7C6)\r\n                        )\r\n                    )\r\n\r\n                    // Tombol Selesai\r\n                    Button(\r\n                        onClick = {\r\n                            if (judul.isNotEmpty() && tanggal.isNotEmpty() && buktiFoto.isNotEmpty()) {\r\n                                Toast.makeText(\r\n                                    context,\r\n                                    \"Proker berhasil ditambahkan!\",\r\n                                    Toast.LENGTH_SHORT\r\n                                ).show()\r\n                            } else {\r\n                                Toast.makeText(\r\n                                    context,\r\n                                    \"Harap lengkapi semua field!\",\r\n                                    Toast.LENGTH_SHORT\r\n                                ).show()\r\n                            }\r\n                        },\r\n                        modifier = Modifier\r\n                            .fillMaxWidth()\r\n                            .height(48.dp)\r\n                            .padding(horizontal = 16.dp), // Padding kiri dan kanan untuk tombol\r\n                        colors = ButtonDefaults.buttonColors(\r\n                            containerColor = Color(0xFFFF6F00) // Warna tombol\r\n                        )\r\n                    ) {\r\n                        Text(\r\n                            \"Selesai\",\r\n                            color = Color.White // Teks tombol berwarna putih\r\n                        )\r\n                    }\r\n                }\r\n\r\n                // Menambahkan kembali BottomBar di bagian bawah\r\n                BottomBar(\r\n                    modifier = Modifier\r\n                        .fillMaxWidth()\r\n                        .align(Alignment.BottomCenter),\r\n                    navController = navController\r\n                )\r\n            }\r\n        }\r\n    )\r\n}\r\n\r\n@Preview(showBackground = true)\r\n@Composable\r\nfun TambahDetailProkerPreview() {\r\n    val navController = rememberNavController()\r\n    TambahDetailProkerScreen(navController = navController)\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/proksi_tbptb/frontend/TambahDetailProker/TambahDetailScreen.kt b/app/src/main/java/com/example/proksi_tbptb/frontend/TambahDetailProker/TambahDetailScreen.kt
+--- a/app/src/main/java/com/example/proksi_tbptb/frontend/TambahDetailProker/TambahDetailScreen.kt	(revision d367f89d90ffbfc7f16dfe575dd25408bf8a3162)
++++ b/app/src/main/java/com/example/proksi_tbptb/frontend/TambahDetailProker/TambahDetailScreen.kt	(date 1733819297552)
+@@ -34,7 +34,6 @@
+         }
+     }
+ }
+-
+ @OptIn(ExperimentalMaterial3Api::class)
+ @Composable
+ fun TambahDetailProkerScreen(navController: NavHostController) {
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><project version=\"4\">\r\n  <component name=\"ExternalStorageConfigurationManager\" enabled=\"true\" />\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_20\" default=\"true\" project-jdk-name=\"20\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/build/classes\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision d367f89d90ffbfc7f16dfe575dd25408bf8a3162)
++++ b/.idea/misc.xml	(date 1733819297550)
+@@ -1,6 +1,6 @@
+ <project version="4">
+   <component name="ExternalStorageConfigurationManager" enabled="true" />
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_20" default="true" project-jdk-name="20" project-jdk-type="JavaSDK">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="temurin-17" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/build/classes" />
+   </component>
+ </project>
+\ No newline at end of file
+Index: local.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>## This file must *NOT* be checked into Version Control Systems,\r\n# as it contains information specific to your local configuration.\r\n#\r\n# Location of the SDK. This is only used by Gradle.\r\n# For customization when using a Version Control System, please read the\r\n# header note.\r\n#Fri Nov 22 18:22:45 WIB 2024\r\nsdk.dir=C\\:\\\\Users\\\\LENOVO\\\\AppData\\\\Local\\\\Android\\\\Sdk\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>ISO-8859-1
+===================================================================
+diff --git a/local.properties b/local.properties
+--- a/local.properties	(revision d367f89d90ffbfc7f16dfe575dd25408bf8a3162)
++++ b/local.properties	(date 1733819297553)
+@@ -4,5 +4,5 @@
+ # Location of the SDK. This is only used by Gradle.
+ # For customization when using a Version Control System, please read the
+ # header note.
+-#Fri Nov 22 18:22:45 WIB 2024
+-sdk.dir=C\:\\Users\\LENOVO\\AppData\\Local\\Android\\Sdk
++#Sun Dec 01 23:31:31 WIB 2024
++sdk.dir=C\:\\Users\\acer\\AppData\\Local\\Android\\Sdk
