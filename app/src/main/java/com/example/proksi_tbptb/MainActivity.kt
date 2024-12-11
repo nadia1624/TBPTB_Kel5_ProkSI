@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -24,18 +26,18 @@ import com.example.proksi_tbptb.frontend.isikegiatan.screen.IsiKegiatanScreen
 import com.example.proksi_tbptb.frontend.kegiatan.screen.KegiatanScreen
 import com.example.proksi_tbptb.frontend.login.LoginPage
 import com.example.proksi_tbptb.ui.theme.ProkSI_TBPTBTheme
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
+
+    private val userPreferences = UserPreferences()
+    private val apiService = ApiConfig.api // Ensure ApiService is created correctly
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val userPreferences = UserPreferences()
-        val apiService = ApiConfig.api // Pastikan ApiService dibuat dengan benar
-
-        CoroutineScope(Dispatchers.Main).launch {
+        // Using lifecycleScope to launch coroutines tied to the lifecycle of this Activity
+        lifecycleScope.launch {
             val isLoggedIn = userPreferences.getLoginState(this@MainActivity)
             val token = userPreferences.getToken(this@MainActivity)
 
@@ -51,7 +53,7 @@ class MainActivity : ComponentActivity() {
                             composable("login") { LoginPage(navController = navController) }
                             composable("home") { HomePage(navController = navController) }
                             composable("absensi") {
-                                AbsensiScreen(navController = navController, context = androidx.compose.ui.platform.LocalContext.current)
+                                AbsensiScreen(navController = navController, context = LocalContext.current)
                             }
                             composable("proker") { ProkerScreen(navController = navController) }
                             composable("tambah-absensi") { IsiAbsensiScreen(navController = navController) }
@@ -67,9 +69,7 @@ class MainActivity : ComponentActivity() {
                                         viewModel.fetchDetailKegiatan(token = token.toString(), idKegiatan = it)
                                     }
                                 }
-                                IsiKegiatanScreen(
-                                    navController = navController,
-                                )
+                                IsiKegiatanScreen(navController = navController)
                             }
                         }
                     }

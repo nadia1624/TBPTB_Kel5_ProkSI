@@ -4,30 +4,63 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.platform.LocalContext
+import com.example.proksi_tbptb.data.local.UserPreferences
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.proksi_tbptb.frontend.Component.BottomBar
 import com.example.proksi_tbptb.frontend.Component.TopBar
+import com.example.proksi_tbptb.frontend.Proker.LihatProkerFactory
+import com.example.proksi_tbptb.frontend.Proker.LihatProkerViewModel
 import com.example.proksi_tbptb.frontend.Proker.component.BoxProker
 import com.example.proksi_tbptb.frontend.Proker.component.CustomButtonProker
 
-// Data class untuk mewakili item Proker
+// Remove unused imports, such as LocalContext, if not necessary
+// import androidx.compose.ui.platform.LocalContext
+
 data class ProkerItem(val name: String, val status: String)
 
 @Composable
 fun ProkerScreen(
-    data: List<ProkerItem> = listOf(), // Data diterima sebagai parameter
+    navController: NavHostController,
     modifier: Modifier = Modifier,
-    navController: NavHostController
+    viewModel: LihatProkerViewModel = viewModel(factory = LihatProkerFactory())
 ) {
+    // Observing live data from the view model
+    val prokers by viewModel.prokers.observeAsState(initial = emptyList())
+    val isLoading by viewModel.isLoading.observeAsState(initial = true)
+    val error by viewModel.error.observeAsState()
+
+    // Fetching token and checking login state
+    val context = LocalContext.current
+    val userPreferences = UserPreferences()
+    val token = remember { mutableStateOf("") }
+    val userId = remember { mutableIntStateOf(0) }
+
+    // Fetch token when the screen is first loaded
+    LaunchedEffect(Unit) {
+        token.value = userPreferences.getToken(context).orEmpty()
+        userId.value = userPreferences.getUserId(context)
+        if (token.value.isNotEmpty() && userId.value != 0) {
+            viewModel.fetchProkers(token.value, userId.value)
+        }
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -36,12 +69,10 @@ fun ProkerScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(bottom = 66.dp) // Memberikan ruang untuk BottomBar
+                .padding(bottom = 66.dp)
         ) {
-            // TopBar di bagian atas
             TopBar(pageTitle = "Proker")
 
-            // Konten utama
             Column(
                 modifier = Modifier
                     .weight(1f)
@@ -49,11 +80,13 @@ fun ProkerScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Row(horizontalArrangement = Arrangement.spacedBy(16.dp), // Mengatur elemen-elemen agar dimulai dari kiri
-                    modifier = Modifier.padding(end = 100.dp)) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    modifier = Modifier.padding(end = 100.dp)
+                ) {
                     CustomButtonProker(
                         text = "Divisi",
-                        onClick = { println("Divisi diklik") },
+                        onClick = { /* Handle division filter */ },
                         modifier = Modifier.weight(1f),
                         buttonColor = Color(0xFFF9B683),
                         contentColor = Color.Black
@@ -67,23 +100,37 @@ fun ProkerScreen(
                     )
                 }
 
-                // LazyColumn untuk menampilkan data Proker
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(data) { item ->
-                        BoxProker(
-                            text = item.name, // Nama Proker
-                            status = item.status, // Status Proker
-                            onClick = { println("Item ${item.name} diklik") }
+                when {
+                    isLoading -> {
+                        CircularProgressIndicator(
+                            modifier = Modifier.align(Alignment.CenterHorizontally)
                         )
+                    }
+                    error != null -> {
+                        Text(
+                            text = error ?: "Unknown error",
+                            color = Color.Red,
+                            modifier = Modifier.align(Alignment.CenterHorizontally)
+                        )
+                    }
+                    else -> {
+                        LazyColumn(
+                            modifier = Modifier.fillMaxSize(),
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            items(prokers) { proker ->
+                                BoxProker(
+                                    text = proker.name,
+                                    status = proker.status,
+                                    onClick = { /* Handle proker click */ }
+                                )
+                            }
+                        }
                     }
                 }
             }
         }
 
-        // BottomBar di bagian bawah layar
         BottomBar(
             modifier = Modifier
                 .fillMaxWidth()
@@ -96,13 +143,6 @@ fun ProkerScreen(
 @Preview
 @Composable
 fun ProkerScreenPreview() {
-    val dummyData = remember {
-        listOf(
-            ProkerItem("Seminar Hasil", "Done"),
-            ProkerItem("Kaderisasi", "In Progress"),
-            ProkerItem("Mahasiswa Prestasi", "Not Started")
-        )
-    }
     val navController = rememberNavController()
-    ProkerScreen(data = dummyData, navController = navController)
+    ProkerScreen(navController = navController)
 }
