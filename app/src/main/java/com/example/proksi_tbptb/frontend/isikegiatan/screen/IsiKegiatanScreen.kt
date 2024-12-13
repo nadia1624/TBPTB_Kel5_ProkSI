@@ -77,7 +77,9 @@ fun IsiKegiatanScreen(
         }
     }
 
-    Box(modifier = modifier.fillMaxSize().background(Color(0xFFFAF3E1))) {
+    Box(modifier = modifier
+        .fillMaxSize()
+        .background(Color(0xFFFAF3E1))) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -111,6 +113,7 @@ fun IsiKegiatanScreen(
                             )
                         }
                     }
+
                     1 -> {
                         Column(
                             modifier = Modifier.fillMaxSize(),
@@ -163,12 +166,21 @@ fun IsiKegiatanScreen(
                                                 context
                                             )
                                         }
-                                        Log.d("UPLOAD", "idKegiatan yang diterima di uploadAbsensiKegiatan: $idKegiatan")
+                                        Log.d(
+                                            "UPLOAD",
+                                            "idKegiatan yang diterima di uploadAbsensiKegiatan: $idKegiatan"
+                                        )
                                     }
-                                    navController.navigate("all-kegiatan"){
-                                        popUpTo("tambah-kegiatan/{id_kegiatan}"){inclusive = true}
+                                    navController.navigate("all-kegiatan") {
+                                        popUpTo("tambah-kegiatan/{id_kegiatan}") {
+                                            inclusive = true
+                                        }
                                     }
-                                    Toast.makeText(context, "Absensi berhasil diisi!", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        context,
+                                        "Absensi berhasil diisi!",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 },
                                 enabled = imageUri != null
                             ) {
@@ -176,6 +188,7 @@ fun IsiKegiatanScreen(
                             }
                         }
                     }
+
                     2 -> {
                         Column(
                             modifier = Modifier.fillMaxSize(),
