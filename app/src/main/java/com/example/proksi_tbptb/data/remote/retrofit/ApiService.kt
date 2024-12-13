@@ -6,6 +6,7 @@ import com.example.proksi_tbptb.data.remote.response.IsiKegiatanResponse
 import com.example.proksi_tbptb.data.remote.response.LihatAbsensiResponse
 import com.example.proksi_tbptb.data.remote.response.LoginResponse
 import com.example.proksi_tbptb.data.remote.response.RekapAbsenResponse
+import com.example.proksi_tbptb.data.remote.response.LihatProkerResponse
 import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -53,4 +54,10 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("id_kegiatan") id_kegiatan: Int // Gunakan @Path karena id_kegiatan ada di URL
     ): Response<IsiKegiatanResponse>
+
+    @GET("proker/")
+    suspend fun lihatProker(
+        @Header("Authorization") token: String,
+        @Query("id_divisi") divisiId: Int // Optional query parameter
+    ): Response<LihatProkerResponse>
 }
