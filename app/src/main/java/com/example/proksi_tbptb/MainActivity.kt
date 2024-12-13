@@ -2,6 +2,7 @@ package com.example.proksi_tbptb
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,8 +29,6 @@ import com.example.proksi_tbptb.frontend.kegiatan.screen.KegiatanScreen
 import com.example.proksi_tbptb.frontend.login.LoginPage
 import com.example.proksi_tbptb.ui.theme.ProkSI_TBPTBTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -87,7 +86,7 @@ class MainActivity : ComponentActivity() {
                                         token = token
                                     )
                                 } else {
-                                    // Handle invalid or missing idRekapan
+                                    Toast.makeText(this@MainActivity, "Id Rekapan tidak ditemukan", Toast.LENGTH_SHORT).show()
                                 }
                             }
 
