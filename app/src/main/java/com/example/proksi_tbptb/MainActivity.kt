@@ -14,6 +14,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.proksi_tbptb.data.local.UserPreferences
 import com.example.proksi_tbptb.data.remote.retrofit.ApiConfig
+import com.example.proksi_tbptb.frontend.AbsensiTerkirim.screen.AbsensiTerkirimScreen
 import com.example.proksi_tbptb.frontend.IsiAbsensi.screen.IsiAbsensiScreen
 import com.example.proksi_tbptb.frontend.Proker.screen.ProkerScreen
 import com.example.proksi_tbptb.frontend.absensi.screen.AbsensiScreen
@@ -24,10 +25,12 @@ import com.example.proksi_tbptb.frontend.isikegiatan.screen.IsiKegiatanScreen
 import com.example.proksi_tbptb.frontend.kegiatan.screen.KegiatanScreen
 import com.example.proksi_tbptb.frontend.login.LoginPage
 import com.example.proksi_tbptb.ui.theme.ProkSI_TBPTBTheme
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,6 +74,21 @@ class MainActivity : ComponentActivity() {
                                     navController = navController,
                                 )
                             }
+                            composable("absensi-terkirim/{id_rekapan}") { backStackEntry ->
+                                val idRekapan = backStackEntry.arguments?.getString("id_rekapan")?.toIntOrNull()
+                                val token = backStackEntry.arguments?.getString("token") ?: ""
+                                println("Id Rekapan ${idRekapan}")
+                                if (idRekapan != null) {
+                                    AbsensiTerkirimScreen(
+                                        navController = navController,
+                                        idRekapan = idRekapan,
+                                        token = token
+                                    )
+                                } else {
+                                    // Handle invalid or missing idRekapan
+                                }
+                            }
+
                         }
                     }
                 }

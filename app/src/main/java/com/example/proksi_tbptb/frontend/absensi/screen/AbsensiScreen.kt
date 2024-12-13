@@ -107,7 +107,6 @@ fun AbsensiScreen(
                         modifier = Modifier.align(Alignment.CenterHorizontally)
                     )
                 }
-
                 // Menampilkan daftar absensi
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
@@ -126,10 +125,10 @@ fun AbsensiScreen(
                                 else -> R.drawable.pending
                             }
                             BoxAbsensi(
-                                text = absensiItem.idRekapan?.toString()
-                                    ?: "Absensi ${index + 1}", // ID Rekapan atau fallback
+                                text = absensiItem.idRekapan?.toString() ?: "Item $index", // ID Rekapan atau fallback
                                 painter = painterResource(id = imageRes), // Gambar yang ditampilkan (bisa diubah dengan gambar lain)
-                                onClick = { println("Absensi ${absensiItem.idRekapan} diklik") } // Fungsi ketika diklik
+                                onClick = { navController.navigate("absensi-terkirim/${absensiItem.idRekapan}") }
+
                             )
                         }
                     } else {
