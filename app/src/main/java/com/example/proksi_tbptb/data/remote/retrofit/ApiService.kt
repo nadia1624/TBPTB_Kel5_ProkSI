@@ -31,7 +31,11 @@ interface ApiService {
     ): Response<LihatAbsensiResponse>
 
     @GET("absensi/detail/{id_rekapan}")
-    suspend fun detailAbsensi(): Response<DetailAbsensiResponse>
+    suspend fun detailAbsensi(
+        @Header("Authorization") token: String,
+        @Path("id_rekapan") idRekapan: Int
+    ): Response<DetailAbsensiResponse>
+
 
     @FormUrlEncoded
     @POST("absensi/create")
