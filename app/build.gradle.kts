@@ -13,7 +13,7 @@ android {
     defaultConfig {
         applicationId = "com.example.proksi_tbptb"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -102,6 +102,10 @@ dependencies {
 //    Retrofit
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
+    implementation(libs.coil.compose)
+
 
 //    Dagger
     implementation(libs.hilt.android)
