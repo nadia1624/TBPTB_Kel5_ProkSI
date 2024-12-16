@@ -11,12 +11,15 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.proksi_tbptb.data.local.UserPreferences
 import com.example.proksi_tbptb.data.remote.retrofit.ApiConfig
 import com.example.proksi_tbptb.frontend.AbsensiTerkirim.screen.AbsensiTerkirimScreen
+import com.example.proksi_tbptb.frontend.DetailProker.screen.DetailProkerScreen
 import com.example.proksi_tbptb.frontend.IsiAbsensi.screen.IsiAbsensiScreen
 import com.example.proksi_tbptb.frontend.Proker.screen.ProkerScreen
 import com.example.proksi_tbptb.frontend.absensi.screen.AbsensiScreen
@@ -28,8 +31,6 @@ import com.example.proksi_tbptb.frontend.kegiatan.screen.KegiatanScreen
 import com.example.proksi_tbptb.frontend.login.LoginPage
 import com.example.proksi_tbptb.ui.theme.ProkSI_TBPTBTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -75,6 +76,28 @@ class MainActivity : ComponentActivity() {
                                     }
                                 }
                                 IsiKegiatanScreen(navController = navController)
+                            }
+                            composable(
+                                route = "detail-proker/{id}?name={name}&status={status}",
+                                arguments = listOf(
+                                    navArgument("id") { type = NavType.IntType },
+                                    navArgument("name") { type = NavType.StringType },
+                                    navArgument("status") { type = NavType.StringType }
+                                )
+                            ) { backStackEntry ->
+                                val prokerId = backStackEntry.arguments?.getInt("id") ?: 0
+                                val token = backStackEntry.arguments?.getString("token") ?: ""
+                                val name = backStackEntry.arguments?.getString("name").orEmpty()
+                                val status = backStackEntry.arguments?.getString("status").orEmpty()
+
+                                DetailProkerScreen(
+                                    prokerId= prokerId,
+                                    navController = navController,
+                                    token = token,
+                                    name = name,
+                                    status = status
+
+                                )
                             }
                             composable("absensi-terkirim/{id_rekapan}") { backStackEntry ->
                                 val idRekapan = backStackEntry.arguments?.getString("id_rekapan")?.toIntOrNull()

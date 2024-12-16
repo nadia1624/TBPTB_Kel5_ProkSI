@@ -26,13 +26,14 @@ data class LihatProkerResponseItem(
 	val divisi: Divisi? = null,
 
 	@field:SerializedName("id_proker")
-	val idProker: Int? = null,
+	val idProker: Int,
 
 	@field:SerializedName("status")
 	val status: Int? = null,
 
 	@field:SerializedName("updatedAt")
-	val updatedAt: String? = null
+	val updatedAt: String? = null,
+	val id: Int
 )
 
 data class Divisi(

@@ -2,11 +2,12 @@ package com.example.proksi_tbptb.data.remote.retrofit
 
 import com.example.proksi_tbptb.data.remote.response.CreateAbsensiResponse
 import com.example.proksi_tbptb.data.remote.response.DetailAbsensiResponse
+import com.example.proksi_tbptb.data.remote.response.DetailProkerResponse
 import com.example.proksi_tbptb.data.remote.response.IsiKegiatanResponse
 import com.example.proksi_tbptb.data.remote.response.LihatAbsensiResponse
+import com.example.proksi_tbptb.data.remote.response.LihatProkerResponse
 import com.example.proksi_tbptb.data.remote.response.LoginResponse
 import com.example.proksi_tbptb.data.remote.response.RekapAbsenResponse
-import com.example.proksi_tbptb.data.remote.response.LihatProkerResponse
 import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -60,4 +61,10 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Query("id_divisi") divisiId: Int // Optional query parameter
     ): Response<LihatProkerResponse>
+
+    @GET("proker/detailproker/{id}")
+    suspend fun getDetailProker(
+        @Header("Authorization") token: String,
+        @Path("id") prokerId: Int
+    ): Response<DetailProkerResponse>
 }
