@@ -45,11 +45,12 @@ interface ApiService {
     ): Response<DetailAbsensiResponse>
 
 
-    @FormUrlEncoded
+    @Multipart
     @POST("absensi/create")
     suspend fun createAbsensi(
-        @Field("gambar") gambar: String
-    ): Response<CreateAbsensiResponse>
+        @Header("Authorization") token: String,
+        @Part image: MultipartBody.Part? = null
+    ): Response<Unit>
 
     @GET("api/riwayat-absensi")
     suspend fun rekapAbsensi (
