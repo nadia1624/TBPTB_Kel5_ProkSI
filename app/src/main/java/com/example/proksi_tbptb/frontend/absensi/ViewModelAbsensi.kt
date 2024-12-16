@@ -1,11 +1,10 @@
 package com.example.proksi_tbptb.frontend.absensi.viewmodel
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.proksi_tbptb.data.remote.response.LihatAbsensiResponseItem
 import com.example.proksi_tbptb.data.local.UserPreferences
+import com.example.proksi_tbptb.data.remote.response.LihatAbsensiResponseItem
 import com.example.proksi_tbptb.data.repository.AbsensiRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

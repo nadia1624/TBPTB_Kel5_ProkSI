@@ -1,7 +1,13 @@
 package com.example.proksi_tbptb.frontend.Proker.screen
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
@@ -11,18 +17,18 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.platform.LocalContext
-import com.example.proksi_tbptb.data.local.UserPreferences
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.proksi_tbptb.data.local.UserPreferences
 import com.example.proksi_tbptb.frontend.Component.BottomBar
 import com.example.proksi_tbptb.frontend.Component.TopBar
 import com.example.proksi_tbptb.frontend.Proker.LihatProkerFactory
@@ -33,7 +39,7 @@ import com.example.proksi_tbptb.frontend.Proker.component.CustomButtonProker
 // Remove unused imports, such as LocalContext, if not necessary
 // import androidx.compose.ui.platform.LocalContext
 
-data class ProkerItem(val name: String, val status: String)
+ data class ProkerItem(val name: String, val status: String, val id: Int)
 
 @Composable
 fun ProkerScreen(
@@ -122,7 +128,7 @@ fun ProkerScreen(
                                 BoxProker(
                                     text = proker.name,
                                     status = proker.status,
-                                    onClick = { /* Handle proker click */ }
+                                    onClick = { navController.navigate("detail-proker/${proker.id}?name=${proker.name}&status=${proker.status}")}
                                 )
                             }
                         }

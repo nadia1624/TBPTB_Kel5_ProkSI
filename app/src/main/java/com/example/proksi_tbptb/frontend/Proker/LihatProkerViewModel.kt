@@ -7,9 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.proksi_tbptb.data.repository.LihatProkerRepository
 import com.example.proksi_tbptb.frontend.Proker.screen.ProkerItem
-import com.example.proksi_tbptb.data.remote.response.LihatProkerResponse
 import kotlinx.coroutines.launch
-import retrofit2.Response
 
 class LihatProkerViewModel(private val repository: LihatProkerRepository) : ViewModel() {
     private val _prokers = MutableLiveData<List<ProkerItem>>()
@@ -25,15 +23,17 @@ class LihatProkerViewModel(private val repository: LihatProkerRepository) : View
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val response: Response<LihatProkerResponse>? = repository.getProkers(token, divisiId)
-                Log.d("LihatProkerViewModel", "Token: $token")
-                Log.d("LihatProkerViewModel", "ID: $divisiId")
+                val response = repository.getProkers(token, divisiId)
+
+                // Log the token and divisiId for debugging
+                Log.d("LihatProkerViewModel", "Fetching prokers with Token: $token and DivisiID: $divisiId")
 
                 if (response != null && response.isSuccessful) {
                     val prokerList = response.body()?.lihatProkerResponse?.mapNotNull { item ->
                         item?.let {
                             ProkerItem(
-                                name = it.namaProker ?: "Unknown",
+                                id = it.idProker, // Default to 0 if id is null
+                                name = it.namaProker.orEmpty(), // Default to "" if namaProker is null
                                 status = when (it.status) {
                                     0 -> "Not Started"
                                     1 -> "In Progress"
@@ -47,11 +47,11 @@ class LihatProkerViewModel(private val repository: LihatProkerRepository) : View
                     _prokers.value = prokerList
                     _error.value = null
                 } else {
-                    Log.e("ProkerViewModel", "Response error: $response")
+                    Log.e("LihatProkerViewModel", "Failed to fetch prokers, response: ${response?.message()}")
                     _error.value = "Error: ${response?.message() ?: "Unknown error"}"
                 }
             } catch (e: Exception) {
-                Log.e("ProkerViewModel", "Error fetching prokers", e)
+                Log.e("LihatProkerViewModel", "Error fetching prokers", e)
                 _error.value = "Error: ${e.message ?: "An unknown error occurred"}"
             } finally {
                 _isLoading.value = false
