@@ -12,7 +12,7 @@ import com.example.proksi_tbptb.data.remote.response.IsiAbsenKegiatanResponse
 import com.example.proksi_tbptb.data.remote.response.IsiKegiatanResponse
 import com.example.proksi_tbptb.data.remote.retrofit.ApiConfig
 import kotlinx.coroutines.launch
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -67,29 +67,23 @@ class IsiKegiatanViewModel : ViewModel() {
                     _errorMessage.value = "ID Kegiatan tidak valid"
                     return@launch
                 }
-                // Cek MIME type terlebih dahulu
-                Log.d("IsiKegiatanViewModel", "Starting upload with parameters:")
-                Log.d("IsiKegiatanViewModel", "Token: $token")
-                Log.d("IsiKegiatanViewModel", "IdKegiatan: $idKegiatan")
-                Log.d("IsiKegiatanViewModel", "UserId: $userId")
-                Log.d("IsiKegiatanViewModel", "ImageUri: $imageUri")
+
                 val mimeType = context.contentResolver.getType(imageUri)
                 if (!isImageMimeTypeAllowed(mimeType)) {
                     _errorMessage.value = "Format file tidak didukung. Gunakan JPG, JPEG, atau PNG"
                     return@launch
                 }
 
-                // Convert URI to File
                 val file = uriToFile(imageUri, context)
                 Log.d("IsiKegiatanViewModel", "File size: ${file.length()} bytes")
                 Log.d("IsiKegiatanViewModel", "File path: ${file.absolutePath}")
 
-                // Pastikan menggunakan MIME type yang benar
-                val requestFile = file.asRequestBody(mimeType?.toMediaTypeOrNull() ?: "image/jpeg".toMediaTypeOrNull())
+                // Create RequestBody instance from file
+                val requestFile = file.asRequestBody((mimeType ?: "image/jpeg").toMediaType())
                 val imagePart = MultipartBody.Part.createFormData("gambar", file.name, requestFile)
 
                 // Create userId RequestBody
-                val userIdBody = userId.toString().toRequestBody("text/plain".toMediaTypeOrNull())
+                val userIdBody = userId.toString().toRequestBody("text/plain".toMediaType())
 
                 val response = ApiConfig.api.isiAbsensiKegiatan(
                     "Bearer $token",
@@ -98,15 +92,12 @@ class IsiKegiatanViewModel : ViewModel() {
                     imagePart
                 )
 
-                Log.d("IsiKegiatanViewModel", "Response: $idKegiatan")
-
                 if (response.isSuccessful) {
                     _uploadResponse.value = response.body()
                     Log.d("IsiKegiatanViewModel", "Berhasil upload: ${response.body()}")
                 } else {
                     _errorMessage.value = "Gagal upload: ${response.message()}"
                     val errorBody = response.errorBody()?.string()
-
                     Log.e("IsiKegiatanViewModel", "Gagal upload: ${response.message()}")
                     Log.e("IsiKegiatanViewModel", "Gagal upload dengan kode: ${response.code()}")
                     Log.e("IsiKegiatanViewModel", "Error body: $errorBody")
