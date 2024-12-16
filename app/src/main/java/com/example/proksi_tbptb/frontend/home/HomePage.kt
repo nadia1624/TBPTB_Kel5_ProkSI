@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,24 +32,8 @@ fun HomePage(modifier: Modifier = Modifier, navController: NavController, viewMo
                 .padding(bottom = 66.dp) // Beri ruang untuk BottomBar
         ) {
             TopBar(pageTitle = "Home")
-            Text(text = "Home Page")
-            Button(
-                onClick = {
-                    viewModel.logout(context)
-                    navController.navigate("login") {
-                        popUpTo("login") { inclusive = true }
-                    }},
-                modifier = Modifier.padding(top = 16.dp),
-                content = {
-                    Text(text = "Logout")
-                }
-            )
-            Button(
-                onClick = {},
-                modifier = Modifier.padding(top = 16.dp),
-                content = {
-                    Text(text = "Go to Profile")
-                }
+            Text(text = "Home Page",
+                modifier = Modifier.align(Alignment.CenterHorizontally)
             )
         }
 

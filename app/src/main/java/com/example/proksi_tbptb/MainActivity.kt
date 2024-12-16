@@ -2,6 +2,7 @@ package com.example.proksi_tbptb
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,6 +30,7 @@ import com.example.proksi_tbptb.frontend.isikegiatan.IsiKegiatanViewModel
 import com.example.proksi_tbptb.frontend.isikegiatan.screen.IsiKegiatanScreen
 import com.example.proksi_tbptb.frontend.kegiatan.screen.KegiatanScreen
 import com.example.proksi_tbptb.frontend.login.LoginPage
+import com.example.proksi_tbptb.frontend.profile.ProfileScreen
 import com.example.proksi_tbptb.ui.theme.ProkSI_TBPTBTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -102,7 +104,7 @@ class MainActivity : ComponentActivity() {
                             composable("absensi-terkirim/{id_rekapan}") { backStackEntry ->
                                 val idRekapan = backStackEntry.arguments?.getString("id_rekapan")?.toIntOrNull()
                                 val token = backStackEntry.arguments?.getString("token") ?: ""
-                                println("Id Rekapan ${idRekapan}")
+                                println("Id Rekapan $idRekapan")
                                 if (idRekapan != null) {
                                     AbsensiTerkirimScreen(
                                         navController = navController,
@@ -110,10 +112,10 @@ class MainActivity : ComponentActivity() {
                                         token = token
                                     )
                                 } else {
-                                    // Handle invalid or missing idRekapan
+                                    Toast.makeText(this@MainActivity, "Id Rekapan tidak ditemukan", Toast.LENGTH_SHORT).show()
                                 }
                             }
-
+                            composable("profile") { ProfileScreen(navController = navController) }
                         }
                     }
                 }

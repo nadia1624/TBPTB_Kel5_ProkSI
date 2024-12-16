@@ -37,7 +37,8 @@ fun BoxAbsensi(
     status: Int = 0,  // Menambahkan status untuk menentukan kondisi (0: Belum diisi, 1: Sedang berlangsung, 2: Sudah diisi)
     painter: Painter = painterResource(id = R.drawable.ceklis),
     jamKegiatan: String = "hh:mm", // Waktu yang ditampilkan jika sedang berlangsung
-    tanggal: String = "dd/mm/yyyy" // Tanggal yang ditampilkan jika sedang berlangsung
+    tanggal: String = "dd/mm/yyyy", // Tanggal yang ditampilkan jika sedang berlangsung
+    idKegiatan: Int = 0
 ) {
     // Fungsi untuk memformat waktu
     fun formatJamKegiatan(jam: String): String {
@@ -124,7 +125,7 @@ fun BoxAbsensi(
                     Row(
                         modifier = Modifier
                     ){
-                        Text(text = "$text")
+                        Text(text = text)
                         Spacer(modifier = Modifier.width(128.dp))
                         Text(text = "Tidak Selesai", fontSize = 14.sp)
 

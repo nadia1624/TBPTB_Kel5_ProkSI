@@ -46,9 +46,9 @@ fun KegiatanScreen(
 
     LaunchedEffect(Unit) {
         token.value = userPreferences.getToken(context).orEmpty()
-        userId.value = userPreferences.getUserId(context)
-        if (token.value.isNotEmpty() && userId.value != 0) {
-            viewModel.fetchRiwayatAbsensi(token.value, userId.value)
+        userId.intValue = userPreferences.getUserId(context)
+        if (token.value.isNotEmpty() && userId.intValue != 0) {
+            viewModel.fetchRiwayatAbsensi(token.value, userId.intValue)
         }
     }
 
