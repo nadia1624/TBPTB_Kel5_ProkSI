@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -25,6 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.proksi_tbptb.data.local.UserPreferences
 import com.example.proksi_tbptb.frontend.AbsensiTerkirim.AbsensiTerkirimViewModel
+import com.example.proksi_tbptb.frontend.AbsensiTerkirim.component.AnimasiAbsensiFailed
+import com.example.proksi_tbptb.frontend.AbsensiTerkirim.component.AnimasiAbsensiPending
 import com.example.proksi_tbptb.frontend.AbsensiTerkirim.component.AnimasiAbsensiTercatat
 import com.example.proksi_tbptb.frontend.AbsensiTerkirim.component.BuktiFoto
 import com.example.proksi_tbptb.frontend.AbsensiTerkirim.component.HeaderAbsensiTerkirim
@@ -86,9 +89,20 @@ fun AbsensiTerkirimScreen(
                             val detail = currentState.detail
                             HeaderAbsensiTerkirim(titleText = "Minggu Ke-${detail.idRekapan ?: "-"}")
                             statusCustom(
-                                text = if (detail.status == 1) "Done" else "Pending",
-                                color = if (detail.status == 1) Color(0xFF87B662) else Color(0xFFFFA726)
+                                text = when (detail.status) {
+                                    1 -> "Done"
+                                    2 -> "Failed"
+                                    0 -> "Pending"
+                                    else -> "Unknown"
+                                },
+                                color = when (detail.status) {
+                                    1 -> Color(0xFF87B662) // Hijau untuk Done
+                                    2 -> Color(0xFFD32F2F) // Merah untuk Gagal
+                                    0 -> Color(0xFFFFA726) // Oranye untuk Pending
+                                    else -> Color(0xFF9E9E9E) // Abu-abu untuk Unknown
+                                }
                             )
+
                         }
                         is AbsensiTerkirimViewModel.AbsensiDetailState.Loading -> {
                             HeaderAbsensiTerkirim(titleText = "Loading...")
@@ -109,9 +123,24 @@ fun AbsensiTerkirimScreen(
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        BuktiFoto()
-                        Spacer(modifier = Modifier.height(16.dp))
-                        AnimasiAbsensiTercatat()
+                        when ((state as AbsensiTerkirimViewModel.AbsensiDetailState.Success).detail.status){
+                            1 -> { // Absensi sukses
+                                BuktiFoto()
+                                Spacer(modifier = Modifier.height(16.dp))
+                                AnimasiAbsensiTercatat()
+                            }
+                            0 -> {
+                                AnimasiAbsensiPending()
+                            }
+                            2 -> {
+                                AnimasiAbsensiFailed()
+                            }
+                            else -> { // Status tidak dikenal (opsional)
+                                Log.w("AbsensiTerkirimScreen", "Unknown status: ${(state as AbsensiTerkirimViewModel.AbsensiDetailState.Success).detail.status}")
+                                Text(text = "Status absensi tidak dikenal")
+                            }
+                        }
+
                     }
                 }
             }
@@ -124,3 +153,5 @@ fun AbsensiTerkirimScreen(
         )
     }
 }
+
+

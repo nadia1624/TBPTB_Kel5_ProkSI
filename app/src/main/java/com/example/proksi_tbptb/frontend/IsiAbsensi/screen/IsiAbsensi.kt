@@ -1,5 +1,10 @@
 package com.example.proksi_tbptb.frontend.IsiAbsensi.screen
 
+import android.content.Context
+import android.net.Uri
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -8,22 +13,52 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.rememberAsyncImagePainter
+import com.example.proksi_tbptb.data.local.UserPreferences
 import com.example.proksi_tbptb.frontend.Component.BottomBar
 import com.example.proksi_tbptb.frontend.Component.TopBar
+import com.example.proksi_tbptb.frontend.IsiAbsensi.IsiAbsensiViewModel
 import com.example.proksi_tbptb.frontend.IsiAbsensi.component.AnimasiAbsensi
 import com.example.proksi_tbptb.frontend.IsiAbsensi.component.ButtonKirimAbsensi
 import com.example.proksi_tbptb.frontend.IsiAbsensi.component.HeaderIsiAbsensi
 import com.example.proksi_tbptb.frontend.IsiAbsensi.component.UploadGambarAbsensi
 
 @Composable
-fun IsiAbsensiScreen (modifier: Modifier = Modifier, navController: NavHostController){
+fun IsiAbsensiScreen (
+    modifier: Modifier = Modifier,
+    viewModel: IsiAbsensiViewModel = viewModel(),
+    context: Context = LocalContext.current,
+    navController: NavHostController
+) {
+    var imageUri by remember { mutableStateOf<Uri?>(null) }
+    val userPreferences = remember { UserPreferences() }
+    val token = remember { mutableStateOf("") }
+
+    LaunchedEffect(Unit) {
+        token.value = userPreferences.getToken(context).orEmpty()
+    }
+
+    val imagePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        imageUri = uri
+    }
+
     Box(
         modifier = modifier
         .fillMaxSize()
@@ -42,16 +77,32 @@ fun IsiAbsensiScreen (modifier: Modifier = Modifier, navController: NavHostContr
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ){
                 HeaderIsiAbsensi(titleText = "Minggu Ke-1")
-                UploadGambarAbsensi()
+                UploadGambarAbsensi(
+                    onClick = {
+                    imagePickerLauncher.launch("image/*")
+                },
+                    imageUri = imageUri
+                )
                 ButtonKirimAbsensi(
                     text = "Kirim",
-                    onClick = { println("Kirim Absen diklik") },
+                    onClick = {
+                        viewModel.isiAbsensi(
+                            context = context,
+                            token = token.value,
+                            imageUri = imageUri,
+                            onSuccess = {
+                                Toast.makeText(context, "Absensi berhasil dikirim", Toast.LENGTH_SHORT).show()
+                                navController.navigate("absensi")
+                            },
+                            onError = {errorMessage ->
+                                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                            }
+                        )
+                    },
                     buttonColor = Color(0xFFFF6E1F),  // Warna latar belakang
                     contentColor = Color.White      // Warna teks
                 )
                 AnimasiAbsensi()
-
-
             }
         }
         BottomBar(
