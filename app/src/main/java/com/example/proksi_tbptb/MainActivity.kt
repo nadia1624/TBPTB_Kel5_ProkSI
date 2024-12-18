@@ -23,6 +23,7 @@ import com.example.proksi_tbptb.frontend.AbsensiTerkirim.screen.AbsensiTerkirimS
 import com.example.proksi_tbptb.frontend.DetailProker.screen.DetailProkerScreen
 import com.example.proksi_tbptb.frontend.IsiAbsensi.screen.IsiAbsensiScreen
 import com.example.proksi_tbptb.frontend.Proker.screen.ProkerScreen
+import com.example.proksi_tbptb.frontend.TambahDetailProker.TambahDetailProkerScreen
 import com.example.proksi_tbptb.frontend.absensi.screen.AbsensiScreen
 import com.example.proksi_tbptb.frontend.allproker.screen.AllProker
 import com.example.proksi_tbptb.frontend.home.HomePage
@@ -99,6 +100,20 @@ class MainActivity : ComponentActivity() {
                                     name = name,
                                     status = status
 
+                                )
+                            }
+                            composable(
+                                route = "tambah_detail_proker/{prokerId}",
+                                arguments = listOf(
+                                    navArgument("prokerId") { type = NavType.StringType }  // Changed to match the type expected by API
+                                )
+                            ) { backStackEntry ->
+                                val prokerId = backStackEntry.arguments?.getString("prokerId") ?: ""  // Changed to getString
+                                val token = backStackEntry.arguments?.getString("token") ?: ""
+                                TambahDetailProkerScreen(
+                                    navController = navController,
+                                    prokerId = prokerId,
+                                    token = token
                                 )
                             }
                             composable("absensi-terkirim/{id_rekapan}") { backStackEntry ->

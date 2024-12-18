@@ -166,7 +166,9 @@ fun DetailProkerScreen(
                                     )
 
                                     CustomButtonWithIcon(
-                                        onClick = { /* Handle add action */ },
+                                        onClick = {
+                                            navController.navigate("tambah_detail_proker/${prokerId.toString()}")  // Convert Int to String
+                                        },
                                         modifier = Modifier.size(40.dp),
                                         buttonColor = Color(0xFFF9B683)
                                     )
@@ -174,7 +176,7 @@ fun DetailProkerScreen(
 
                                 // Description Text
                                 Text(
-                                    text = "Description of the proker and its details will be displayed here.",
+                                    text = "Beberapa rincian program kerja yang dilakukan dalam satu kepengurusan HMSI",
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = Color.Black,
                                     modifier = Modifier.padding(vertical = 16.dp)
