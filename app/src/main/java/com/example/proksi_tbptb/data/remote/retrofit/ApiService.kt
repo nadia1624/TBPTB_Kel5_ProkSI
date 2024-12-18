@@ -13,6 +13,7 @@ import com.example.proksi_tbptb.data.remote.response.TambahDetailResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -96,9 +97,21 @@ interface ApiService {
     @POST("proker/detail/{id_proker}")
     suspend fun addProkerDetail(
         @Header("Authorization") token: String,
-        @Path("id_proker") idProker: String,
+        @Path("id_proker") idProker: Int,
         @Part("judul_detail_proker") judulDetailProker: RequestBody,
         @Part("tanggal") tanggal: RequestBody,
-        @Part image: MultipartBody.Part? = null
+        @Part gambar: MultipartBody.Part? = null
     ): Response<TambahDetailResponse>
+
+    @POST("register-token")
+    suspend fun registerToken(@Body request: TokenRequest): Response<TokenResponse>
+
+    @POST("send-notification")
+    suspend fun sendNotification(@Body request: NotificationRequest): Response<NotificationResponse>
+
+    data class TokenRequest(val token: String)
+    data class TokenResponse(val message: String)
+    data class NotificationRequest(val title: String, val body: String)
+    data class NotificationResponse(val message: String)
+
 }

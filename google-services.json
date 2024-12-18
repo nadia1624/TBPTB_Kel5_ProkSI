@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "545421375675",
+    "project_id": "proksi-f12e5",
+    "storage_bucket": "proksi-f12e5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:545421375675:android:b7a5da175e89e90e53d19e",
+        "android_client_info": {
+          "package_name": "com.example.proksi_tbptb"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmrC84iCu1B0hOtDU_GGRgcDDVdE57Koo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

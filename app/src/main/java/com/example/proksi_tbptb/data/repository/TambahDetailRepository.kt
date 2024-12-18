@@ -20,7 +20,7 @@ class TambahDetailRepository(
         idProker: String,
         judulDetailProker: String,
         tanggal: String,
-        imageUri: Uri?
+        gambar: Uri?
     ): Result<TambahDetailResponse> {
         return try {
             // Prepare multipart data
@@ -28,7 +28,7 @@ class TambahDetailRepository(
             val tanggalRequestBody = tanggal.toRequestBody("text/plain".toMediaType())
 
             // Handle image if provided
-            val imagePart = imageUri?.let { uri ->
+            val imagePart = gambar?.let { uri ->
                 // Buat temporary file
                 val file = File(context.cacheDir, "temp_image_${System.currentTimeMillis()}.jpg")
 
@@ -46,10 +46,10 @@ class TambahDetailRepository(
 
             val response = apiService.addProkerDetail(
                 token = "Bearer $token",
-                idProker = idProker,
+                idProker = idProker.toInt(),
                 judulDetailProker = judulRequestBody,
                 tanggal = tanggalRequestBody,
-                image = imagePart
+                gambar = imagePart
             )
 
             if (response.isSuccessful) {
