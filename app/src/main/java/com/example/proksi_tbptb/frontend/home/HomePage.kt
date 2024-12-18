@@ -16,8 +16,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.proksi_tbptb.frontend.Component.BottomBar
-import com.example.proksi_tbptb.frontend.Component.TopBar
+import com.example.proksi_tbptb.frontend.component.BottomBar
+import com.example.proksi_tbptb.frontend.component.TopBar
 
 
 @Composable

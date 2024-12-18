@@ -19,24 +19,22 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.proksi_tbptb.data.local.UserPreferences
 import com.example.proksi_tbptb.data.remote.retrofit.ApiConfig
-import com.example.proksi_tbptb.frontend.AbsensiTerkirim.screen.AbsensiTerkirimScreen
-import com.example.proksi_tbptb.frontend.DetailProker.screen.DetailProkerScreen
-import com.example.proksi_tbptb.frontend.IsiAbsensi.screen.IsiAbsensiScreen
-import com.example.proksi_tbptb.frontend.Proker.screen.ProkerScreen
-import com.example.proksi_tbptb.frontend.TambahDetailProker.TambahDetailProkerScreen
 import com.example.proksi_tbptb.frontend.absensi.screen.AbsensiScreen
-import com.example.proksi_tbptb.frontend.allproker.screen.AllProker
+import com.example.proksi_tbptb.frontend.absensi_terkirim.screen.AbsensiTerkirimScreen
+import com.example.proksi_tbptb.frontend.all_proker.screen.AllProker
+import com.example.proksi_tbptb.frontend.detail_proker.screen.DetailProkerScreen
 import com.example.proksi_tbptb.frontend.home.HomePage
-import com.example.proksi_tbptb.frontend.isikegiatan.IsiKegiatanViewModel
-import com.example.proksi_tbptb.frontend.isikegiatan.screen.IsiKegiatanScreen
+import com.example.proksi_tbptb.frontend.isi_absensi.screen.IsiAbsensiScreen
+import com.example.proksi_tbptb.frontend.isi_kegiatan.IsiKegiatanViewModel
+import com.example.proksi_tbptb.frontend.isi_kegiatan.screen.IsiKegiatanScreen
 import com.example.proksi_tbptb.frontend.kegiatan.screen.KegiatanScreen
 import com.example.proksi_tbptb.frontend.login.LoginPage
 import com.example.proksi_tbptb.frontend.profile.ProfileScreen
+import com.example.proksi_tbptb.frontend.proker.screen.ProkerScreen
+import com.example.proksi_tbptb.frontend.tambah_detail_proker.TambahDetailProkerScreen
 import com.example.proksi_tbptb.ui.theme.ProkSI_TBPTBTheme
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val userPreferences = UserPreferences()
@@ -109,11 +107,9 @@ class MainActivity : ComponentActivity() {
                                 )
                             ) { backStackEntry ->
                                 val prokerId = backStackEntry.arguments?.getString("prokerId") ?: ""  // Changed to getString
-                                val token = backStackEntry.arguments?.getString("token") ?: ""
                                 TambahDetailProkerScreen(
                                     navController = navController,
                                     prokerId = prokerId,
-                                    token = token
                                 )
                             }
                             composable("absensi-terkirim/{id_rekapan}") { backStackEntry ->

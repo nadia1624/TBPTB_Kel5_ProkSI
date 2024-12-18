@@ -27,8 +27,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.proksi_tbptb.R
-import com.example.proksi_tbptb.frontend.Component.BottomBar
-import com.example.proksi_tbptb.frontend.Component.TopBar
+import com.example.proksi_tbptb.frontend.component.BottomBar
+import com.example.proksi_tbptb.frontend.component.TopBar
 import com.example.proksi_tbptb.frontend.absensi.component.BoxAbsensi
 import com.example.proksi_tbptb.frontend.absensi.component.CustomButtonAbsensi
 import com.example.proksi_tbptb.frontend.absensi.component.CustomButtonWithIcon
