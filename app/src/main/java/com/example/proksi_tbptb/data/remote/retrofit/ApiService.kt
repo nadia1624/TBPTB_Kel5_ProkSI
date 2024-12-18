@@ -1,6 +1,5 @@
 package com.example.proksi_tbptb.data.remote.retrofit
 
-import com.example.proksi_tbptb.data.remote.response.CreateAbsensiResponse
 import com.example.proksi_tbptb.data.remote.response.DetailAbsensiResponse
 import com.example.proksi_tbptb.data.remote.response.DetailProkerResponse
 import com.example.proksi_tbptb.data.remote.response.IsiAbsenKegiatanResponse
@@ -10,6 +9,7 @@ import com.example.proksi_tbptb.data.remote.response.LihatProkerResponse
 import com.example.proksi_tbptb.data.remote.response.LoginResponse
 import com.example.proksi_tbptb.data.remote.response.ProfileResponse
 import com.example.proksi_tbptb.data.remote.response.RekapAbsenResponse
+import com.example.proksi_tbptb.data.remote.response.TambahDetailResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -91,4 +91,14 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("id") prokerId: Int
     ): Response<DetailProkerResponse>
+
+    @Multipart
+    @POST("proker/detail/{id_proker}")
+    suspend fun addProkerDetail(
+        @Header("Authorization") token: String,
+        @Path("id_proker") idProker: String,
+        @Part("judul_detail_proker") judulDetailProker: RequestBody,
+        @Part("tanggal") tanggal: RequestBody,
+        @Part image: MultipartBody.Part? = null
+    ): Response<TambahDetailResponse>
 }
