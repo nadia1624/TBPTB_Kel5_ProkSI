@@ -24,6 +24,7 @@ import com.example.proksi_tbptb.data.remote.retrofit.ApiService
 import com.example.proksi_tbptb.frontend.absensi.screen.AbsensiScreen
 import com.example.proksi_tbptb.frontend.absensi_terkirim.screen.AbsensiTerkirimScreen
 import com.example.proksi_tbptb.frontend.all_proker.screen.AllProker
+import com.example.proksi_tbptb.frontend.change_password.screen.ChangePasswordScreen
 import com.example.proksi_tbptb.frontend.detail_proker.screen.DetailProkerScreen
 import com.example.proksi_tbptb.frontend.home.HomePage
 import com.example.proksi_tbptb.frontend.isi_absensi.screen.IsiAbsensiScreen
@@ -37,7 +38,9 @@ import com.example.proksi_tbptb.frontend.tambah_detail_proker.TambahDetailProker
 import com.example.proksi_tbptb.ui.theme.ProkSI_TBPTBTheme
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -49,6 +52,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getAndSendToken()
+        checkFcmToken()
         intent?.let { checkIntentForNavigation(it) }
 
         // Using lifecycleScope to launch coroutines tied to the lifecycle of this Activity
@@ -143,9 +147,29 @@ class MainActivity : ComponentActivity() {
                                 }
                             }
                             composable("profile") { ProfileScreen(navController = navController) }
+                            composable("change-password") { ChangePasswordScreen(navController = navController) }
                         }
                     }
                 }
+            }
+        }
+    }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    private fun checkFcmToken() {
+        lifecycleScope.launch {
+            val token = userPreferences.getFcmToken(applicationContext)
+            if (token == null) {
+                // Request new token jika belum ada
+                FirebaseMessaging.getInstance().token
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            val newToken = task.result
+                            GlobalScope.launch {
+                                userPreferences.saveFcmToken(applicationContext, newToken)
+                            }
+                        }
+                    }
             }
         }
     }

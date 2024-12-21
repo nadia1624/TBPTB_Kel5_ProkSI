@@ -12,20 +12,33 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.NotificationCompat
 import com.example.proksi_tbptb.MainActivity
 import com.example.proksi_tbptb.R
+import com.example.proksi_tbptb.data.local.UserPreferences
 import com.example.proksi_tbptb.data.remote.retrofit.ApiConfig
 import com.example.proksi_tbptb.data.remote.retrofit.ApiService
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class ProkerFirebaseMessagingService : FirebaseMessagingService() {
     private val CHANNEL_ID = "detail_proker_channel"
+    private val userPreferences = UserPreferences()
 
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onNewToken(token: String) {
         Log.d("Firebase", "New token generated: $token")
-        sendTokenToServer(token)
+        GlobalScope.launch {
+            try {
+                userPreferences.saveFcmToken(applicationContext, token)
+                Log.d("Firebase", "FCM Token saved to DataStore: $token")
+                sendTokenToServer(token)
+            } catch (e: Exception) {
+                Log.e("Firebase", "Error saving FCM token", e)
+            }
+        }
     }
 
     private fun sendTokenToServer(token: String) {

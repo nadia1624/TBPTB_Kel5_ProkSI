@@ -13,6 +13,7 @@ class UserPreferences {
     private val tokenKey = stringPreferencesKey("auth_token")
     private val userIdKey = stringPreferencesKey("user_id")
     private val isLoggedInKey = stringPreferencesKey("is_logged_in")
+    private val fcmTokenKey = stringPreferencesKey("fcm_token") // Tambah key untuk FCM token
 
     suspend fun saveLoginState(context: Context, isLoggedIn: Boolean) {
         context.dataStore.edit { prefs ->
@@ -34,6 +35,20 @@ class UserPreferences {
         context.dataStore.edit { prefs ->
             prefs[tokenKey] = token
         }
+    }
+
+    suspend fun saveFcmToken(context: Context, fcmToken: String) {
+        context.dataStore.edit { prefs ->
+            prefs[fcmTokenKey] = fcmToken
+        }
+        Log.d("UserPreferences", "FCM Token yang disimpan: $fcmToken")
+    }
+
+    // Fungsi baru untuk mengambil FCM token
+    suspend fun getFcmToken(context: Context): String? {
+        val fcmToken = context.dataStore.data.first()[fcmTokenKey]
+        Log.d("UserPreferences", "FCM Token yang diambil: $fcmToken")
+        return fcmToken
     }
 
     suspend fun getToken(context: Context): String? {
