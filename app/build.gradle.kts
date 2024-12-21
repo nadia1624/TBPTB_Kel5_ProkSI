@@ -4,6 +4,7 @@ plugins {
     id("com.google.dagger.hilt.android")
     kotlin("kapt")
     alias(libs.plugins.compose.compiler)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -21,6 +22,7 @@ android {
 //        buildConfigField("String", "BASE_URL","\"https://8shnf50m-3000.asse.devtunnels.ms/\"")
         buildConfigField("String", "BASE_URL", "\"http://10.0.2.2:3000/\"")
 //        buildConfigField("String", "BASE_URL", "\"https://serverptb-production.up.railway.app/\"")
+        //buildConfigField("String", "BASE_URL", "\"http://10.44.10.107:3000/\"")
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -69,6 +71,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.datastore.core.android)
     implementation(libs.androidx.runtime.livedata)
+    implementation(libs.firebase.messaging.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -81,6 +84,11 @@ dependencies {
     implementation (libs.androidx.material.icons.extended)
     implementation (libs.androidx.foundation)
     implementation(libs.material3)
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation (libs.firebase.messaging)
+
 
 
 //    DataStore

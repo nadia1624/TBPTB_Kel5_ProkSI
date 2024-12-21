@@ -23,7 +23,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/upload/baseline_upload_24.xml" />
+                                      <entry key="url" value="file:/C:/Users/HP%20ID/AppData/Local/Android/Sdk/icons/material/materialicons/notifications/baseline_notifications_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -33,7 +33,7 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_upload" />
+                            <entry key="outputName" value="ic_notification" />
                             <entry key="sourceFile" value="C:\Users\LENOVO\OneDrive\Documents\Semester 5\PTB\TB\ProkSI_TBPTB" />
                           </map>
                         </option>
