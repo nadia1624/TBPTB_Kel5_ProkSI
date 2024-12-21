@@ -19,7 +19,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
 import com.example.proksi_tbptb.R
-import com.example.proksi_tbptb.frontend.AbsensiTerkirim.AbsensiTerkirimViewModel
 
 @Composable
 fun BuktiFoto (

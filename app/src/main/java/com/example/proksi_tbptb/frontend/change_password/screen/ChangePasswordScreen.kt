@@ -30,12 +30,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.proksi_tbptb.R
-import com.example.proksi_tbptb.data.User
 import com.example.proksi_tbptb.data.local.UserPreferences
 import com.example.proksi_tbptb.frontend.ChangePassword.ChangePasswordViewModel
-import com.example.proksi_tbptb.frontend.ChangePassword.component.PasswordForm
-import com.example.proksi_tbptb.frontend.Component.BottomBar
-import com.example.proksi_tbptb.frontend.Component.TopBar
 import com.example.proksi_tbptb.frontend.change_password.component.PasswordForm
 import com.example.proksi_tbptb.frontend.component.BottomBar
 import com.example.proksi_tbptb.frontend.component.TopBar
