@@ -1,5 +1,8 @@
 package com.example.proksi_tbptb.data.remote.retrofit
 
+import com.example.proksi_tbptb.data.remote.response.AllProkerResponse
+import com.example.proksi_tbptb.data.remote.response.AllProkerResponseItem
+import com.example.proksi_tbptb.data.remote.response.ChangePasswordResponse
 import com.example.proksi_tbptb.data.remote.response.CreateAbsensiResponse
 import com.example.proksi_tbptb.data.remote.response.DetailAbsensiResponse
 import com.example.proksi_tbptb.data.remote.response.DetailProkerResponse
@@ -19,6 +22,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.Multipart
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
@@ -91,4 +95,18 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("id") prokerId: Int
     ): Response<DetailProkerResponse>
+
+    @FormUrlEncoded
+    @PATCH("profil/changepassword")
+    suspend fun changePassword (
+        @Header("Authorization") token: String,
+        @Field("passwordLama") passwordlama: String,
+        @Field("passwordBaru") passwordBaru : String,
+        @Field("konfirmasiPassword")  konfirmasiPassword : String
+    ) : Response<ChangePasswordResponse>
+
+    @GET("proker/alldetailproker")
+    suspend fun allProker (
+        @Header("Authorization") token: String
+    ) : AllProkerResponse
 }

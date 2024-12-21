@@ -31,7 +31,10 @@ import com.example.proksi_tbptb.frontend.Component.TopBar
 
 
 @Composable
-fun KegiatanTerkirimScreen (modifier: Modifier = Modifier){
+fun KegiatanTerkirimScreen (
+    modifier: Modifier = Modifier,
+    idRekapan: Int,
+){
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -74,7 +77,7 @@ fun KegiatanTerkirimScreen (modifier: Modifier = Modifier){
                         }
                     }
                     Spacer(modifier = Modifier.height(12.dp))
-                    BuktiFoto()
+//                    BuktiFoto()
                     Spacer(modifier = Modifier.height(16.dp)) // Jarak antara BuktiFoto dan Animasi
                     AnimasiAbsensiTercatat()
                 }
@@ -86,5 +89,5 @@ fun KegiatanTerkirimScreen (modifier: Modifier = Modifier){
 @Preview
 @Composable
 fun PreviewKegiatanTerkirim (){
-    KegiatanTerkirimScreen()
+//    KegiatanTerkirimScreen()
 }

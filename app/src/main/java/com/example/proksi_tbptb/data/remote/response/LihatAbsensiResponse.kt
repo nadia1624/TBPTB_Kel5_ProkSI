@@ -23,5 +23,17 @@ data class LihatAbsensiResponseItem(
 	val status: Int? = null,
 
 	@field:SerializedName("updatedAt")
-	val updatedAt: String? = null
+	val updatedAt: String? = null,
+
+	@field:SerializedName("rekapan")
+	val rekapan: RekapanAbsensiItem
+)
+
+data class RekapanAbsensiItem (
+	@field:SerializedName("id_rekapan")
+	val idRekapan: Int? = null,
+
+	@field:SerializedName("minggu_ke")
+	val mingguKe: String? = null
+
 )

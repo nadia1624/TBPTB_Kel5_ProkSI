@@ -20,5 +20,10 @@ data class DetailAbsensiResponse(
 	val status: Int? = null,
 
 	@field:SerializedName("updatedAt")
-	val updatedAt: String? = null
+	val updatedAt: String? = null,
+
+	@field:SerializedName("rekapan")
+	val rekapan: RekapanAbsensiItem
 )
+
+

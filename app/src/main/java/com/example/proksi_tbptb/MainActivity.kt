@@ -20,6 +20,7 @@ import androidx.navigation.navArgument
 import com.example.proksi_tbptb.data.local.UserPreferences
 import com.example.proksi_tbptb.data.remote.retrofit.ApiConfig
 import com.example.proksi_tbptb.frontend.AbsensiTerkirim.screen.AbsensiTerkirimScreen
+import com.example.proksi_tbptb.frontend.ChangePassword.screen.ChangePasswordScreen
 import com.example.proksi_tbptb.frontend.DetailProker.screen.DetailProkerScreen
 import com.example.proksi_tbptb.frontend.IsiAbsensi.screen.IsiAbsensiScreen
 import com.example.proksi_tbptb.frontend.Proker.screen.ProkerScreen
@@ -116,6 +117,7 @@ class MainActivity : ComponentActivity() {
                                 }
                             }
                             composable("profile") { ProfileScreen(navController = navController) }
+                            composable("change-password") { ChangePasswordScreen(navController = navController) }
                         }
                     }
                 }

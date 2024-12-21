@@ -156,7 +156,7 @@ fun ProfileScreen(
                         }) {
                             Text("sign out", color = Color.Black)
                         }
-                        TextButton(onClick = { /* TODO: Change password action */ }) {
+                        TextButton(onClick = { navController.navigate("change-password") }) {
                             Text("change password", color = Color.Black)
                         }
                     }

@@ -12,10 +12,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,10 +19,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun PasswordForm() {
-    var oldPassword by remember { mutableStateOf("") }
-    var newPassword by remember { mutableStateOf("") }
-    var confirmPassword by remember { mutableStateOf("") }
+fun PasswordForm(
+    passwordLama: String,
+    passwordBaru: String,
+    konfirmasiPassword: String,
+    passwordBaruChange: (String) -> Unit,
+    passwordLamaChange: (String) -> Unit,
+    passwordKonfirmasiChange: (String) -> Unit,
+    onClick: () -> Unit
+) {
 
     Card(
         shape = RoundedCornerShape(16.dp),
@@ -42,21 +43,23 @@ fun PasswordForm() {
             ) {
             Text("Password Lama",
                 fontSize = 18.sp)
-            PasswordField(label = "Password", value = oldPassword, onValueChange = { oldPassword = it })
+            PasswordField(label = "Password", value = passwordLama, onValueChange = {  passwordLamaChange(it) })
             Spacer(modifier = Modifier.height(16.dp))
             Text("New Password",
                 fontSize = 18.sp)
-            PasswordField(label = "New Password", value = newPassword, onValueChange = { newPassword = it })
+            PasswordField(label = "New Password", value = passwordBaru, onValueChange = { passwordBaruChange(it) })
             Spacer(modifier = Modifier.height(12.dp))
             Text("Confirm Password",
                 fontSize = 18.sp)
-            PasswordField(label = "Confirm Password", value = confirmPassword, onValueChange = { confirmPassword = it })
+            PasswordField(label = "Confirm Password", value = konfirmasiPassword, onValueChange = { passwordKonfirmasiChange(it) })
             Spacer(modifier = Modifier.height(16.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End // Mengatur Button di sebelah kanan
             ) {
-                ButtonChangePassword()
+                ButtonChangePassword(
+                    onClick = onClick
+                )
             }
 
         }
@@ -66,5 +69,5 @@ fun PasswordForm() {
 @Preview
 @Composable
 fun PasswordFormPreview(){
-    PasswordForm()
+//    PasswordForm()
 }

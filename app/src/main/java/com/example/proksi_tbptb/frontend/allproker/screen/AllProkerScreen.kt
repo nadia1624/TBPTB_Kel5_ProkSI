@@ -1,5 +1,6 @@
 package com.example.proksi_tbptb.frontend.allproker.screen
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,93 +12,149 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.proksi_tbptb.BuildConfig
 import com.example.proksi_tbptb.R
+import com.example.proksi_tbptb.data.local.UserPreferences
+import com.example.proksi_tbptb.frontend.AbsensiTerkirim.component.statusCustom
 import com.example.proksi_tbptb.frontend.Component.BottomBar
 import com.example.proksi_tbptb.frontend.Component.TopBar
 import com.example.proksi_tbptb.frontend.Proker.component.CustomButtonProker
 import com.example.proksi_tbptb.frontend.absensi.component.BoxAbsensi
 import com.example.proksi_tbptb.frontend.absensi.component.CustomButtonAbsensi
 import com.example.proksi_tbptb.frontend.absensi.component.CustomButtonWithIcon
+import com.example.proksi_tbptb.frontend.allproker.AllProkerViewModel
 import com.example.proksi_tbptb.frontend.allproker.component.CustomButtonAllProker
 import com.example.proksi_tbptb.frontend.allproker.component.ProkerCard
 
 @Composable
-fun AllProker(modifier: Modifier = Modifier, navController: NavHostController){
+fun AllProker(
+    modifier: Modifier = Modifier,
+    navController: NavHostController,
+    viewModel: AllProkerViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+) {
+    val allProker by viewModel.allProker.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
+    val isError by viewModel.isError.collectAsState()
+    val errorMessage by viewModel.errorMessage.collectAsState()
+    val context = LocalContext.current
+
+    val userPreferences = remember { UserPreferences() }
+    var token by remember { mutableStateOf("") }
+
+    LaunchedEffect(Unit) {
+        token = userPreferences.getToken(context).orEmpty()
+        viewModel.fetchAllDetailProker(token = token)
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(Color(0xFFFAF3E1))
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = 66.dp) // Memberikan ruang untuk BottomBar
-        ) {
-            // TopBar di bagian atas
-            TopBar(pageTitle = "All Proker")
+        when {
+            isLoading -> {
 
-            // Konten utama
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                    CustomButtonAllProker(
-                        text = "Divisi",
-                        onClick = { println("Divisi diklik") },
-                        modifier = Modifier.weight(1f),
-                        buttonColor = Color(0xFFF5E7C6),
-                        contentColor = Color.Black
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .padding(16.dp)
                     )
-                    CustomButtonAllProker(
-                        text = "All",
-                        onClick = { println("All diklik") },
-                        modifier = Modifier.weight(1f),
-                        buttonColor = Color(0xFFF9B683),
-                        contentColor = Color.Black
+
+            }
+            isError -> {
+                    Text(
+                        text = errorMessage ?: "Terjadi kesalahan",
+                        color = Color.Red
                     )
-                }
-                LazyColumn (
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.spacedBy(12.dp))
-                {
-                    items(10) { index -> // Mengulang daftar 10 item sebagai contoh
-                        ProkerCard(
-                            title = "Proker ${index + 1}",
-                            divisi = "Divisi ${index + 1}",
-                            onClick = { println("Proker ${index + 1} diklik") }
-                        )
+
+            }
+            else -> {
+                // Menampilkan konten jika data berhasil dimuat
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = 66.dp) // Memberikan ruang untuk BottomBar
+                ) {
+                    // TopBar di bagian atas
+                    TopBar(pageTitle = "All Proker")
+
+                    // Konten utama
+                    Column(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                            CustomButtonAllProker(
+                                text = "Divisi",
+                                onClick = { navController.navigate("proker") },
+                                modifier = Modifier.weight(1f),
+                                buttonColor = Color(0xFFF5E7C6),
+                                contentColor = Color.Black
+                            )
+                            CustomButtonAllProker(
+                                text = "All",
+                                onClick = { navController.navigate("all-proker") },
+                                modifier = Modifier.weight(1f),
+                                buttonColor = Color(0xFFF9B683),
+                                contentColor = Color.Black
+                            )
+                        }
+                        LazyColumn(
+                            modifier = Modifier.fillMaxSize(),
+                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            items(allProker) { detailProker ->
+                                val baseUrl = BuildConfig.BASE_URL
+                                val gambarUrl = baseUrl + (detailProker.gambar)
+                                Log.d("AllProkerScreen", "Gambar URL: $gambarUrl")
+                                ProkerCard(
+                                    title = detailProker.judulDetailProker.toString(),
+                                    divisi = detailProker.proker.divisi.namaDivisi.toString(),
+                                    gambar = gambarUrl,
+                                    onClick = { println("Proker diklik") }
+                                )
+                            }
+                        }
                     }
                 }
+
+                // BottomBar di bagian bawah layar
+                BottomBar(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.BottomCenter), // Menempatkan di bagian bawah layar
+                    navController = navController
+                )
             }
         }
-
-        // BottomBar di bagian bawah layar
-        BottomBar(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter), // Menempatkan di bagian bawah layar
-            navController = navController
-        )
     }
-
 }
 
 @Preview
 @Composable
-fun AllProkerPreview (){
+fun AllProkerPreview() {
     val navController = rememberNavController()
     AllProker(navController = navController)
 }
