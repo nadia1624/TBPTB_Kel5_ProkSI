@@ -1,9 +1,8 @@
-package com.example.proksi_tbptb
+package com.example.proksi_tbptb.service
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
@@ -11,6 +10,8 @@ import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.NotificationCompat
+import com.example.proksi_tbptb.MainActivity
+import com.example.proksi_tbptb.R
 import com.example.proksi_tbptb.data.remote.retrofit.ApiConfig
 import com.example.proksi_tbptb.data.remote.retrofit.ApiService
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -23,6 +24,7 @@ class ProkerFirebaseMessagingService : FirebaseMessagingService() {
     private val CHANNEL_ID = "detail_proker_channel"
 
     override fun onNewToken(token: String) {
+        Log.d("Firebase", "New token generated: $token")
         sendTokenToServer(token)
     }
 
@@ -30,32 +32,39 @@ class ProkerFirebaseMessagingService : FirebaseMessagingService() {
         val apiService = ApiConfig.api
         CoroutineScope(Dispatchers.IO).launch {
             try {
+                Log.d("Firebase", "Sending token to server: $token")
                 val response = apiService.registerToken(ApiService.TokenRequest(token))
                 if (response.isSuccessful) {
-                    Log.d("FCM", "Token registered successfully")
+                    Log.d("Firebase", "Token registered successfully")
                 }
             } catch (e: Exception) {
-                Log.e("FCM", "Failed to register token", e)
+                Log.e("Firebase", "Failed to register token", e)
             }
         }
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
+        Log.d("Firebase", "Message received from: ${remoteMessage.from}")
+        Log.d("Firebase", "Data: ${remoteMessage.data}")
+        Log.d("Firebase", "Notification: ${remoteMessage.notification}")
         remoteMessage.data.let { data ->
-            val title = data["title"] ?: "Detail Proker Baru"
-            val body = data["body"] ?: "Ada pembaruan detail proker"
+            val title = data["title"] ?: remoteMessage.notification?.title ?: "Detail Proker Baru"
+            val body = data["body"] ?: remoteMessage.notification?.body ?: "Ada pembaruan detail proker"
             showNotification(title, body)
         }
     }
 
     private fun showNotification(title: String, body: String) {
         val intent = Intent(this, MainActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            putExtra("navigation_destination", "all-proker")
         }
 
         val pendingIntent = PendingIntent.getActivity(
-            this, 0, intent,
-            PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
+            this,
+            0,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
@@ -67,9 +76,9 @@ class ProkerFirebaseMessagingService : FirebaseMessagingService() {
             .setAutoCancel(true)
             .setSound(defaultSoundUri)
             .setContentIntent(pendingIntent)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)  // Menambah prioritas agar terlihat jelas
+            .setPriority(NotificationCompat.PRIORITY_HIGH)  // Menambah prioritas agar terlihat jelas
 
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(

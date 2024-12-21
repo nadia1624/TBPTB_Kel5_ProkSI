@@ -58,16 +58,20 @@ class TambahDetailViewModel (private val context: Context) : ViewModel() {
             try {
                 val result = addProkerDetailToApi(token, idProker, judulDetailProker, tanggal, gambar)
                 if (result.isSuccess) {
-                    apiService.sendNotification(
+                    val notifResponse = apiService.sendNotification(
                         ApiService.NotificationRequest(
-                            title = "Detail Proker Baru",
-                            body = "Detail proker baru: $judulDetailProker"
+                            title = "Ada Detail Proker Baru nih!",
+                            body = judulDetailProker
                         )
                     )
-                    Log.d("Notification", "Notification sent")
+                    if (notifResponse.isSuccessful) {
+                        Log.d("Notification", "Notification sent successfully")
+                    } else {
+                        Log.e("Notification", "Failed to send notification: ${notifResponse.errorBody()?.string()}")
+                    }
                 }
             } catch (e: Exception) {
-                Log.e("Notification", "Failed to send notification", e)
+                Log.e("Notification", "Error sending notification", e)
             } finally {
                 _isLoading.value = false
             }

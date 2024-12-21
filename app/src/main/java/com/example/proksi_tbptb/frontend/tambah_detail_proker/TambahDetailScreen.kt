@@ -217,7 +217,6 @@ fun TambahDetailProkerScreen(
                                         tanggal = tanggal,
                                         gambar = gambar
                                     )
-                                    Log.d("TambahDetailProkerScreen", "Token: ${tokenValue.value}")
                                     navController.navigate("proker")
                                     Toast.makeText(context, "Detail Proker berhasil ditambahkan!", Toast.LENGTH_SHORT).show()
                                 } else {
