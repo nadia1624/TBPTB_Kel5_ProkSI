@@ -1,5 +1,8 @@
 package com.example.proksi_tbptb.frontend.profile
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,11 +20,12 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -31,7 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -50,52 +54,66 @@ fun ProfileScreen(
     navController: NavController
 ) {
     val context = LocalContext.current
-    val profileData = viewModel.profileState.value // Amati state di sini
+    val profileData = viewModel.profileState.value
     val userPreferences = remember { UserPreferences() }
     val token = remember { mutableStateOf("") }
     val userId = remember { mutableIntStateOf(0) }
 
+    val imageTimestamp = remember { mutableLongStateOf(System.currentTimeMillis()) }
+
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        uri?.let {
+            viewModel.uploadImage(context, it)
+            imageTimestamp.longValue = System.currentTimeMillis()
+        }
+    }
+
+
     LaunchedEffect(Unit) {
         token.value = userPreferences.getToken(context).orEmpty()
-        userId.intValue = userPreferences.getUserId(context) // Ganti dengan ID user yang sesuai
+        userId.intValue = userPreferences.getUserId(context)
         viewModel.getProfile(token.value, userId.intValue)
     }
+
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFFFFF4E2))
+        modifier = Modifier.fillMaxSize() // Gunakan Box untuk tata letak layar penuh
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(bottom = 16.dp),
+                .padding(bottom = 66.dp) // Beri ruang untuk BottomBar
         ) {
             TopBar(pageTitle = "Profile")
-
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
+                    .padding(vertical = 16.dp),
                 colors = CardDefaults.cardColors(containerColor = Color(0xFFFFCFA1)),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(24.dp)
             ) {
                 Column(
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier.padding(24.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Box(
                         modifier = Modifier
-                            .size(80.dp)
+                            .size(100.dp)
                             .clip(CircleShape)
-                            .background(Color.White),
-                        contentAlignment = Alignment.BottomEnd // Menempatkan ikon di sudut kanan bawah
+                            .background(Color(0xFFFFF4E2)),
+                        contentAlignment = Alignment.Center
                     ) {
                         if (profileData?.gambar != null) {
                             AsyncImage(
-                                model = "http://10.0.2.2:3000/profil/profile/image",
+                                model = coil.request.ImageRequest.Builder(LocalContext.current)
+                                    .data("http://10.0.2.2:3000/profil/profile/image?t=${imageTimestamp.longValue}")
+                                    .addHeader("Authorization", "Bearer ${token.value}")
+                                    .crossfade(true)
+                                    .build(),
                                 contentDescription = "Profile Picture",
                                 modifier = Modifier
-                                    .size(80.dp)
+                                    .size(100.dp)
                                     .clip(CircleShape)
                             )
                         } else {
@@ -107,83 +125,123 @@ fun ProfileScreen(
                                     .clip(CircleShape)
                             )
                         }
+                    }
 
-                        // Tombol Edit
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_edit), // Ganti dengan ikon edit Anda
-                            contentDescription = "Edit Profile Picture",
-                            modifier = Modifier
-                                .size(24.dp)
-                                .clip(CircleShape)
-                                .background(Color.LightGray)
-                                .padding(4.dp)
-                                .clickable {
-                                    // TODO: Tambahkan logika untuk mengedit foto profil
-                                }
+                    Text(
+                        text = "Edit Profile",
+                        modifier = Modifier
+                            .padding(top = 8.dp)
+                            .clickable {
+                                launcher.launch("image/*")
+                            },
+                        fontSize = 14.sp,
+                        textDecoration = TextDecoration.Underline
+                    )
+
+                    if (viewModel.isLoading.value) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.align(Alignment.CenterHorizontally)
                         )
                     }
-                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
                     Text(
-                        text = "${profileData?.namaDepan ?: "[Nama Depan]"} ${profileData?.namaBelakang ?: "[Nama Belakang]"}",
+                        text = "${profileData?.namaDepan ?: "[Nama Pengurus]"} ${profileData?.namaBelakang ?: ""}",
                         fontWeight = FontWeight.Bold,
                         fontSize = 20.sp
                     )
                     Text(
-                        text = profileData?.nim ?: "[NIM]",
+                        text = profileData?.nim ?: "[NIM Pengurus]",
                         fontSize = 16.sp,
                         color = Color.DarkGray
                     )
                     Text(
-                        text = "${profileData?.divisi?.namaDivisi ?: "[Divisi]"} - ${profileData?.jabatan ?: "[Jabatan]"}",
+                        text = "${profileData?.divisi?.namaDivisi ?: "[Divisi Pengurus]"} - ${profileData?.jabatan ?: "[Jabatan]"}",
                         fontSize = 16.sp,
                         color = Color.DarkGray
                     )
 
-                    Spacer(modifier = Modifier.height(16.dp))
-                    ProfileField(label = "Email", value = profileData?.email ?: "[Email]")
-                    Spacer(modifier = Modifier.height(8.dp))
-                    ProfileField(label = "Jadwal Piket", value = profileData?.jadwal ?: "[Jadwal]")
+                    Spacer(modifier = Modifier.height(24.dp))
 
+                    ProfileField(
+                        label = "Email",
+                        value = profileData?.email ?: "Email A",
+                        backgroundColor = Color(0xFFFFF4E2)
+                    )
                     Spacer(modifier = Modifier.height(16.dp))
+                    ProfileField(
+                        label = "Jadwal Piket",
+                        value = profileData?.jadwal ?: "Senin",
+                        backgroundColor = Color(0xFFFFF4E2)
+                    )
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        TextButton(onClick = {
-                            viewModel.logout(context)
-                            navController.navigate("login") {
-                                popUpTo("login") { inclusive = true }
-                            }
-                        }) {
-                            Text("sign out", color = Color.Black)
-                        }
-                        TextButton(onClick = { navController.navigate("change-password") }) {
-                            Text("change password", color = Color.Black)
-                        }
+                        Text(
+                            text = "sign out",
+                            modifier = Modifier
+                                .clickable {
+                                    viewModel.logout(context)
+                                    navController.navigate("login") {
+                                        popUpTo("login") { inclusive = true }
+                                    }
+                                },
+                            textDecoration = TextDecoration.Underline,
+                            color = Color.Black
+                        )
+                        Text(
+                            text = "change password",
+                            modifier = Modifier
+                                .clickable { navController.navigate("change-password") },
+                            textDecoration = TextDecoration.Underline,
+                            color = Color.Black
+                        )
                     }
                 }
             }
         }
+
         BottomBar(
             modifier = Modifier
                 .fillMaxWidth()
-                .align(Alignment.BottomCenter), // Digunakan dengan `Box`
+                .align(Alignment.BottomCenter), // Menempatkan BottomBar di bawah
             navController = navController
         )
     }
 }
 
 @Composable
-fun ProfileField(label: String, value: String) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Text(label, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+fun ProfileField(
+    label: String,
+    value: String,
+    backgroundColor: Color
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp)
+    ) {
         Text(
-            value,
+            text = label,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Medium,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color(0xFFFFF4E2), shape = RoundedCornerShape(8.dp))
-                .padding(8.dp),
-            textAlign = TextAlign.Start
-        )
+                .background(backgroundColor, RoundedCornerShape(12.dp))
+                .padding(16.dp)
+        ) {
+            Text(
+                text = value,
+                fontSize = 16.sp
+            )
+        }
     }
 }

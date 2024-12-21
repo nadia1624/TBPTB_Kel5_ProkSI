@@ -1,9 +1,7 @@
 package com.example.proksi_tbptb.data.remote.retrofit
 
 import com.example.proksi_tbptb.data.remote.response.AllProkerResponse
-import com.example.proksi_tbptb.data.remote.response.AllProkerResponseItem
 import com.example.proksi_tbptb.data.remote.response.ChangePasswordResponse
-import com.example.proksi_tbptb.data.remote.response.CreateAbsensiResponse
 import com.example.proksi_tbptb.data.remote.response.DetailAbsensiResponse
 import com.example.proksi_tbptb.data.remote.response.DetailProkerResponse
 import com.example.proksi_tbptb.data.remote.response.IsiAbsenKegiatanResponse
@@ -14,6 +12,7 @@ import com.example.proksi_tbptb.data.remote.response.LoginResponse
 import com.example.proksi_tbptb.data.remote.response.ProfileResponse
 import com.example.proksi_tbptb.data.remote.response.RekapAbsenResponse
 import com.example.proksi_tbptb.data.remote.response.TambahDetailResponse
+import com.example.proksi_tbptb.data.remote.response.UploadProfileResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -130,7 +129,15 @@ interface ApiService {
 
     data class TokenRequest(val token: String)
     data class TokenResponse(val message: String)
-    data class NotificationRequest(val title: String, val body: String)
+    data class NotificationRequest(val title: String, val body: String, val excludeToken: String)
     data class NotificationResponse(val message: String)
+
+    @Multipart
+    @POST("profil/profile/upload")
+    suspend fun uploadImage(
+        @Header("Authorization") token: String,
+        @Part gambar: MultipartBody.Part
+    ): Response<UploadProfileResponse>
+
 
 }
