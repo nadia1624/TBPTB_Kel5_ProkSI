@@ -42,6 +42,7 @@ fun AbsensiTerkirimScreen(
     modifier: Modifier = Modifier,
     idRekapan: Int,
     navController: NavHostController,
+    onBackClick: () -> Unit,
     token: String, // Tambahkan token sebagai parameter
     viewModel: AbsensiTerkirimViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
@@ -75,7 +76,7 @@ fun AbsensiTerkirimScreen(
                 .fillMaxSize()
                 .padding(bottom = 66.dp)
         ) {
-            TopBar(pageTitle = "Absensi")
+            TopBar(pageTitle = "Absensi", onBackClick = onBackClick)
             Column(
                 modifier = Modifier
                     .fillMaxWidth()

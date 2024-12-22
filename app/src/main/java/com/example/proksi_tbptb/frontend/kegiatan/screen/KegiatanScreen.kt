@@ -37,6 +37,7 @@ import com.example.proksi_tbptb.frontend.kegiatan.component.BoxAbsensi
 fun KegiatanScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController,
+    onBackClick: () -> Unit,
     viewModel: KegiatanViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
     val context = LocalContext.current
@@ -64,7 +65,7 @@ fun KegiatanScreen(
                 .fillMaxSize()
                 .padding(bottom = 66.dp) // Memberikan ruang untuk BottomBar
         ) {
-            TopBar(pageTitle = "Absensi")
+            TopBar(pageTitle = "Absensi", onBackClick = onBackClick)
 
             Column(
                 modifier = Modifier

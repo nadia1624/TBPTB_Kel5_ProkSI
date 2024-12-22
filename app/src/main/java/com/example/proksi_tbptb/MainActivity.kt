@@ -26,6 +26,7 @@ import com.example.proksi_tbptb.frontend.absensi_terkirim.screen.AbsensiTerkirim
 import com.example.proksi_tbptb.frontend.all_proker.screen.AllProker
 import com.example.proksi_tbptb.frontend.change_password.screen.ChangePasswordScreen
 import com.example.proksi_tbptb.frontend.detail_proker.screen.DetailProkerScreen
+import com.example.proksi_tbptb.frontend.detail_proker_2.DetailProker2Screen
 import com.example.proksi_tbptb.frontend.home.HomePage
 import com.example.proksi_tbptb.frontend.isi_absensi.screen.IsiAbsensiScreen
 import com.example.proksi_tbptb.frontend.isi_kegiatan.IsiKegiatanViewModel
@@ -80,12 +81,36 @@ class MainActivity : ComponentActivity() {
                             composable("login") { LoginPage(navController = navController) }
                             composable("home") { HomePage(navController = navController) }
                             composable("absensi") {
-                                AbsensiScreen(navController = navController, context = LocalContext.current)
+                                AbsensiScreen(
+                                    navController = navController,
+                                    context = LocalContext.current,
+                                    onBackClick = { navController.popBackStack() }
+                                )
                             }
-                            composable("proker") { ProkerScreen(navController = navController) }
-                            composable("tambah-absensi") { IsiAbsensiScreen(navController = navController) }
-                            composable("all-proker") { AllProker(navController = navController) }
-                            composable("all-kegiatan") { KegiatanScreen(navController = navController) }
+                            composable("proker") {
+                                ProkerScreen(
+                                    navController = navController,
+                                    onBackClick = { navController.popBackStack() }
+                                )
+                            }
+                            composable("tambah-absensi") {
+                                IsiAbsensiScreen(
+                                    navController = navController,
+                                    onBackClick = { navController.popBackStack() }
+                                )
+                            }
+                            composable("all-proker") {
+                                AllProker(
+                                    navController = navController,
+                                    onBackClick = { navController.popBackStack() }
+                                )
+                            }
+                            composable("all-kegiatan") {
+                                KegiatanScreen(
+                                    navController = navController,
+                                    onBackClick = { navController.popBackStack() }
+                                )
+                            }
                             composable("tambah-kegiatan/{id_kegiatan}") { backStackEntry ->
                                 val idKegiatan = backStackEntry.arguments?.getString("id_kegiatan")?.toIntOrNull()
                                 Log.d("IsiKegiatanScreen", "idKegiatan: $idKegiatan")
@@ -96,7 +121,7 @@ class MainActivity : ComponentActivity() {
                                         viewModel.fetchDetailKegiatan(token = token.toString(), idKegiatan = it)
                                     }
                                 }
-                                IsiKegiatanScreen(navController = navController)
+                                IsiKegiatanScreen(navController = navController, onBackClick = { navController.popBackStack() })
                             }
                             composable(
                                 route = "detail-proker/{id}?name={name}&status={status}",
@@ -111,12 +136,14 @@ class MainActivity : ComponentActivity() {
                                 val name = backStackEntry.arguments?.getString("name").orEmpty()
                                 val status = backStackEntry.arguments?.getString("status").orEmpty()
 
+
                                 DetailProkerScreen(
                                     prokerId= prokerId,
                                     navController = navController,
                                     token = token,
                                     name = name,
-                                    status = status
+                                    status = status,
+                                    onBackClick = { navController.popBackStack() } // Navigasi kembali
 
                                 )
                             }
@@ -130,6 +157,7 @@ class MainActivity : ComponentActivity() {
                                 TambahDetailProkerScreen(
                                     navController = navController,
                                     prokerId = prokerId,
+                                    onBackClick = { navController.popBackStack() }
                                 )
                             }
                             composable("absensi-terkirim/{id_rekapan}") { backStackEntry ->
@@ -140,13 +168,44 @@ class MainActivity : ComponentActivity() {
                                     AbsensiTerkirimScreen(
                                         navController = navController,
                                         idRekapan = idRekapan,
-                                        token = token
+                                        token = token,
+                                        onBackClick = { navController.popBackStack() }
                                     )
                                 } else {
                                     Toast.makeText(this@MainActivity, "Id Rekapan tidak ditemukan", Toast.LENGTH_SHORT).show()
                                 }
                             }
-                            composable("profile") { ProfileScreen(navController = navController) }
+                            composable("profile") { ProfileScreen(navController = navController, onBackClick = { navController.popBackStack() }) }
+                            composable(
+                                route = "detail-proker-2/{idDetailProker}",
+                                arguments = listOf(
+                                    navArgument("idDetailProker") {
+                                        type = NavType.IntType
+                                        nullable = false
+                                    }
+                                )
+                            ) { backStackEntry ->
+                                val idDetailProker = backStackEntry.arguments?.getInt("idDetailProker")
+                                val token = backStackEntry.arguments?.getString("token") ?: ""
+                                Log.d("DetailProkerNavigation", "ID Detail Proker: $idDetailProker")
+
+                                if (idDetailProker != null) {
+                                    DetailProker2Screen(
+                                        navController = navController,
+                                        idDetailProker = idDetailProker,
+                                        onBackClick = { navController.popBackStack() },
+                                        token = token
+                                    )
+                                } else {
+                                    LaunchedEffect(Unit) {
+                                        Toast.makeText(
+                                            this@MainActivity,
+                                            "ID Detail Proker tidak ditemukan",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                }
+                            }
                             composable("change-password") { ChangePasswordScreen(navController = navController) }
                         }
                     }

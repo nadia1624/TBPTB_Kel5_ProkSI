@@ -21,24 +21,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.proksi_tbptb.R
-import com.example.proksi_tbptb.frontend.component.BottomBar
-import com.example.proksi_tbptb.frontend.component.TopBar
 import com.example.proksi_tbptb.frontend.absensi.component.BoxAbsensi
 import com.example.proksi_tbptb.frontend.absensi.component.CustomButtonAbsensi
 import com.example.proksi_tbptb.frontend.absensi.component.CustomButtonWithIcon
 import com.example.proksi_tbptb.frontend.absensi.viewmodel.AbsensiViewModel
+import com.example.proksi_tbptb.frontend.component.BottomBar
+import com.example.proksi_tbptb.frontend.component.TopBar
 
 @Composable
 fun AbsensiScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     context: Context,
+    onBackClick: () -> Unit,
     absensiViewModel: AbsensiViewModel = viewModel() // Menyuntikkan ViewModel
 ) {
     // Mengambil data absensi dan status loading/error dari ViewModel
@@ -62,7 +61,7 @@ fun AbsensiScreen(
                 .padding(bottom = 66.dp) // Memberikan ruang untuk BottomBar
         ) {
             // TopBar di bagian atas
-            TopBar(pageTitle = "Absensi")
+            TopBar(pageTitle = "Absensi", onBackClick = onBackClick)
 
             // Konten utama
             Column(
@@ -155,9 +154,9 @@ fun AbsensiScreen(
     }
 }
 
-@Preview
-@Composable
-fun AbsensiScreenPreview() {
-    val navController = rememberNavController()
-    AbsensiScreen(navController = navController, context = androidx.compose.ui.platform.LocalContext.current)
-}
+//@Preview
+//@Composable
+//fun AbsensiScreenPreview() {
+//    val navController = rememberNavController()
+//    AbsensiScreen(navController = navController, context = androidx.compose.ui.platform.LocalContext.current)
+//}

@@ -205,7 +205,6 @@ fun HomePage(
         )
     }
 }
-
 @Preview(showBackground = true)
 @Composable
 fun PreviewHomePage() {

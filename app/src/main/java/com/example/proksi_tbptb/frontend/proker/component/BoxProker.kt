@@ -49,9 +49,9 @@ fun BoxProker(
                 .padding(end = 16.dp, bottom = 8.dp)
                 .background(
                     color = when (status) {
-                        "Done" -> Color(0xFF388E3C) // Dark Green for Done
-                        "In Progress" -> Color(0xFFFBC02D) // Dark Yellow for In Progress
-                        "Not Started" -> Color(0xFFD32F2F) // Dark Red for Not Started
+                        "Done" -> Color(0xFF87B662)
+                        "In Progress" -> Color(0xFFFFD77A)
+                        "Not Started" -> Color(0xFFFF6D1F)
                         else -> Color(0xFF9E9E9E) // Default gray for unknown status
                     },
                     shape = RoundedCornerShape(16.dp) // Round the corners of the status box

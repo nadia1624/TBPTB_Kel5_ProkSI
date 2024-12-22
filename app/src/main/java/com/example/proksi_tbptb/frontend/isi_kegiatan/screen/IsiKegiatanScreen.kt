@@ -51,6 +51,7 @@ import com.example.proksi_tbptb.frontend.isi_kegiatan.IsiKegiatanViewModel
 fun IsiKegiatanScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController,
+    onBackClick: () -> Unit,
     viewModel: IsiKegiatanViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
 ) {
     val context = LocalContext.current
@@ -88,9 +89,7 @@ fun IsiKegiatanScreen(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-
             TopBar(pageTitle = "Detail Kegiatan")
-
             if (isLoading) {
                 CircularProgressIndicator(
                     modifier = Modifier

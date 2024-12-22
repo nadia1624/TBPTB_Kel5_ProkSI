@@ -52,7 +52,8 @@ import com.example.proksi_tbptb.frontend.component.TopBar
 fun ProfileScreen(
     modifier: Modifier = Modifier,
     viewModel: ProfileViewModel = viewModel(),
-    navController: NavController
+    navController: NavController,
+    onBackClick: () -> Unit
 ) {
     val context = LocalContext.current
     val profileData = viewModel.profileState.value

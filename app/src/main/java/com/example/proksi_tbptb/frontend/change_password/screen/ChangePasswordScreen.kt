@@ -24,11 +24,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.proksi_tbptb.R
 import com.example.proksi_tbptb.data.local.UserPreferences
 import com.example.proksi_tbptb.frontend.ChangePassword.ChangePasswordViewModel
@@ -59,7 +57,7 @@ fun ChangePasswordScreen(
             .background(Color(0xFFFAF3E1)) // Background untuk seluruh screen
     )
     Column {
-        TopBar(pageTitle = "Change Password")
+        TopBar(pageTitle = "Change Password", onBackClick = onBackClick)
         Column(
             modifier = modifier
                 .weight(1f)
@@ -102,11 +100,4 @@ fun ChangePasswordScreen(
     }
 
 
-}
-
-@Preview
-@Composable
-fun ChangePasswordPreview(){
-    val navController = rememberNavController()
-    ChangePasswordScreen(navController = navController)
 }

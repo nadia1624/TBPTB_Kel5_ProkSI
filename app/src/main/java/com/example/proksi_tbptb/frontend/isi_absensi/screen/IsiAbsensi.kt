@@ -22,11 +22,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.proksi_tbptb.data.local.UserPreferences
 import com.example.proksi_tbptb.frontend.component.BottomBar
 import com.example.proksi_tbptb.frontend.component.TopBar
@@ -41,7 +39,8 @@ fun IsiAbsensiScreen (
     modifier: Modifier = Modifier,
     viewModel: IsiAbsensiViewModel = viewModel(),
     context: Context = LocalContext.current,
-    navController: NavHostController
+    navController: NavHostController,
+    onBackClick: () -> Unit
 ) {
     var imageUri by remember { mutableStateOf<Uri?>(null) }
     val userPreferences = remember { UserPreferences() }
@@ -67,7 +66,7 @@ fun IsiAbsensiScreen (
                 .fillMaxSize()
                 .padding(bottom = 66.dp)
         ){
-            TopBar(pageTitle = "Absensi")
+            TopBar(pageTitle = "Absensi", onBackClick = onBackClick)
             Column(
                 modifier = Modifier
                     .weight(1f)
@@ -113,9 +112,9 @@ fun IsiAbsensiScreen (
     }
 }
 
-@Preview
-@Composable
-fun IsiAbsensiPreview(){
-    val navController = rememberNavController()
-    IsiAbsensiScreen(navController = navController)
-}
+//@Preview
+//@Composable
+//fun IsiAbsensiPreview(){
+//    val navController = rememberNavController()
+//    IsiAbsensiScreen(navController = navController)
+//}

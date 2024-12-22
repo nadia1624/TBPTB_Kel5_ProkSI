@@ -23,11 +23,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.proksi_tbptb.data.local.UserPreferences
 import com.example.proksi_tbptb.frontend.component.BottomBar
 import com.example.proksi_tbptb.frontend.component.TopBar
@@ -42,6 +40,7 @@ data class ProkerItem(val name: String, val status: String, val id: Int)
 fun ProkerScreen(
     navController: NavHostController,
     modifier: Modifier = Modifier,
+    onBackClick: () -> Unit,
     viewModel: LihatProkerViewModel = viewModel(factory = LihatProkerFactory())
 ) {
     // Observing live data from the view model
@@ -74,7 +73,7 @@ fun ProkerScreen(
                 .fillMaxSize()
                 .padding(bottom = 66.dp)
         ) {
-            TopBar(pageTitle = "Proker")
+            TopBar(pageTitle = "Proker", onBackClick = onBackClick)
 
             Column(
                 modifier = Modifier
@@ -143,9 +142,9 @@ fun ProkerScreen(
     }
 }
 
-@Preview
-@Composable
-fun ProkerScreenPreview() {
-    val navController = rememberNavController()
-    ProkerScreen(navController = navController)
-}
+//@Preview
+//@Composable
+//fun ProkerScreenPreview() {
+//    val navController = rememberNavController()
+//    ProkerScreen(navController = navController)
+//}

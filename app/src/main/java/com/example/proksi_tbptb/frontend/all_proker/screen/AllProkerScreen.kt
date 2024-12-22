@@ -38,6 +38,8 @@ import com.example.proksi_tbptb.frontend.component.BottomBar
 import com.example.proksi_tbptb.frontend.component.TopBar
 import com.example.proksi_tbptb.frontend.all_proker.component.CustomButtonAllProker
 import com.example.proksi_tbptb.frontend.all_proker.component.ProkerCard
+import com.example.proksi_tbptb.frontend.component.BottomBar
+import com.example.proksi_tbptb.frontend.component.TopBar
 
 @Composable
 fun AllProker(
@@ -58,7 +60,6 @@ fun AllProker(
         token = userPreferences.getToken(context).orEmpty()
         viewModel.fetchAllDetailProker(token = token)
     }
-
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -66,7 +67,6 @@ fun AllProker(
     ) {
         when {
             isLoading -> {
-
                     CircularProgressIndicator(
                         modifier = Modifier
                             .padding(16.dp)
@@ -144,7 +144,6 @@ fun AllProker(
         }
     }
 }
-
 @Preview
 @Composable
 fun AllProkerPreview() {

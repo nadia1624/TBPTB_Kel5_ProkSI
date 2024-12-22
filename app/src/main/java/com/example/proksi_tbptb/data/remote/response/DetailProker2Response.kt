@@ -2,13 +2,16 @@ package com.example.proksi_tbptb.data.remote.response
 
 import com.google.gson.annotations.SerializedName
 
-data class DetailProkerResponse(
+data class DetailProker2Response(
 
-	@SerializedName("data")
-	val data: List<DetailProkerResponseItem?>? = null
+	@field:SerializedName("data")
+	val data: DetailProker2Data,
+
+	@field:SerializedName("message")
+	val message: String? = null
 )
 
-data class DetailProkerResponseItem(
+data class DetailProker2Data(
 
 	@field:SerializedName("createdAt")
 	val createdAt: String? = null,
@@ -17,18 +20,17 @@ data class DetailProkerResponseItem(
 	val judulDetailProker: String? = null,
 
 	@field:SerializedName("id_detailproker")
-	val idDetailproker: Int? = null,
+	val id_detailproker: Int? = null,
 
 	@field:SerializedName("tanggal")
 	val tanggal: String? = null,
 
 	@field:SerializedName("gambar")
-	val gambar: Any? = null,
+	val gambar: String? = null,
 
 	@field:SerializedName("id_proker")
-	val idProker: Int? = null,
+	val idProker: String? = null,
 
 	@field:SerializedName("updatedAt")
 	val updatedAt: String? = null
-
 )

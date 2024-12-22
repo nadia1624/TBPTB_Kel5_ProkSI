@@ -11,7 +11,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 
@@ -19,7 +18,8 @@ import androidx.compose.ui.unit.dp
 fun CustomButtonWithIcon(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    buttonColor: Color = Color.Blue  // Parameter untuk warna latar belakang
+    buttonColor: Color = Color.Blue,  // Parameter untuk warna latar belakang
+    enabled: Boolean
 ) {
     Button(
         onClick = onClick,
@@ -39,11 +39,12 @@ fun CustomButtonWithIcon(
     }
 }
 
-@Preview
-@Composable
-fun CustomButtonIconPreview() {
-    CustomButtonWithIcon(
-        onClick = { println("Tambah diklik") },
-        buttonColor = Color(0xFFF9B683)  // Menentukan warna untuk preview
-    )
-}
+//@Preview
+//@Composable
+//fun CustomButtonIconPreview() {
+//    CustomButtonWithIcon(
+//        onClick = { println("Tambah diklik") },
+//        buttonColor = Color(0xFFF9B683),
+//        enabled = currentStatus != "Done"  // Menentukan warna untuk preview
+//    )
+//}

@@ -20,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.proksi_tbptb.R
 
@@ -28,7 +27,8 @@ import com.example.proksi_tbptb.R
 fun TopBar(
     modifier: Modifier = Modifier,
     pageTitle: String = "Home",
-    onNotificationClick: () -> Unit = {}
+    onNotificationClick: () -> Unit = {},
+    onBackClick: () -> Unit
 ) {
     Row(
         modifier = modifier
@@ -73,8 +73,8 @@ fun TopBar(
 }
 
 
-@Preview
-@Composable
-fun TopBarPreview(){
-    TopBar()
-}
+//@Preview
+//@Composable
+//fun TopBarPreview(){
+//    TopBar(onBackClick = onBackClick)
+//}
