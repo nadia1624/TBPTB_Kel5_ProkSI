@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -89,7 +90,7 @@ fun ProfileScreen(
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 16.dp),
+                    .padding(28 .dp),
                 colors = CardDefaults.cardColors(containerColor = Color(0xFFFFCFA1)),
                 shape = RoundedCornerShape(24.dp)
             ) {
@@ -97,70 +98,91 @@ fun ProfileScreen(
                     modifier = Modifier.padding(24.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Box(
-                        modifier = Modifier
-                            .size(100.dp)
-                            .clip(CircleShape)
-                            .background(Color(0xFFFFF4E2)),
-                        contentAlignment = Alignment.Center
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        if (profileData?.gambar != null) {
-                            AsyncImage(
-                                model = coil.request.ImageRequest.Builder(LocalContext.current)
-                                    .data("http://10.0.2.2:3000/profil/profile/image?t=${imageTimestamp.longValue}")
-                                    .addHeader("Authorization", "Bearer ${token.value}")
-                                    .crossfade(true)
-                                    .build(),
-                                contentDescription = "Profile Picture",
+                        Column(
+                            modifier = Modifier.weight(1f),
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Box(
                                 modifier = Modifier
                                     .size(100.dp)
                                     .clip(CircleShape)
-                            )
-                        } else {
-                            Image(
-                                painter = painterResource(id = R.drawable.elemen5),
-                                contentDescription = "Default Profile Picture",
+                                    .background(Color(0xFFFFF4E2)),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                if (profileData?.gambar != null) {
+                                    AsyncImage(
+                                        model = coil.request.ImageRequest.Builder(LocalContext.current)
+                                            .data("http://10.0.2.2:3000/profil/profile/image?t=${imageTimestamp.longValue}")
+                                            .addHeader("Authorization", "Bearer ${token.value}")
+                                            .crossfade(true)
+                                            .build(),
+                                        contentDescription = "Profile Picture",
+                                        modifier = Modifier
+                                            .size(100.dp)
+                                            .clip(CircleShape)
+                                    )
+                                } else {
+                                    Image(
+                                        painter = painterResource(id = R.drawable.elemen5),
+                                        contentDescription = "Default Profile Picture",
+                                        modifier = Modifier
+                                            .size(80.dp)
+                                            .clip(CircleShape)
+                                    )
+                                }
+                            }
+
+                            Text(
+                                text = "Edit Profile",
                                 modifier = Modifier
-                                    .size(80.dp)
-                                    .clip(CircleShape)
+                                    .padding(top = 8.dp)
+                                    .offset(x = (12).dp)
+                                    .clickable {
+                                        launcher.launch("image/*")
+                                    },
+                                fontSize = 14.sp,
+                                textDecoration = TextDecoration.Underline
+                            )
+
+                            if (viewModel.isLoading.value) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                                )
+                            }
+                        }
+                        Column(
+                            modifier = Modifier
+                                .weight(1f)
+                                .offset(x = (-35).dp),
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+
+                        ) {
+                            Text(
+                                text = "${profileData?.namaDepan ?: "[Nama Pengurus]"} ${profileData?.namaBelakang ?: ""}",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 20.sp
+                            )
+                            Text(
+                                text = profileData?.nim ?: "[NIM Pengurus]",
+                                fontSize = 16.sp,
+                                color = Color.DarkGray
+                            )
+                            Text(
+                                text = "${profileData?.divisi?.namaDivisi ?: "[Divisi Pengurus]"} - ${profileData?.jabatan ?: "[Jabatan]"}",
+                                fontSize = 16.sp,
+                                color = Color.DarkGray
                             )
                         }
                     }
 
-                    Text(
-                        text = "Edit Profile",
-                        modifier = Modifier
-                            .padding(top = 8.dp)
-                            .clickable {
-                                launcher.launch("image/*")
-                            },
-                        fontSize = 14.sp,
-                        textDecoration = TextDecoration.Underline
-                    )
-
-                    if (viewModel.isLoading.value) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.align(Alignment.CenterHorizontally)
-                        )
-                    }
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    Text(
-                        text = "${profileData?.namaDepan ?: "[Nama Pengurus]"} ${profileData?.namaBelakang ?: ""}",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp
-                    )
-                    Text(
-                        text = profileData?.nim ?: "[NIM Pengurus]",
-                        fontSize = 16.sp,
-                        color = Color.DarkGray
-                    )
-                    Text(
-                        text = "${profileData?.divisi?.namaDivisi ?: "[Divisi Pengurus]"} - ${profileData?.jabatan ?: "[Jabatan]"}",
-                        fontSize = 16.sp,
-                        color = Color.DarkGray
-                    )
+
 
                     Spacer(modifier = Modifier.height(24.dp))
 
