@@ -73,7 +73,7 @@ fun IsiAbsensiScreen (
                     .padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ){
-                HeaderIsiAbsensi(titleText = "Minggu Ke-1")
+                HeaderIsiAbsensi(titleText = "Isi Absensi")
                 UploadGambarAbsensi(
                     onClick = {
                     imagePickerLauncher.launch("image/*")
