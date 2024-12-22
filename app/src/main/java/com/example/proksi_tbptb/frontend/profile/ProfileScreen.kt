@@ -87,7 +87,7 @@ fun ProfileScreen(
                 .fillMaxSize()
                 .padding(bottom = 66.dp) // Beri ruang untuk BottomBar
         ) {
-            TopBar(pageTitle = "Profile")
+            TopBar(pageTitle = "Profile", onBackClick = onBackClick)
             Card(
                 modifier = Modifier
                     .fillMaxWidth()

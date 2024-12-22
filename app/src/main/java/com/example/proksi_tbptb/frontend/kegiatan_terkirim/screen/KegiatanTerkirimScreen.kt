@@ -19,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.proksi_tbptb.frontend.absensi_terkirim.component.AnimasiAbsensiTercatat
-import com.example.proksi_tbptb.frontend.absensi_terkirim.component.BuktiFoto
 import com.example.proksi_tbptb.frontend.absensi_terkirim.component.HeaderAbsensiTerkirim
 import com.example.proksi_tbptb.frontend.component.TopBar
 
@@ -28,6 +27,7 @@ import com.example.proksi_tbptb.frontend.component.TopBar
 fun KegiatanTerkirimScreen (
     modifier: Modifier = Modifier,
     idRekapan: Int,
+    onBackClick: () -> Unit
 ){
     Box(
         modifier = modifier
@@ -78,9 +78,4 @@ fun KegiatanTerkirimScreen (
             }
         }
     }
-}
-@Preview
-@Composable
-fun PreviewKegiatanTerkirim (){
-//    KegiatanTerkirimScreen()
 }

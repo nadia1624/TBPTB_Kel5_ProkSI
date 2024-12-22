@@ -1,6 +1,5 @@
 package com.example.proksi_tbptb.frontend.change_password.screen
 
-import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -38,7 +37,8 @@ import com.example.proksi_tbptb.frontend.component.TopBar
 fun ChangePasswordScreen(
     modifier: Modifier = Modifier,
     viewModel: ChangePasswordViewModel = viewModel(),
-    navController: NavHostController
+    navController: NavHostController,
+    onBackClick: () -> Unit
 ){
     val userPreferences = remember { UserPreferences() }
     var token by remember { mutableStateOf("") }

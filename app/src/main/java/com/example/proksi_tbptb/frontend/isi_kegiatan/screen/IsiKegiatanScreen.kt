@@ -89,7 +89,7 @@ fun IsiKegiatanScreen(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            TopBar(pageTitle = "Detail Kegiatan")
+            TopBar(pageTitle = "Detail Kegiatan", onBackClick = onBackClick)
             if (isLoading) {
                 CircularProgressIndicator(
                     modifier = Modifier

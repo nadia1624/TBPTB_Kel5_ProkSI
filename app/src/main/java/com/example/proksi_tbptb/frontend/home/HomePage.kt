@@ -24,12 +24,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.proksi_tbptb.R
 import com.example.proksi_tbptb.frontend.component.BottomBar
 import com.example.proksi_tbptb.frontend.component.TopBar
@@ -38,7 +36,8 @@ import com.example.proksi_tbptb.frontend.component.TopBar
 fun HomePage(
     modifier: Modifier = Modifier,
     navController: NavController,
-    viewModel: HomeViewModel = viewModel()
+    viewModel: HomeViewModel = viewModel(),
+    onBackClick: () -> Unit
 ) {
     val context = LocalContext.current
     val scrollState = rememberScrollState()
@@ -54,7 +53,7 @@ fun HomePage(
                 .padding(bottom = 66.dp) // Space for BottomBar
         ) {
             // Top Bar (Fixed position)
-            TopBar(pageTitle = "Home")
+            TopBar(pageTitle = "Home", onBackClick = onBackClick)
 
             // Scrollable Content
             Column(
@@ -204,10 +203,4 @@ fun HomePage(
             navController = navController
         )
     }
-}
-@Preview(showBackground = true)
-@Composable
-fun PreviewHomePage() {
-    val navController = rememberNavController()
-    HomePage(navController = navController)
 }

@@ -17,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -25,19 +24,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.proksi_tbptb.BuildConfig
-import com.example.proksi_tbptb.R
 import com.example.proksi_tbptb.data.local.UserPreferences
-import com.example.proksi_tbptb.frontend.allproker.AllProkerViewModel
-import com.example.proksi_tbptb.frontend.component.BottomBar
-import com.example.proksi_tbptb.frontend.component.TopBar
 import com.example.proksi_tbptb.frontend.all_proker.component.CustomButtonAllProker
 import com.example.proksi_tbptb.frontend.all_proker.component.ProkerCard
+import com.example.proksi_tbptb.frontend.allproker.AllProkerViewModel
 import com.example.proksi_tbptb.frontend.component.BottomBar
 import com.example.proksi_tbptb.frontend.component.TopBar
 
@@ -45,7 +38,8 @@ import com.example.proksi_tbptb.frontend.component.TopBar
 fun AllProker(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    viewModel: AllProkerViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    viewModel: AllProkerViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+    onBackClick: () -> Unit
 ) {
     val allProker by viewModel.allProker.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
@@ -88,7 +82,7 @@ fun AllProker(
                         .padding(bottom = 66.dp) // Memberikan ruang untuk BottomBar
                 ) {
                     // TopBar di bagian atas
-                    TopBar(pageTitle = "All Proker")
+                    TopBar(pageTitle = "All Proker", onBackClick = onBackClick)
 
                     // Konten utama
                     Column(
@@ -143,10 +137,4 @@ fun AllProker(
             }
         }
     }
-}
-@Preview
-@Composable
-fun AllProkerPreview() {
-    val navController = rememberNavController()
-    AllProker(navController = navController)
 }

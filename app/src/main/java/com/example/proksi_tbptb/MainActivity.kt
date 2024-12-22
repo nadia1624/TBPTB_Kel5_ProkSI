@@ -79,7 +79,7 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier.padding(innerPadding)
                         ) {
                             composable("login") { LoginPage(navController = navController) }
-                            composable("home") { HomePage(navController = navController) }
+                            composable("home") { HomePage(navController = navController, onBackClick = { navController.popBackStack() }) }
                             composable("absensi") {
                                 AbsensiScreen(
                                     navController = navController,
@@ -206,7 +206,7 @@ class MainActivity : ComponentActivity() {
                                     }
                                 }
                             }
-                            composable("change-password") { ChangePasswordScreen(navController = navController) }
+                            composable("change-password") { ChangePasswordScreen(navController = navController, onBackClick = { navController.popBackStack() }) }
                         }
                     }
                 }
