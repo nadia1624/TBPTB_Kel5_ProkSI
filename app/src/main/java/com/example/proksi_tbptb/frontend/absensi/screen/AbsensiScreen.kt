@@ -124,7 +124,7 @@ fun AbsensiScreen(
                                 else -> R.drawable.pending
                             }
                             BoxAbsensi(
-                                text = absensiItem.idRekapan?.toString() ?: "Item $index", // ID Rekapan atau fallback
+                                text = "Minggu ${absensiItem.rekapan.mingguKe?.toString()}", // ID Rekapan atau fallback
                                 painter = painterResource(id = imageRes), // Gambar yang ditampilkan (bisa diubah dengan gambar lain)
                                 onClick = { navController.navigate("absensi-terkirim/${absensiItem.idRekapan}") }
 

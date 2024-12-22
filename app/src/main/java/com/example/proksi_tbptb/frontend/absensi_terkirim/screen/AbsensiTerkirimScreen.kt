@@ -18,12 +18,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.proksi_tbptb.BuildConfig
 import com.example.proksi_tbptb.data.local.UserPreferences
 import com.example.proksi_tbptb.frontend.absensi_terkirim.AbsensiTerkirimViewModel
 import com.example.proksi_tbptb.frontend.absensi_terkirim.component.AnimasiAbsensiFailed
@@ -46,20 +48,23 @@ fun AbsensiTerkirimScreen(
 ) {
     val userPreferences = UserPreferences()
     val context = LocalContext.current
-    val token = remember { mutableStateOf("") }
+    var token by remember { mutableStateOf("") }
     // Panggil fetchDetailAbsensi saat layar dimuat
     LaunchedEffect(Unit) {
         val userToken = userPreferences.getToken(context).orEmpty()
         if (userToken.isNotEmpty()) {
-            token.value = userToken
+            token = userToken
             viewModel.fetchDetailAbsensi(userToken, idRekapan)
         } else {
             Log.e("AbsensiTerkirimScreen", "Token is empty")
         }
     }
 
-
     val state by viewModel.absensiDetailState.collectAsState()
+
+    LaunchedEffect(idRekapan) {
+        viewModel.fetchDetailAbsensi(token = token, idRekapan = idRekapan)
+    }
 
     Box(
         modifier = modifier
@@ -88,7 +93,7 @@ fun AbsensiTerkirimScreen(
                     when (val currentState = state) {
                         is AbsensiTerkirimViewModel.AbsensiDetailState.Success -> {
                             val detail = currentState.detail
-                            HeaderAbsensiTerkirim(titleText = "Minggu Ke-${detail.idRekapan ?: "-"}")
+                            HeaderAbsensiTerkirim(titleText = "Minggu Ke-${detail.rekapan.mingguKe ?: "-"}")
                             statusCustom(
                                 text = when (detail.status) {
                                     1 -> "Done"
@@ -126,7 +131,9 @@ fun AbsensiTerkirimScreen(
                     ) {
                         when ((state as AbsensiTerkirimViewModel.AbsensiDetailState.Success).detail.status){
                             1 -> { // Absensi sukses
-                                BuktiFoto()
+                                val baseUrl = BuildConfig.BASE_URL
+                                val gambar = baseUrl + (state as AbsensiTerkirimViewModel.AbsensiDetailState.Success).detail.gambar
+                                BuktiFoto(idRekapan = idRekapan, gambar = gambar )
                                 Spacer(modifier = Modifier.height(16.dp))
                                 AnimasiAbsensiTercatat()
                             }

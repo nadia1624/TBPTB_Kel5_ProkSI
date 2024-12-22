@@ -84,11 +84,11 @@ fun ProkerScreen(
             ) {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    modifier = Modifier.padding(end = 100.dp)
+//                    modifier = Modifier.padding(end = 100.dp)
                 ) {
                     CustomButtonProker(
                         text = "Divisi",
-                        onClick = { /* Handle division filter */ },
+                        onClick = { navController.navigate("proker") },
                         modifier = Modifier.weight(1f),
                         buttonColor = Color(0xFFF9B683),
                         contentColor = Color.Black

@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults.cardColors
@@ -22,12 +24,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import com.example.proksi_tbptb.R
 
 @Composable
 fun ProkerCard(
     title: String,
     divisi: String,
+    gambar: String,
     onClick: () -> Unit
 ) {
     Card(
@@ -70,8 +74,12 @@ fun ProkerCard(
 
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.element4),  // Ganti dengan gambar Anda
-                    contentDescription = "Upload Icon" // Ukuran gambar
+                    painter = rememberAsyncImagePainter(model = gambar),  // Ganti dengan gambar Anda
+                    contentDescription = "Upload Icon", // Ukuran gambar
+                    modifier = Modifier
+                        .fillMaxWidth() // Lebar gambar
+                        .height(200.dp) // Tinggi gambar
+                        .padding(8.dp) // Opsional: Tambahkan padding jika diperlukan
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
@@ -84,8 +92,8 @@ fun ProkerCard(
 @Preview
 @Composable
 fun ProkerCardPreview(){
-    ProkerCard(title = "Semhas",
-        divisi = "PSDM ",
-        onClick = {})
+//    ProkerCard(title = "Semhas",
+//        divisi = "PSDM ",
+//        onClick = {})
 }
 

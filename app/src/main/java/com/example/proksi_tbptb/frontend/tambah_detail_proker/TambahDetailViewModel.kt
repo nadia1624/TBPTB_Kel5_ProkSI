@@ -14,6 +14,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.proksi_tbptb.data.local.UserPreferences
 import com.example.proksi_tbptb.data.remote.response.TambahDetailResponse
 import com.example.proksi_tbptb.data.remote.retrofit.ApiConfig
 import com.example.proksi_tbptb.data.remote.retrofit.ApiService
@@ -46,6 +47,8 @@ class TambahDetailViewModel (private val context: Context) : ViewModel() {
     val isLoading: StateFlow<Boolean> = _isLoading
 
     private val apiService = ApiConfig.api
+    private val userPreferences = UserPreferences()
+
 
     fun addProkerDetail(
         token: String,
@@ -58,16 +61,29 @@ class TambahDetailViewModel (private val context: Context) : ViewModel() {
             try {
                 val result = addProkerDetailToApi(token, idProker, judulDetailProker, tanggal, gambar)
                 if (result.isSuccess) {
-                    apiService.sendNotification(
-                        ApiService.NotificationRequest(
-                            title = "Detail Proker Baru",
-                            body = "Detail proker baru: $judulDetailProker"
+                    // Ambil FCM token dari DataStore
+                    val userFcmToken = userPreferences.getFcmToken(context)
+                    Log.d("TambahDetailViewModel", "FCM Token yang diambil: $userFcmToken")
+
+                    if (userFcmToken != null) {
+                        val notifResponse = apiService.sendNotification(
+                            ApiService.NotificationRequest(
+                                title = "Ada Detail Proker Baru nih!",
+                                body = judulDetailProker,
+                                excludeToken = userFcmToken
+                            )
                         )
-                    )
-                    Log.d("Notification", "Notification sent")
+                        if (notifResponse.isSuccessful) {
+                            Log.d("Notification", "Notification sent successfully")
+                        } else {
+                            Log.e("Notification", "Failed to send notification: ${notifResponse.errorBody()?.string()}")
+                        }
+                    } else {
+                        Log.e("Notification", "FCM Token is null")
+                    }
                 }
             } catch (e: Exception) {
-                Log.e("Notification", "Failed to send notification", e)
+                Log.e("Notification", "Error sending notification", e)
             } finally {
                 _isLoading.value = false
             }
@@ -121,6 +137,8 @@ class TambahDetailViewModel (private val context: Context) : ViewModel() {
                 val gambarReq = file.asRequestBody("image/*".toMediaType())
                 MultipartBody.Part.createFormData("gambar", file.name, gambarReq)
             }
+
+            Log.d("TambahDetailViewModel", "Image part: $imagePart")
 
 
             // API call

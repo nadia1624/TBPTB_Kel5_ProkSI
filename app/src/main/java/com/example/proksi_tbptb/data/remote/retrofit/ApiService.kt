@@ -1,5 +1,7 @@
 package com.example.proksi_tbptb.data.remote.retrofit
 
+import com.example.proksi_tbptb.data.remote.response.AllProkerResponse
+import com.example.proksi_tbptb.data.remote.response.ChangePasswordResponse
 import com.example.proksi_tbptb.data.remote.response.DetailAbsensiResponse
 import com.example.proksi_tbptb.data.remote.response.DetailProker2Response
 import com.example.proksi_tbptb.data.remote.response.DetailProkerResponse
@@ -12,6 +14,7 @@ import com.example.proksi_tbptb.data.remote.response.ProfileResponse
 import com.example.proksi_tbptb.data.remote.response.RekapAbsenResponse
 import com.example.proksi_tbptb.data.remote.response.StatusResponse
 import com.example.proksi_tbptb.data.remote.response.TambahDetailResponse
+import com.example.proksi_tbptb.data.remote.response.UploadProfileResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -22,6 +25,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.Multipart
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Part
@@ -96,6 +100,20 @@ interface ApiService {
         @Path("id") prokerId: Int
     ): Response<DetailProkerResponse>
 
+    @FormUrlEncoded
+    @PATCH("profil/changepassword")
+    suspend fun changePassword (
+        @Header("Authorization") token: String,
+        @Field("passwordLama") passwordlama: String,
+        @Field("passwordBaru") passwordBaru : String,
+        @Field("konfirmasiPassword")  konfirmasiPassword : String
+    ) : Response<ChangePasswordResponse>
+
+    @GET("proker/alldetailproker")
+    suspend fun allProker (
+        @Header("Authorization") token: String
+    ) : AllProkerResponse
+
     @Multipart
     @POST("proker/detail/{id_proker}")
     suspend fun addProkerDetail(
@@ -126,7 +144,15 @@ interface ApiService {
 
     data class TokenRequest(val token: String)
     data class TokenResponse(val message: String)
-    data class NotificationRequest(val title: String, val body: String)
+    data class NotificationRequest(val title: String, val body: String, val excludeToken: String)
     data class NotificationResponse(val message: String)
+
+    @Multipart
+    @POST("profil/profile/upload")
+    suspend fun uploadImage(
+        @Header("Authorization") token: String,
+        @Part gambar: MultipartBody.Part
+    ): Response<UploadProfileResponse>
+
 
 }

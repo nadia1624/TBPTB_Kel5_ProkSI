@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -42,6 +43,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.proksi_tbptb.data.local.UserPreferences
+import com.example.proksi_tbptb.frontend.component.BottomBar
 import com.example.proksi_tbptb.frontend.component.TopBar
 import com.example.proksi_tbptb.frontend.isi_kegiatan.IsiKegiatanViewModel
 
@@ -78,16 +80,16 @@ fun IsiKegiatanScreen(
         }
     }
 
-    Box(modifier = modifier
+    Box(
+        modifier = modifier
         .fillMaxSize()
-        .background(Color(0xFFFAF3E1))) {
+        .background(Color(0xFFFAF3E1))
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp)
         ) {
-            TopBar(pageTitle = "Detail Kegiatan", onBackClick = onBackClick)
-
+            TopBar(pageTitle = "Detail Kegiatan")
             if (isLoading) {
                 CircularProgressIndicator(
                     modifier = Modifier
@@ -224,5 +226,12 @@ fun IsiKegiatanScreen(
                 }
             }
         }
+
+        BottomBar(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter), // Menempatkan di bagian bawah layar
+            navController = navController
+        )
     }
 }
