@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -26,8 +27,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.proksi_tbptb.data.local.UserPreferences
-import com.example.proksi_tbptb.frontend.component.TopBar
 import com.example.proksi_tbptb.frontend.absensi.component.CustomButtonAbsensi
+import com.example.proksi_tbptb.frontend.component.BottomBar
+import com.example.proksi_tbptb.frontend.component.TopBar
 import com.example.proksi_tbptb.frontend.kegiatan.KegiatanViewModel
 import com.example.proksi_tbptb.frontend.kegiatan.component.BoxAbsensi
 
@@ -120,5 +122,12 @@ fun KegiatanScreen(
                 }
             }
         }
+
+        BottomBar(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter), // Menempatkan di bagian bawah layar
+            navController = navController
+        )
     }
 }
