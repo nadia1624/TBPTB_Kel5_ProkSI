@@ -16,24 +16,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.proksi_tbptb.R
 import com.example.proksi_tbptb.frontend.change_password.component.PasswordForm
 import com.example.proksi_tbptb.frontend.component.BottomBar
 import com.example.proksi_tbptb.frontend.component.TopBar
 
 @Composable
-fun ChangePasswordScreen(modifier: Modifier = Modifier, navController: NavHostController){
+fun ChangePasswordScreen(modifier: Modifier = Modifier, navController: NavHostController, onBackClick: () -> Unit){
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(Color(0xFFFAF3E1)) // Background untuk seluruh screen
     )
     Column {
-        TopBar(pageTitle = "Change Password")
+        TopBar(pageTitle = "Change Password", onBackClick = onBackClick)
         Column(
             modifier = modifier
                 .weight(1f)
@@ -56,9 +54,9 @@ fun ChangePasswordScreen(modifier: Modifier = Modifier, navController: NavHostCo
 
 }
 
-@Preview
-@Composable
-fun ChangePasswordPreview(){
-    val navController = rememberNavController()
-    ChangePasswordScreen(navController = navController)
-}
+//@Preview
+//@Composable
+//fun ChangePasswordPreview(){
+//    val navController = rememberNavController()
+//    ChangePasswordScreen(navController = navController)
+//}

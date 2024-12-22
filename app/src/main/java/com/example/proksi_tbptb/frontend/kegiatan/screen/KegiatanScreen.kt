@@ -26,8 +26,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.proksi_tbptb.data.local.UserPreferences
-import com.example.proksi_tbptb.frontend.component.TopBar
 import com.example.proksi_tbptb.frontend.absensi.component.CustomButtonAbsensi
+import com.example.proksi_tbptb.frontend.component.TopBar
 import com.example.proksi_tbptb.frontend.kegiatan.KegiatanViewModel
 import com.example.proksi_tbptb.frontend.kegiatan.component.BoxAbsensi
 
@@ -35,6 +35,7 @@ import com.example.proksi_tbptb.frontend.kegiatan.component.BoxAbsensi
 fun KegiatanScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController,
+    onBackClick: () -> Unit,
     viewModel: KegiatanViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
     val context = LocalContext.current
@@ -62,7 +63,7 @@ fun KegiatanScreen(
                 .fillMaxSize()
                 .padding(bottom = 66.dp) // Memberikan ruang untuk BottomBar
         ) {
-            TopBar(pageTitle = "Absensi")
+            TopBar(pageTitle = "Absensi", onBackClick = onBackClick)
 
             Column(
                 modifier = Modifier

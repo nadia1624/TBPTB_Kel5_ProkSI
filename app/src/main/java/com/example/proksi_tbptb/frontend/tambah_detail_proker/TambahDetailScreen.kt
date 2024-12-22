@@ -61,6 +61,7 @@ import java.util.Calendar
 fun TambahDetailProkerScreen(
     navController: NavHostController,
     prokerId: String,
+    onBackClick: () -> Unit
 ) {
     val context = LocalContext.current
     val userPreferences = UserPreferences()
@@ -100,7 +101,7 @@ fun TambahDetailProkerScreen(
     ) { uri: Uri? -> gambar = uri }
 
     Scaffold(
-        topBar = { TopBar(pageTitle = "Tambah Proker") },
+        topBar = { TopBar(pageTitle = "Tambah Proker", onBackClick = onBackClick) },
         content = { padding ->
             Box(
                 modifier = Modifier

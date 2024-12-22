@@ -11,11 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.proksi_tbptb.frontend.component.BottomBar
 import com.example.proksi_tbptb.frontend.component.TopBar
 
@@ -31,7 +29,7 @@ fun HomePage(modifier: Modifier = Modifier, navController: NavController, viewMo
                 .fillMaxSize()
                 .padding(bottom = 66.dp) // Beri ruang untuk BottomBar
         ) {
-            TopBar(pageTitle = "Home")
+            TopBar(pageTitle = "Home", onBackClick = {})
             Text(text = "Home Page",
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
@@ -47,9 +45,9 @@ fun HomePage(modifier: Modifier = Modifier, navController: NavController, viewMo
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewHomePage() {
-    val navController = rememberNavController() // Dummy untuk preview
-    HomePage(navController = navController)
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewHomePage() {
+//    val navController = rememberNavController() // Dummy untuk preview
+//    HomePage(navController = navController)
+//}

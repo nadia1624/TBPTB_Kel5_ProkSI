@@ -13,17 +13,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import com.example.proksi_tbptb.frontend.component.BottomBar
-import com.example.proksi_tbptb.frontend.component.TopBar
 import com.example.proksi_tbptb.frontend.all_proker.component.CustomButtonAllProker
 import com.example.proksi_tbptb.frontend.all_proker.component.ProkerCard
+import com.example.proksi_tbptb.frontend.component.BottomBar
+import com.example.proksi_tbptb.frontend.component.TopBar
 
 @Composable
-fun AllProker(modifier: Modifier = Modifier, navController: NavHostController){
+fun AllProker(modifier: Modifier = Modifier, navController: NavHostController, onBackClick: () -> Unit){
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -35,7 +33,7 @@ fun AllProker(modifier: Modifier = Modifier, navController: NavHostController){
                 .padding(bottom = 66.dp) // Memberikan ruang untuk BottomBar
         ) {
             // TopBar di bagian atas
-            TopBar(pageTitle = "All Proker")
+            TopBar(pageTitle = "All Proker", onBackClick = onBackClick)
 
             // Konten utama
             Column(
@@ -87,9 +85,9 @@ fun AllProker(modifier: Modifier = Modifier, navController: NavHostController){
 
 }
 
-@Preview
-@Composable
-fun AllProkerPreview (){
-    val navController = rememberNavController()
-    AllProker(navController = navController)
-}
+//@Preview
+//@Composable
+//fun AllProkerPreview (){
+//    val navController = rememberNavController()
+//    AllProker(navController = navController)
+//}
